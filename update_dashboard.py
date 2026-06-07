@@ -111,6 +111,9 @@ statuses = set()
 for row in reader:
     statuses.add(row.get('Order Status',''))
 print("UNIQUE STATUSES:", statuses)
+# DEBUG - cek nama kolom asli
+reader2 = csv.DictReader(io.StringIO(csv_text))
+print("COLUMNS:", reader2.fieldnames)
 
 # Count rows
 reader = csv.reader(io.StringIO(csv_text))
