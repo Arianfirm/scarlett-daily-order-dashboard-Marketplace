@@ -104,6 +104,14 @@ csv_resp = requests.get(report_url, timeout=120)
 csv_resp.raise_for_status()
 csv_text = csv_resp.text
 
+# DEBUG - cek nilai unik Order Status
+import io, csv
+reader = csv.DictReader(io.StringIO(csv_text))
+statuses = set()
+for row in reader:
+    statuses.add(row.get('Order Status',''))
+print("UNIQUE STATUSES:", statuses)
+
 # Count rows
 reader = csv.reader(io.StringIO(csv_text))
 rows = list(reader)
