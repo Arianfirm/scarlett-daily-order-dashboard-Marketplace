@@ -1,13 +1,12 @@
-
 name: Update Scarlett Dashboard
-
-permissions:
-  contents: write
 
 on:
   schedule:
-    - cron: '0 1 * * *'
-  workflow_dispatch:
+    - cron: '0 * * * *'   # tiap jam: 00:00, 01:00, 02:00, dst (UTC)
+  workflow_dispatch:        # tetap bisa trigger manual
+
+permissions:
+  contents: write
 
 jobs:
   update-dashboard:
@@ -20,26 +19,21 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install Dependencies
-        run: |
-          pip install pandas requests openpyxl
+        run: pip install requests
 
       - name: Run Dashboard Update
         env:
-          ACHANTO_EMAIL: ${{ secrets.ACHANTO_EMAIL }}
+          ACHANTO_EMAIL:    ${{ secrets.ACHANTO_EMAIL }}
           ACHANTO_PASSWORD: ${{ secrets.ACHANTO_PASSWORD }}
+        run: python update_dashboard.py
+
+      - name: Commit & Push
         run: |
-          python update_dashboard.py
-
-      - name: Commit Updated JSON
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-
-          git add data/orders.json
-
-          git commit -m "Auto update dashboard" || echo "No changes"
-
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/orders.csv data/last_updated.json
+          git diff --staged --quiet || git commit -m "chore: update data $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
