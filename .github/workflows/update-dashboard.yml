@@ -1,6 +1,9 @@
 
 name: Update Scarlett Dashboard
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: '0 1 * * *'
