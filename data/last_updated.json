@@ -1,8 +1,8 @@
 {
   "date": "2026-06-08",
-  "last_updated": "2026-06-08 04:12:48 UTC",
+  "last_updated": "2026-06-08 04:23:37 UTC",
   "run_at_hour": 4,
-  "total_rows": 13567,
+  "total_rows": 16191,
   "columns": [
     "Marketplace",
     "Order Date",
@@ -15,10 +15,15 @@
     "Payment Method",
     "Order Status",
     "Customer Name",
-    "Shipping Address Line",
-    "Shipping Address2",
-    "Customer Contact Number",
-    "Shipping City",
-    "Shipping Postcode"
+    "Shipping Provider",
+    "Shipment Type Name",
+    "Tracking Number",
+    "Order Picking Time",
+    "Order Packing Time",
+    "Shipping Fee",
+    "Billing Name",
+    "Billing Address Line",
+    "Delivery Date (DD/MM/YYYY)",
+    "Dispatch Scheduled Date"
   ]
 }
