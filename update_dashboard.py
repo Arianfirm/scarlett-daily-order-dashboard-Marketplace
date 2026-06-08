@@ -57,11 +57,20 @@ print("\n[3/5] Waiting for report...")
 report_url = ""
 for i in range(1, 25):
     time.sleep(15)
-    ch = requests.get(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
-    at = ch.json().get("data", {}).get("attributes", {})
-    print(f"      [{i:02d}/24] status={at.get('status','')}")
-    if at.get("report_url"):
-        report_url = at["report_url"]; print("      ✓ Report ready!"); break
+    try:
+        ch = requests.get(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
+        if not ch.text.strip():
+            print(f"      [{i:02d}/24] empty response, retrying...")
+            continue
+        at = ch.json().get("data", {}).get("attributes", {})
+        status = at.get("status","")
+        url    = at.get("report_url","")
+        print(f"      [{i:02d}/24] status={status}")
+        if url:
+            report_url = url; print("      ✓ Report ready!"); break
+    except Exception as e:
+        print(f"      [{i:02d}/24] poll error: {e}, retrying...")
+        continue
 if not report_url:
     print("      ✗ Timeout"); exit(1)
 
