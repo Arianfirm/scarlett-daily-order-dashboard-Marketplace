@@ -20,15 +20,30 @@ jwt = r.json()["jwt"]
 print("      ✓ Login success")
 H = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
 
-# 2. Create report — field IDs confirmed from raw CSV analysis
-# 25 columns total dari file B2C Order Report
+# 2. Create report
+# Confirmed working: 12,14,16,22,623,28,1220,29,30,31,32,33,34,35,36
+# From last run columns: Marketplace,Order Date,Order Number,Item Name,Kit Name,
+#   Ordered Qty,Total Ordered Qty,Paid Amount,Payment Method,Order Status,
+#   Customer Name,Shipping Address Line,Shipping Address2,Customer Contact Number,
+#   Shipping City,Shipping Postcode
+# MISSING: Shipping Provider → try IDs 50-200, 1300-1500
 print("\n[2/5] Creating report...")
 payload = {"report_schedule": {
     "report_type_id": "3", "report_format": "csv",
     "report_occurrence_id": "5", "mailing_list": [""],
-    "field_ids": ["12","14","16","22","623","28","1220",
-                  "29","30","31","32","33","34","35","36",
-                  "37","38","39","40","41","42","43","44","45","46"],
+    "field_ids": [
+        # Confirmed working
+        "12","14","16","22","623","28","1220",
+        "29","30","31","32","33","34","35","36",
+        # Try range for Shipping Provider, Tracking, Dispatch Date
+        "50","51","52","53","54","55","56","57","58","59","60",
+        "61","62","63","64","65","66","67","68","69","70",
+        "71","72","73","74","75","76","77","78","79","80",
+        "1300","1301","1302","1303","1304","1305","1306","1307","1308","1309","1310",
+        "1311","1312","1313","1314","1315","1316","1317","1318","1319","1320",
+        "1400","1401","1402","1403","1404","1405",
+        "1500","1501","1502","1503","1504","1505",
+    ],
     "filters": {"company_id": ["2"], "campaign_code": []},
     "from_date": TODAY, "end_date": TODAY,
     "notification_type": "email", "carrier_code": []
@@ -63,8 +78,8 @@ reader = csv.DictReader(io.StringIO(csv_text))
 rows = list(reader)
 cols = reader.fieldnames or []
 print(f"      ✓ {len(rows):,} rows · {len(cols)} columns")
-print(f"      Columns: {cols}")
-for c in ["Order Status","Shipping Provider","Shipping City","Payment Method"]:
+print(f"      ALL COLUMNS: {cols}")
+for c in ["Order Status","Shipping Provider","Shipping City","Payment Method","Dispatch Date","Tracking Number"]:
     print(f"      {'✓' if c in cols else '✗ MISSING'} '{c}'")
 
 # 5. Save
@@ -77,5 +92,4 @@ meta = {"date": TODAY, "last_updated": NOW,
         "total_rows": len(rows), "columns": cols}
 with open("data/last_updated.json", "w") as f:
     json.dump(meta, f, indent=2)
-print(f"      ✓ Saved")
-print(f"\n=== DONE — {len(rows):,} rows · {TODAY} ===")
+print(f"      ✓ Saved\n\n=== DONE — {len(rows):,} rows · {len(cols)} columns · {TODAY} ===")
