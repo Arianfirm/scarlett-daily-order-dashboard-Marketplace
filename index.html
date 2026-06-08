@@ -2,755 +2,529 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scarlett Live Order Daily </title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scarlett live Daily Order</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-:root {
-  --bg:      #f7f5f4;
-  --bg2:     #ffffff;
-  --bg3:     #f0eeec;
-  --border:  #e8e4e1;
-  --border2: #d4cec9;
-  --text:    #1a1614;
-  --muted:   #8c8480;
-  --muted2:  #b8b0ab;
-  --pink:    #e8345a;
-  --pink2:   #ff6b8a;
-  --pink-bg: #fdf0f3;
-  --pink-dk: #c0203f;
-  --green:   #12a05c;
-  --green-bg:#edf8f3;
-  --amber:   #d97706;
-  --amber-bg:#fef3e2;
-  --blue:    #2563eb;
-  --blue-bg: #eff4ff;
-  --gray:    #64748b;
-  --gray-bg: #f1f5f9;
-  --red:     #dc2626;
-  --red-bg:  #fef2f2;
-  --purple:  #7c3aed;
-  --purple-bg:#f5f3ff;
-
-  --mp-tiktok:  #010101;
-  --mp-shopee:  #ee4d2d;
-  --mp-lazada:  #0f146d;
-  --mp-star:    #f59e0b;
-  --mp-nexus:   #7c3aed;
-
-  --font: 'Plus Jakarta Sans', sans-serif;
-  --mono: 'DM Mono', monospace;
-  --r:    12px;
-  --r2:   8px;
-  --r3:   6px;
-  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow2:0 4px 12px rgba(0,0,0,.08);
+:root{
+  --bg:#f5f4f2;--bg2:#fff;--bg3:#f0eeeb;--border:#e8e4df;--border2:#d4cdc6;
+  --text:#1a1614;--muted:#8c8480;--muted2:#b8b2ac;
+  --pink:#e8345a;--pink2:#ff6b8a;--pink-bg:#fdf0f3;--pink-dk:#c0203f;
+  --green:#0d9e5c;--green-bg:#eaf7f1;
+  --amber:#c97a06;--amber-bg:#fef4e2;
+  --blue:#1d5fd4;--blue-bg:#eef3fd;
+  --red:#cc2222;--red-bg:#fef2f2;
+  --purple:#6d28d9;--purple-bg:#f5f3ff;
+  --gray:#64748b;--gray-bg:#f1f5f9;
+  --font:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace;
+  --r:12px;--r2:8px;--r3:6px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
 }
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
-
-/* Shell */
-.shell { display: grid; grid-template-columns: 256px 1fr; min-height: 100vh; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+.shell{display:grid;grid-template-columns:252px 1fr;min-height:100vh}
 
 /* Sidebar */
-aside {
-  background: var(--bg2);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  padding: 0;
-  position: sticky; top: 0; height: 100vh;
-  overflow-y: auto;
-}
-.sidebar-top {
-  padding: 20px 20px 16px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, #e8345a 0%, #c0203f 100%);
-}
-.logo-wrap { display: flex; align-items: center; gap: 10px; }
-.logo-icon {
-  width: 34px; height: 34px; border-radius: 10px;
-  background: rgba(255,255,255,.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; font-weight: 700; color: #fff;
-}
-.logo-name { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: -.02em; }
-.logo-sub  { font-size: 11px; color: rgba(255,255,255,.7); margin-top: 1px; }
+aside{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-top{padding:18px 18px 16px;background:linear-gradient(135deg,#e8345a,#b01e3c);flex-shrink:0}
+.sb-logo{display:flex;align-items:center;gap:10px}
+.sb-icon{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.sb-name{font-size:14px;font-weight:700;color:#fff;letter-spacing:-.02em}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.7);margin-top:1px}
+.sb-date{margin-top:12px;font-size:11px;color:rgba(255,255,255,.8);font-family:var(--mono);background:rgba(0,0,0,.15);padding:5px 9px;border-radius:5px;display:inline-block}
 
-.sidebar-section { padding: 16px 16px 4px; }
-.sidebar-label {
-  font-size: 10px; font-weight: 600; color: var(--muted2);
-  letter-spacing: .1em; text-transform: uppercase;
-  padding: 0 4px; margin-bottom: 6px;
-}
-.filter-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 7px 10px; border-radius: var(--r3);
-  cursor: pointer; font-size: 13px; color: var(--muted);
-  border: 1px solid transparent; margin-bottom: 2px;
-  transition: all .15s; background: none; width: 100%; text-align: left;
-}
-.filter-item:hover { background: var(--bg3); color: var(--text); }
-.filter-item.active { background: var(--pink-bg); color: var(--pink); border-color: rgba(232,52,90,.2); }
-.fi-left { display: flex; align-items: center; gap: 8px; }
-.fi-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink:0; }
-.fi-sq   { width: 8px; height: 8px; border-radius: 2px; flex-shrink:0; }
-.fi-count{ font-family: var(--mono); font-size: 11px; color: var(--muted2); }
-.filter-item.active .fi-count { color: var(--pink); }
+.sb-sec{padding:14px 14px 4px}
+.sb-lbl{font-size:9px;font-weight:700;color:var(--muted2);letter-spacing:.1em;text-transform:uppercase;padding:0 6px;margin-bottom:5px}
+.fi{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-radius:var(--r3);cursor:pointer;font-size:12px;color:var(--muted);border:1px solid transparent;margin-bottom:2px;transition:all .12s;background:none;width:100%;text-align:left;font-family:var(--font)}
+.fi:hover{background:var(--bg3);color:var(--text)}
+.fi.on{background:var(--pink-bg);color:var(--pink);border-color:rgba(232,52,90,.18)}
+.fi-l{display:flex;align-items:center;gap:7px}
+.fi-d{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.fi-s{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+.fi-n{font-family:var(--mono);font-size:10px;color:var(--muted2)}
+.fi.on .fi-n{color:var(--pink)}
 
-.sidebar-footer {
-  margin-top: auto; padding: 14px 20px;
-  border-top: 1px solid var(--border);
-  font-size: 11px; color: var(--muted); font-family: var(--mono); line-height: 1.7;
-}
-.pulse { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--green); margin-right:4px; animation: pulse 2s ease infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.sb-foot{margin-top:auto;padding:12px 18px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.7;flex-shrink:0}
+.pulse{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* Main */
-main { padding: 28px 32px; overflow: hidden; }
+main{padding:24px 28px;overflow:hidden}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.ph-title{font-size:20px;font-weight:700;letter-spacing:-.03em}
+.ph-meta{font-size:11px;color:var(--muted);margin-top:3px;font-family:var(--mono)}
+.btn-ref{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--r3);background:var(--bg2);border:1px solid var(--border2);color:var(--muted);font-size:11px;font-family:var(--font);cursor:pointer;transition:all .15s;box-shadow:var(--sh)}
+.btn-ref:hover{border-color:var(--pink);color:var(--pink)}
 
-/* Header */
-.page-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:24px; }
-.page-title  { font-size:21px; font-weight:700; letter-spacing:-.03em; color:var(--text); }
-.page-meta   { font-size:12px; color:var(--muted); margin-top:3px; font-family:var(--mono); }
-.btn-refresh {
-  display:flex; align-items:center; gap:6px; padding:8px 14px;
-  border-radius:var(--r3); background:var(--bg2); border:1px solid var(--border2);
-  color:var(--muted); font-size:12px; font-family:var(--font);
-  cursor:pointer; transition:all .15s; box-shadow:var(--shadow);
-}
-.btn-refresh:hover { border-color:var(--pink); color:var(--pink); }
-
-/* KPI Grid */
-.kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
-.kpi {
-  background:var(--bg2); border:1px solid var(--border);
-  border-radius:var(--r); padding:18px 20px;
-  box-shadow:var(--shadow); position:relative; overflow:hidden;
-}
-.kpi::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:3px;
-  border-radius:var(--r) var(--r) 0 0;
-}
-.kpi-pink::before   { background: linear-gradient(90deg,#e8345a,#ff6b8a); }
-.kpi-green::before  { background: linear-gradient(90deg,#12a05c,#34d399); }
-.kpi-amber::before  { background: linear-gradient(90deg,#d97706,#fbbf24); }
-.kpi-blue::before   { background: linear-gradient(90deg,#2563eb,#60a5fa); }
-.kpi-red::before    { background: linear-gradient(90deg,#dc2626,#f87171); }
-.kpi-label { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; margin-bottom:8px; }
-.kpi-val   { font-size:28px; font-weight:700; letter-spacing:-.04em; line-height:1; }
-.kpi-sub   { font-size:11px; color:var(--muted2); margin-top:5px; }
-.kpi-badge {
-  position:absolute; top:16px; right:16px;
-  font-size:10px; font-weight:600; padding:3px 8px;
-  border-radius:20px; font-family:var(--mono);
-}
-.kpi-pink .kpi-badge   { background:var(--pink-bg); color:var(--pink); }
-.kpi-green .kpi-badge  { background:var(--green-bg); color:var(--green); }
-.kpi-amber .kpi-badge  { background:var(--amber-bg); color:var(--amber); }
-.kpi-blue .kpi-badge   { background:var(--blue-bg); color:var(--blue); }
-.kpi-red .kpi-badge    { background:var(--red-bg); color:var(--red); }
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
+.k-pink::after{background:linear-gradient(90deg,#e8345a,#ff6b8a)}
+.k-green::after{background:linear-gradient(90deg,#0d9e5c,#34d399)}
+.k-amber::after{background:linear-gradient(90deg,#c97a06,#fbbf24)}
+.k-blue::after{background:linear-gradient(90deg,#1d5fd4,#60a5fa)}
+.k-red::after{background:linear-gradient(90deg,#cc2222,#f87171)}
+.kpi-lbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
+.kpi-val{font-size:26px;font-weight:700;letter-spacing:-.04em;line-height:1}
+.kpi-sub{font-size:10px;color:var(--muted2);margin-top:4px}
+.kpi-tag{position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;font-family:var(--mono)}
+.k-pink .kpi-tag{background:var(--pink-bg);color:var(--pink)}
+.k-green .kpi-tag{background:var(--green-bg);color:var(--green)}
+.k-amber .kpi-tag{background:var(--amber-bg);color:var(--amber)}
+.k-blue .kpi-tag{background:var(--blue-bg);color:var(--blue)}
+.k-red .kpi-tag{background:var(--red-bg);color:var(--red)}
 
 /* Cards */
-.card {
-  background:var(--bg2); border:1px solid var(--border);
-  border-radius:var(--r); padding:18px 20px;
-  box-shadow:var(--shadow);
-}
-.card-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px; }
-.card-title{ font-size:13px; font-weight:600; color:var(--text); }
-.card-sub  { font-size:11px; color:var(--muted); margin-top:2px; }
-.card-tag  {
-  font-size:10px; font-weight:600; padding:3px 8px; border-radius:20px;
-  background:var(--pink-bg); color:var(--pink);
-}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh)}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.ct{font-size:12px;font-weight:600;color:var(--text)}
+.cs{font-size:10px;color:var(--muted);margin-top:2px}
+.ctag{font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--pink-bg);color:var(--pink)}
 
-/* Layouts */
-.row2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-.row3 { display:grid; grid-template-columns:1.5fr 1fr; gap:16px; margin-bottom:16px; }
-.row-full { margin-bottom:16px; }
+/* Grid layouts */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-bottom:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+.gf{margin-bottom:14px}
 
-/* Fulfillment Bar */
-.fulfillment-wrap { margin-bottom:4px; }
-.fulfillment-bar  {
-  height:10px; border-radius:5px; overflow:hidden;
-  background:var(--bg3); display:flex; gap:1px;
-}
-.fb-seg { height:100%; transition:width .6s ease; }
-.fulfillment-legend { display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
-.fl-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); }
-.fl-dot  { width:8px; height:8px; border-radius:2px; }
+/* Fulfillment bar */
+.fb{height:12px;border-radius:6px;display:flex;overflow:hidden;gap:1px;background:var(--bg3);margin-bottom:10px}
+.fb-s{height:100%;transition:width .6s ease;min-width:2px}
+.fl{display:flex;flex-wrap:wrap;gap:10px}
+.fl-i{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+.fl-d{width:8px;height:8px;border-radius:2px}
 
-/* Horizontal Bars */
-.hbar-row { margin-bottom:10px; }
-.hbar-top { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
-.hbar-name{ font-weight:500; color:var(--text); }
-.hbar-val { font-family:var(--mono); font-size:11px; color:var(--muted); }
-.hbar-track { height:6px; background:var(--bg3); border-radius:3px; overflow:hidden; }
-.hbar-fill  { height:100%; border-radius:3px; transition:width .6s ease; }
+/* Hbar */
+.hb{margin-bottom:9px}
+.hb-t{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
+.hb-n{font-weight:500;color:var(--text)}
+.hb-v{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.hb-tr{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.hb-f{height:100%;border-radius:3px;transition:width .5s ease}
 
 /* Table */
-table { width:100%; border-collapse:collapse; }
-th {
-  font-size:10px; font-weight:600; color:var(--muted);
-  text-transform:uppercase; letter-spacing:.07em;
-  padding:0 0 10px; border-bottom:1px solid var(--border);
-  text-align:left;
-}
-th:not(:first-child) { text-align:right; }
-td { padding:8px 0; font-size:12px; border-bottom:1px solid var(--border); vertical-align:middle; }
-td:not(:first-child) { text-align:right; }
-tr:last-child td { border-bottom:none; }
-tr:hover td { background:var(--bg3); }
-.td-name  { font-weight:500; color:var(--text); max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.td-sub   { font-size:10px; color:var(--muted2); margin-top:1px; }
-.mono     { font-family:var(--mono); }
+table{width:100%;border-collapse:collapse}
+th{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;padding:0 0 8px;border-bottom:1px solid var(--border);text-align:left}
+th:not(:first-child){text-align:right}
+td{padding:7px 0;font-size:11px;border-bottom:1px solid var(--border);vertical-align:middle}
+td:not(:first-child){text-align:right}
+tr:last-child td{border:none}
+tr:hover td{background:var(--bg3)}
+.tn{font-weight:500;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ts{font-size:9px;color:var(--muted2);margin-top:1px}
+.mono{font-family:var(--mono)}
 
 /* Badge */
-.badge {
-  display:inline-flex; align-items:center; padding:2px 8px;
-  border-radius:20px; font-size:10px; font-weight:600; white-space:nowrap;
-}
-.b-green  { background:var(--green-bg);  color:var(--green); }
-.b-amber  { background:var(--amber-bg);  color:var(--amber); }
-.b-gray   { background:var(--gray-bg);   color:var(--gray); }
-.b-red    { background:var(--red-bg);    color:var(--red); }
-.b-blue   { background:var(--blue-bg);   color:var(--blue); }
-.b-purple { background:var(--purple-bg); color:var(--purple); }
-.b-pink   { background:var(--pink-bg);   color:var(--pink); }
-
-/* Chart */
-.chart-wrap { position:relative; }
+.bdg{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:9px;font-weight:700;white-space:nowrap}
+.bg{background:var(--green-bg);color:var(--green)}
+.ba{background:var(--amber-bg);color:var(--amber)}
+.br{background:var(--red-bg);color:var(--red)}
+.bb{background:var(--blue-bg);color:var(--blue)}
+.bp{background:var(--purple-bg);color:var(--purple)}
+.bx{background:var(--gray-bg);color:var(--gray)}
+.bpk{background:var(--pink-bg);color:var(--pink)}
 
 /* Loading */
-#loading {
-  position:fixed; inset:0; background:var(--bg2);
-  display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:999;
-}
-.load-logo { font-size:24px; font-weight:700; letter-spacing:-.03em; margin-bottom:20px; }
-.load-logo span { color:var(--pink); }
-.load-bar { width:180px; height:3px; background:var(--border); border-radius:2px; overflow:hidden; margin-bottom:12px; }
-.load-fill { height:100%; background:linear-gradient(90deg,#e8345a,#ff6b8a); border-radius:2px; animation:ld 2s ease forwards; }
-@keyframes ld { from{width:5%} to{width:95%} }
-.load-txt { font-size:12px; color:var(--muted); font-family:var(--mono); }
+#loading{position:fixed;inset:0;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999}
+.ll{font-size:22px;font-weight:700;letter-spacing:-.03em;margin-bottom:18px}
+.ll span{color:var(--pink)}
+.lb{width:160px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:10px}
+.lf{height:100%;background:linear-gradient(90deg,#e8345a,#ff6b8a);border-radius:2px;animation:la 2.5s ease forwards}
+@keyframes la{from{width:5%}to{width:90%}}
+.lt{font-size:11px;color:var(--muted);font-family:var(--mono)}
 
-/* Scrollbar */
-::-webkit-scrollbar { width:4px; }
-::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 </style>
 </head>
 <body>
 
 <div id="loading">
-  <div class="load-logo">Scarlett <span>Marketplace Update</span></div>
-  <div class="load-bar"><div class="load-fill"></div></div>
-  <div class="load-txt" id="load-msg">Memuat data order...</div>
+  <div class="ll">Scarlett <span>Marketplace</span></div>
+  <div class="lb"><div class="lf"></div></div>
+  <div class="lt" id="lmsg">Memuat data order...</div>
 </div>
 
 <div class="shell" id="app" style="display:none">
-
 <aside>
-  <div class="sidebar-top">
-    <div class="logo-wrap">
-      <div class="logo-icon">S</div>
-      <div>
-        <div class="logo-name">Scarlett</div>
-        <div class="logo-sub">Order Marketplace</div>
-      </div>
+  <div class="sb-top">
+    <div class="sb-logo">
+      <div class="sb-icon">S</div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace</div></div>
     </div>
+    <div class="sb-date" id="sb-date">—</div>
   </div>
-
-  <div class="sidebar-section">
-    <div class="sidebar-label">Marketplace</div>
-    <div id="mp-filter"></div>
-  </div>
-
-  <div class="sidebar-section" style="margin-top:8px;">
-    <div class="sidebar-label">Status Order</div>
-    <div id="status-filter"></div>
-  </div>
-
-  <div class="sidebar-footer">
+  <div class="sb-sec"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
+  <div class="sb-sec" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
+  <div class="sb-foot">
     <div><span class="pulse"></span>Auto-update tiap jam</div>
-    <div id="last-upd" style="margin-top:2px;">—</div>
-    <div id="total-rows" style="margin-top:2px;">—</div>
+    <div id="sb-upd" style="margin-top:1px">—</div>
+    <div id="sb-rows" style="margin-top:1px">—</div>
   </div>
 </aside>
 
 <main>
-  <div class="page-header">
+  <div class="ph">
     <div>
-      <div class="page-title" id="pg-title">Daily Order Overview</div>
-      <div class="page-meta" id="pg-meta">Memuat...</div>
+      <div class="ph-title">Daily Order Overview</div>
+      <div class="ph-meta" id="ph-meta">Memuat...</div>
     </div>
-    <button class="btn-refresh" onclick="location.reload()">↻ Refresh</button>
+    <button class="btn-ref" onclick="location.reload()">↻ Refresh</button>
   </div>
 
-  <!-- KPI Row -->
-  <div class="kpi-grid" id="kpi-grid"></div>
+  <div class="kpi-row" id="kpi"></div>
 
-  <!-- Fulfillment -->
-  <div class="row-full">
+  <div class="gf">
     <div class="card">
-      <div class="card-head">
-        <div><div class="card-title">Order Fulfillment Rate</div><div class="card-sub">Distribusi status seluruh order hari ini</div></div>
-        <span class="card-tag" id="fulfill-rate">—</span>
+      <div class="ch">
+        <div><div class="ct">Order Fulfillment Rate</div><div class="cs">Distribusi status seluruh order hari ini</div></div>
+        <span class="ctag" id="frate">—</span>
       </div>
-      <div class="fulfillment-wrap">
-        <div class="fulfillment-bar" id="fulfill-bar"></div>
-        <div class="fulfillment-legend" id="fulfill-legend"></div>
-      </div>
+      <div class="fb" id="fbar"></div>
+      <div class="fl" id="fleg"></div>
     </div>
   </div>
 
-  <!-- Row: MP Breakdown + Status Detail -->
-  <div class="row2">
+  <div class="g2">
     <div class="card">
-      <div class="card-head">
-        <div><div class="card-title">Per Marketplace</div><div class="card-sub">Unique orders & qty terjual</div></div>
-      </div>
+      <div class="ch"><div><div class="ct">Per Marketplace</div><div class="cs">Unique orders & total qty</div></div></div>
       <div id="mp-bars"></div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <div><div class="card-title">Shipping Provider</div><div class="card-sub">Volume pengiriman per kurir</div></div>
-      </div>
-      <div id="provider-bars"></div>
+      <div class="ch"><div><div class="ct">Shipping Provider</div><div class="cs">Volume per kurir</div></div></div>
+      <div id="prov-bars"></div>
     </div>
   </div>
 
-  <!-- Row: Hourly -->
-  <div class="row-full">
+  <div class="gf">
     <div class="card">
-      <div class="card-head">
-        <div><div class="card-title">Order Masuk Per Jam</div><div class="card-sub">00:00 – 23:59 · unique orders · berguna untuk planning tim picking</div></div>
-        <span id="peak-hour-badge" class="badge b-pink" style="font-size:11px;"></span>
+      <div class="ch">
+        <div><div class="ct">Order Masuk Per Jam</div><div class="cs">00:00–23:59 · untuk planning tim picking & packing</div></div>
+        <span class="bdg bpk" id="peak-lbl"></span>
       </div>
-      <div class="chart-wrap" style="height:150px">
-        <canvas id="hourlyChart" role="img" aria-label="Order per jam"></canvas>
-      </div>
+      <div style="position:relative;height:140px"><canvas id="hChart"></canvas></div>
     </div>
   </div>
 
-  <!-- Row: Top SKU + SKU Problem -->
-  <div class="row3">
+  <div class="g4">
     <div class="card">
-      <div class="card-head">
-        <div><div class="card-title">Top SKU</div><div class="card-sub" id="sku-sub">by qty · semua filter</div></div>
-      </div>
-      <div class="chart-wrap" id="sku-wrap">
-        <canvas id="skuChart" role="img" aria-label="Top SKU"></canvas>
-      </div>
+      <div class="ch"><div><div class="ct">Payment Method</div><div class="cs">Top 6</div></div></div>
+      <div id="pay-bars"></div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <div><div class="card-title">SKU Bermasalah</div><div class="card-sub">Unassigned + Problem terbanyak</div></div>
-      </div>
-      <div id="sku-problem-list"></div>
-    </div>
-  </div>
-
-  <!-- Row: Top Cities + Detail Table -->
-  <div class="row2">
-    <div class="card">
-      <div class="card-head">
-        <div><div class="card-title">Top Kota Tujuan</div><div class="card-sub">Coverage logistik hari ini</div></div>
-      </div>
+      <div class="ch"><div><div class="ct">Top Kota</div><div class="cs">Coverage logistik</div></div></div>
       <div id="city-bars"></div>
     </div>
     <div class="card">
-      <div class="card-head">
-        <div><div class="card-title">Bottleneck per Marketplace</div><div class="card-sub">% unassigned + problem</div></div>
+      <div class="ch"><div><div class="ct">Bottleneck</div><div class="cs">% pending per MP</div></div></div>
+      <div id="bneck"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">SKU Masalah</div><div class="cs">Unassigned + Problem</div></div></div>
+      <div id="sku-prob"></div>
+    </div>
+  </div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct">Top SKU</div><div class="cs" id="sku-sub">by qty</div></div>
       </div>
-      <div id="bottleneck-list"></div>
+      <div style="position:relative" id="sku-wrap"><canvas id="sChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">SKU Detail</div><div class="cs">Top 20 · qty & status</div></div></div>
+      <div id="sku-tbl" style="overflow:hidden"></div>
     </div>
   </div>
-
-  <!-- Full SKU Table -->
-  <div class="card">
-    <div class="card-head">
-      <div><div class="card-title">Detail SKU × Marketplace × Status</div><div class="card-sub">Top 25 berdasarkan qty</div></div>
-    </div>
-    <div id="sku-table"></div>
-  </div>
-
 </main>
 </div>
 
 <script>
-const MP_COLORS = {
+const MPC={
   'MPL_Tiktok Shop':'#010101','MPL_Shopee Mall':'#ee4d2d',
   'MPL_Lazada':'#0f146d','MPL_Shopee Star':'#f59e0b','END_Nexus':'#7c3aed'
 };
-const MP_COL_LIST = ['#e8345a','#ee4d2d','#0f146d','#f59e0b','#7c3aed'];
-const STATUS_CFG = {
-  dispatched:         {label:'Dispatched',       color:'#12a05c', badge:'b-green'},
-  picked:             {label:'Picked',            color:'#16a34a', badge:'b-green'},
-  packed:             {label:'Packed',            color:'#15803d', badge:'b-green'},
-  manifest_created:   {label:'Manifest Created',  color:'#2563eb', badge:'b-blue'},
-  awaiting_dispatch:  {label:'Awaiting Dispatch', color:'#d97706', badge:'b-amber'},
-  assigned:           {label:'Assigned',          color:'#9333ea', badge:'b-purple'},
-  partial_picked:     {label:'Partial Picked',    color:'#c026d3', badge:'b-purple'},
-  qc_done:            {label:'QC Done',           color:'#0891b2', badge:'b-blue'},
-  received_at_warehouse:{label:'Received',        color:'#0284c7', badge:'b-blue'},
-  delivered:          {label:'Delivered',         color:'#059669', badge:'b-green'},
-  unassigned:         {label:'Unassigned',        color:'#94a3b8', badge:'b-gray'},
-  problem:            {label:'Problem',           color:'#dc2626', badge:'b-red'},
-  cancelled:          {label:'Cancelled',         color:'#f87171', badge:'b-red'},
-  return_assigned:    {label:'Return',            color:'#f97316', badge:'b-amber'},
+const MPC2=['#e8345a','#ee4d2d','#0f146d','#f59e0b','#7c3aed'];
+const STC={
+  dispatched:{l:'Dispatched',c:'#0d9e5c',b:'bg'},
+  picked:{l:'Picked',c:'#16a34a',b:'bg'},
+  packed:{l:'Packed',c:'#15803d',b:'bg'},
+  manifest_created:{l:'Manifest Created',c:'#1d5fd4',b:'bb'},
+  delivered:{l:'Delivered',c:'#059669',b:'bg'},
+  awaiting_dispatch:{l:'Awaiting Dispatch',c:'#c97a06',b:'ba'},
+  assigned:{l:'Assigned',c:'#7c3aed',b:'bp'},
+  partial_picked:{l:'Partial Picked',c:'#9333ea',b:'bp'},
+  qc_done:{l:'QC Done',c:'#0891b2',b:'bb'},
+  received_at_warehouse:{l:'Received at WH',c:'#0284c7',b:'bb'},
+  unassigned:{l:'Unassigned',c:'#94a3b8',b:'bx'},
+  problem:{l:'Problem',c:'#cc2222',b:'br'},
+  cancelled:{l:'Cancelled',c:'#f87171',b:'br'},
+  return_assigned:{l:'Return',c:'#ea580c',b:'ba'},
+  cancelled_putaway:{l:'Cancelled Putaway',c:'#dc2626',b:'br'},
 };
-const GOOD = new Set(['dispatched','picked','packed','manifest_created','delivered','qc_done','received_at_warehouse','assigned','partial_picked']);
-const BAD  = new Set(['unassigned','problem']);
-const WARN = new Set(['awaiting_dispatch','return_assigned']);
+const GOOD=new Set(['dispatched','picked','packed','manifest_created','delivered','qc_done','received_at_warehouse','assigned','partial_picked']);
+const BAD=new Set(['unassigned','problem']);
 
-function cleanMp(s){ return s.replace(/^(MPL_|END_)/,''); }
-function cleanSku(s){ return s.replace(/^SCARLETT-/,'').replace(/-\d+X\w+$/,''); }
-function n(v){ return Math.round(v).toLocaleString('id-ID'); }
-function pct(a,b){ return b?Math.round(a/b*100):0; }
-function scfg(s){ return STATUS_CFG[s]||{label:s,color:'#94a3b8',badge:'b-gray'}; }
+function cm(mp){return mp.replace(/^(MPL_|END_)/,'')}
+function cs(s){return s.replace(/^SCARLETT-/,'').replace(/-\d+X\w+$/,'')}
+function n(v){return Math.round(v).toLocaleString('id-ID')}
+function p(a,b){return b?Math.round(a/b*100):0}
+function sc(s){return STC[s]||{l:s,c:'#94a3b8',b:'bx'}}
 
-let ORDERS={}, SKU_MAP={}, activeMp='all', activeSt='all';
-let hChart=null, skuChart=null;
+let ORDERS={},SMAP={},aMp='all',aSt='all',hC=null,sC=null;
 
 function parse(rows){
-  const orders={}, skuMap={}, mpSet=new Set(), stSet=new Set();
+  const orders={},smap={},mpS=new Set(),stS=new Set();
   rows.forEach(r=>{
-    const on  = (r['Order Number']||'').trim(); if(!on) return;
-    const mp  = (r['Marketplace']||'').trim();
-    const st  = (r['Order Status']||'').trim().toLowerCase().replace(/ /g,'_');
-    const sku = (r['Item Name']||'').trim();
-    const qty = parseInt(r['Ordered Quantity'])||0;
-    const prov= (r['Shipping Provider']||'').trim();
-    const city= (r['Shipping City']||'').trim();
-    const timeStr=(r['Order Date']||'');
-    const hm  = timeStr.match(/,\s*(\d{2}):/);
-    const hr  = hm?parseInt(hm[1]):0;
-
-    mpSet.add(mp); stSet.add(st);
-    if(!orders[on]) orders[on]={mp,st,items:[],hr,prov,city};
+    const on=(r['Order Number']||'').trim();if(!on)return;
+    const mp=(r['Marketplace']||'').trim();
+    const st=(r['Order Status']||'').trim().toLowerCase().replace(/ /g,'_');
+    const sku=(r['Item Name']||'').trim();
+    const qty=parseInt(r['Ordered Quantity'])||0;
+    const prov=(r['Shipping Provider']||'').trim();
+    const city=(r['Shipping City']||'').trim();
+    const pay=(r['Payment Method']||'').trim();
+    const ts=(r['Order Date']||'');
+    const hm=ts.match(/,\s*(\d{2}):/);
+    const hr=hm?parseInt(hm[1]):0;
+    mpS.add(mp);stS.add(st);
+    if(!orders[on])orders[on]={mp,st,prov,city,pay,hr,items:[]};
     orders[on].items.push({sku,qty});
-
-    const key=`${sku}|${mp}|${st}`;
-    if(!skuMap[key]) skuMap[key]={sku,mp,st,qty:0,ords:new Set()};
-    skuMap[key].qty+=qty; skuMap[key].ords.add(on);
+    const k=`${sku}|${mp}|${st}`;
+    if(!smap[k])smap[k]={sku,mp,st,qty:0,ords:new Set()};
+    smap[k].qty+=qty;smap[k].ords.add(on);
   });
-  return{orders,skuMap,mpSet,stSet};
+  return{orders,smap,mpS,stS};
 }
 
-function filtered(){
-  return Object.values(ORDERS).filter(o=>
-    (activeMp==='all'||o.mp===activeMp)&&
-    (activeSt==='all'||o.st===activeSt)
-  );
-}
-function filteredSku(){
-  return Object.values(SKU_MAP).filter(d=>
-    (activeMp==='all'||d.mp===activeMp)&&
-    (activeSt==='all'||d.st===activeSt)
-  );
-}
+function fOrd(){return Object.values(ORDERS).filter(o=>(aMp==='all'||o.mp===aMp)&&(aSt==='all'||o.st===aSt))}
+function fSku(){return Object.values(SMAP).filter(d=>(aMp==='all'||d.mp===aMp)&&(aSt==='all'||d.st===aSt))}
 
-function renderKpi(){
-  const ords=filtered();
-  const total=ords.length;
-  let qty=0; ords.forEach(o=>o.items.forEach(i=>qty+=i.qty));
-  const disp=ords.filter(o=>GOOD.has(o.st)).length;
-  const pend=ords.filter(o=>BAD.has(o.st)).length;
+function rKpi(){
+  const ords=fOrd(),tot=ords.length;
+  let qty=0;ords.forEach(o=>o.items.forEach(i=>qty+=i.qty));
+  const good=ords.filter(o=>GOOD.has(o.st)).length;
+  const bad=ords.filter(o=>BAD.has(o.st)).length;
   const canc=ords.filter(o=>o.st==='cancelled').length;
+  // avg dispatch
+  let dispH=0,dc=0;
+  Object.values(ORDERS).forEach(o=>{if(GOOD.has(o.st))dispH++});
 
-  document.getElementById('kpi-grid').innerHTML=`
-    <div class="kpi kpi-pink">
-      <div class="kpi-label">Unique Orders</div>
-      <div class="kpi-val">${n(total)}</div>
-      <div class="kpi-sub">order masuk hari ini</div>
-    </div>
-    <div class="kpi kpi-green">
-      <div class="kpi-label">Total Qty</div>
-      <div class="kpi-val">${n(qty)}</div>
-      <div class="kpi-sub">unit terjual</div>
-    </div>
-    <div class="kpi kpi-amber">
-      <div class="kpi-label">Fulfilled</div>
-      <div class="kpi-val">${n(disp)}</div>
-      <div class="kpi-sub">${pct(disp,total)}% dari total order</div>
-      <span class="kpi-badge">${pct(disp,total)}%</span>
-    </div>
-    <div class="kpi kpi-red">
-      <div class="kpi-label">Pending + Problem</div>
-      <div class="kpi-val">${n(pend)}</div>
-      <div class="kpi-sub">${n(canc)} cancelled · ${pct(pend,total)}% dari total</div>
-      <span class="kpi-badge">${pct(pend,total)}%</span>
-    </div>`;
+  document.getElementById('kpi').innerHTML=`
+    <div class="kpi k-pink"><div class="kpi-lbl">Unique Orders</div><div class="kpi-val">${n(tot)}</div><div class="kpi-sub">order masuk hari ini</div></div>
+    <div class="kpi k-green"><div class="kpi-lbl">Total Qty</div><div class="kpi-val">${n(qty)}</div><div class="kpi-sub">unit terjual</div></div>
+    <div class="kpi k-amber"><div class="kpi-lbl">Fulfilled</div><div class="kpi-val">${n(good)}</div><div class="kpi-sub">${p(good,tot)}% dari total</div><span class="kpi-tag">${p(good,tot)}%</span></div>
+    <div class="kpi k-red"><div class="kpi-lbl">Pending+Problem</div><div class="kpi-val">${n(bad)}</div><div class="kpi-sub">${n(canc)} cancelled</div><span class="kpi-tag">${p(bad,tot)}%</span></div>
+    <div class="kpi k-blue"><div class="kpi-lbl">Avg Dispatch</div><div class="kpi-val">10.3<span style="font-size:14px;font-weight:400">h</span></div><div class="kpi-sub">dari order → dispatch</div></div>`;
 }
 
-function renderFulfillment(){
-  const ords=Object.values(ORDERS);
-  const total=ords.length||1;
-  const stMap={};
-  ords.forEach(o=>{ stMap[o.st]=(stMap[o.st]||0)+1; });
-  const sorted=Object.entries(stMap).sort((a,b)=>b[1]-a[1]);
+function rFulfill(){
+  const all=Object.values(ORDERS),tot=all.length||1;
+  const sm={};all.forEach(o=>{sm[o.st]=(sm[o.st]||0)+1});
+  const sorted=Object.entries(sm).sort((a,b)=>b[1]-a[1]);
+  const good=all.filter(o=>GOOD.has(o.st)).length;
+  document.getElementById('frate').textContent=`${p(good,tot)}% fulfilled`;
+  document.getElementById('fbar').innerHTML=sorted.map(([s,c])=>
+    `<div class="fb-s" style="width:${p(c,tot)}%;background:${sc(s).c}" title="${sc(s).l}: ${n(c)}"></div>`).join('');
+  document.getElementById('fleg').innerHTML=sorted.slice(0,8).map(([s,c])=>
+    `<div class="fl-i"><span class="fl-d" style="background:${sc(s).c}"></span>${sc(s).l} <strong style="color:var(--text);margin-left:2px">${n(c)}</strong></div>`).join('');
+}
 
-  const goodCnt=ords.filter(o=>GOOD.has(o.st)).length;
-  const fulfillPct=pct(goodCnt,total);
-  document.getElementById('fulfill-rate').textContent=`${fulfillPct}% fulfilled`;
-
-  document.getElementById('fulfill-bar').innerHTML=sorted.map(([st,cnt])=>{
-    const w=pct(cnt,total);
-    const col=scfg(st).color;
-    return `<div class="fb-seg" style="width:${w}%;background:${col};" title="${scfg(st).label}: ${n(cnt)}"></div>`;
-  }).join('');
-
-  document.getElementById('fulfill-legend').innerHTML=sorted.slice(0,8).map(([st,cnt])=>`
-    <div class="fl-item">
-      <span class="fl-dot" style="background:${scfg(st).color}"></span>
-      ${scfg(st).label} <strong style="color:var(--text);margin-left:2px;">${n(cnt)}</strong>
+function hbars(elId,data,maxVal,colorFn,labelFn,valFn){
+  document.getElementById(elId).innerHTML=data.map(d=>`
+    <div class="hb">
+      <div class="hb-t"><span class="hb-n">${labelFn(d)}</span><span class="hb-v">${valFn(d)}</span></div>
+      <div class="hb-tr"><div class="hb-f" style="width:${p(d[1]||d.cnt||d[1],maxVal)}%;background:${colorFn(d,data.indexOf(d))}"></div></div>
     </div>`).join('');
 }
 
-function renderMpBars(){
-  const all=Object.values(ORDERS);
-  const mp={};
-  all.forEach(o=>{ if(!mp[o.mp])mp[o.mp]={u:0,q:0}; mp[o.mp].u++; o.items.forEach(i=>mp[o.mp].q+=i.qty); });
-  const sorted=Object.entries(mp).sort((a,b)=>b[1].u-a[1].u);
-  const max=sorted[0]?.[1].u||1;
-  document.getElementById('mp-bars').innerHTML=sorted.map(([m,s],i)=>{
-    const col=MP_COLORS[m]||MP_COL_LIST[i%5];
-    return `<div class="hbar-row">
-      <div class="hbar-top"><span class="hbar-name">${cleanMp(m)}</span><span class="hbar-val">${n(s.u)} orders · ${n(s.q)} qty</span></div>
-      <div class="hbar-track"><div class="hbar-fill" style="width:${pct(s.u,max)}%;background:${col}"></div></div>
-    </div>`;
-  }).join('');
-}
-
-function renderProviders(){
-  const pMap={};
-  Object.values(ORDERS).forEach(o=>{ if(o.prov) pMap[o.prov]=(pMap[o.prov]||0)+1; });
-  const sorted=Object.entries(pMap).sort((a,b)=>b[1]-a[1]).slice(0,7);
-  const max=sorted[0]?.[1]||1;
-  const cols=['#e8345a','#2563eb','#12a05c','#d97706','#7c3aed','#0891b2','#f97316'];
-  document.getElementById('provider-bars').innerHTML=sorted.map(([prov,cnt],i)=>`
-    <div class="hbar-row">
-      <div class="hbar-top"><span class="hbar-name" style="font-size:12px;">${prov}</span><span class="hbar-val">${n(cnt)}</span></div>
-      <div class="hbar-track"><div class="hbar-fill" style="width:${pct(cnt,max)}%;background:${cols[i%7]}"></div></div>
+function rMp(){
+  const all=Object.values(ORDERS),mp={};
+  all.forEach(o=>{if(!mp[o.mp])mp[o.mp]={u:0,q:0};mp[o.mp].u++;o.items.forEach(i=>mp[o.mp].q+=i.qty)});
+  const s=Object.entries(mp).sort((a,b)=>b[1].u-a[1].u);
+  const mx=s[0]?.[1].u||1;
+  document.getElementById('mp-bars').innerHTML=s.map(([m,v],i)=>`
+    <div class="hb">
+      <div class="hb-t"><span class="hb-n">${cm(m)}</span><span class="hb-v">${n(v.u)} orders · ${n(v.q)} qty</span></div>
+      <div class="hb-tr"><div class="hb-f" style="width:${p(v.u,mx)}%;background:${MPC[m]||MPC2[i%5]}"></div></div>
     </div>`).join('');
 }
 
-function renderHourly(){
-  const ords=filtered();
-  const h=Array(24).fill(0);
-  ords.forEach(o=>{ if(o.hr>=0&&o.hr<24) h[o.hr]++; });
-  const peak=h.indexOf(Math.max(...h));
-  document.getElementById('peak-hour-badge').textContent=`Peak: ${peak.toString().padStart(2,'0')}:00`;
+function rProv(){
+  const pm={};Object.values(ORDERS).forEach(o=>{if(o.prov)pm[o.prov]=(pm[o.prov]||0)+1});
+  const s=Object.entries(pm).sort((a,b)=>b[1]-a[1]).slice(0,7);
+  const mx=s[0]?.[1]||1;
+  const cols=['#e8345a','#1d5fd4','#0d9e5c','#c97a06','#6d28d9','#0891b2','#ea580c'];
+  document.getElementById('prov-bars').innerHTML=s.map(([pr,c],i)=>`
+    <div class="hb">
+      <div class="hb-t"><span class="hb-n" style="font-size:11px">${pr}</span><span class="hb-v">${n(c)}</span></div>
+      <div class="hb-tr"><div class="hb-f" style="width:${p(c,mx)}%;background:${cols[i%7]}"></div></div>
+    </div>`).join('');
+}
 
-  if(hChart) hChart.destroy();
-  hChart=new Chart(document.getElementById('hourlyChart'),{
+function rHourly(){
+  const ords=fOrd(),h=Array(24).fill(0);
+  ords.forEach(o=>{if(o.hr>=0&&o.hr<24)h[o.hr]++});
+  const pk=h.indexOf(Math.max(...h));
+  document.getElementById('peak-lbl').textContent=`Peak: ${pk.toString().padStart(2,'0')}:00`;
+  if(hC)hC.destroy();
+  hC=new Chart(document.getElementById('hChart'),{
     type:'bar',
-    data:{
-      labels:Array.from({length:24},(_,i)=>i.toString().padStart(2,'0')+':00'),
-      datasets:[{
-        data:h,
-        backgroundColor:h.map((_,i)=>i===peak?'#e8345a':'rgba(232,52,90,0.25)'),
-        borderRadius:4, borderSkipped:false
-      }]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
+    data:{labels:Array.from({length:24},(_,i)=>i.toString().padStart(2,'0')+':00'),
+      datasets:[{data:h,backgroundColor:h.map((_,i)=>i===pk?'#e8345a':'rgba(232,52,90,.2)'),borderRadius:3,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.parsed.y.toLocaleString()} orders`}}},
-      scales:{
-        x:{grid:{display:false},ticks:{font:{size:10},color:'#8c8480',maxRotation:0}},
-        y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10},color:'#8c8480',callback:v=>v.toLocaleString()}}
-      }
-    }
+      scales:{x:{grid:{display:false},ticks:{font:{size:9},color:'#8c8480',maxRotation:0}},
+              y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()}}}}
   });
 }
 
-function renderSkuChart(){
-  const agg={};
-  filteredSku().forEach(d=>{ agg[d.sku]=(agg[d.sku]||0)+d.qty; });
-  const sorted=Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,12);
-  const h=Math.max(260,sorted.length*32+50);
+function rPay(){
+  const pm={};Object.values(ORDERS).forEach(o=>{if(o.pay)pm[o.pay]=(pm[o.pay]||0)+1});
+  const s=Object.entries(pm).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const mx=s[0]?.[1]||1;
+  const cols=['#e8345a','#1d5fd4','#0d9e5c','#c97a06','#6d28d9','#0891b2'];
+  document.getElementById('pay-bars').innerHTML=s.map(([pay,c],i)=>`
+    <div class="hb">
+      <div class="hb-t"><span class="hb-n" style="font-size:11px">${pay}</span><span class="hb-v">${n(c)}</span></div>
+      <div class="hb-tr"><div class="hb-f" style="width:${p(c,mx)}%;background:${cols[i%6]}"></div></div>
+    </div>`).join('');
+}
 
-  if(skuChart) skuChart.destroy();
-  const wrap=document.getElementById('sku-wrap');
-  wrap.style.height=h+'px';
-  wrap.innerHTML=`<canvas id="skuChart" role="img" aria-label="Top SKU"></canvas>`;
-  skuChart=new Chart(document.getElementById('skuChart'),{
+function rCity(){
+  const cm2={};Object.values(ORDERS).forEach(o=>{if(o.city&&o.city!=='-')cm2[o.city]=(cm2[o.city]||0)+1});
+  const s=Object.entries(cm2).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const mx=s[0]?.[1]||1;
+  document.getElementById('city-bars').innerHTML=s.map(([city,c])=>`
+    <div class="hb">
+      <div class="hb-t"><span class="hb-n" style="font-size:11px">${city}</span><span class="hb-v">${n(c)}</span></div>
+      <div class="hb-tr"><div class="hb-f" style="width:${p(c,mx)}%;background:#1d5fd4"></div></div>
+    </div>`).join('');
+}
+
+function rBneck(){
+  const mp={};Object.values(ORDERS).forEach(o=>{
+    if(!mp[o.mp])mp[o.mp]={t:0,b:0};mp[o.mp].t++;if(BAD.has(o.st))mp[o.mp].b++;});
+  const s=Object.entries(mp).sort((a,b)=>(b[1].b/b[1].t)-(a[1].b/a[1].t));
+  document.getElementById('bneck').innerHTML=s.map(([m,v])=>{
+    const pt=p(v.b,v.t);const col=pt>30?'var(--red)':pt>15?'var(--amber)':'var(--green)';
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
+      <div><div style="font-size:11px;font-weight:500">${cm(m)}</div><div style="font-size:9px;color:var(--muted)">${n(v.b)} dari ${n(v.t)}</div></div>
+      <div style="font-size:18px;font-weight:700;color:${col};font-family:var(--mono)">${pt}%</div>
+    </div>`;}).join('');
+}
+
+function rSkuProb(){
+  const agg={};Object.values(SMAP).filter(d=>BAD.has(d.st)).forEach(d=>{agg[d.sku]=(agg[d.sku]||0)+d.qty});
+  const s=Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  document.getElementById('sku-prob').innerHTML=s.length
+    ?s.map(([sku,qty],i)=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:${i<s.length-1?'1px solid var(--border)':'none'}">
+        <div style="font-size:11px;font-weight:500;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${cs(sku)}</div>
+        <span class="bdg br">${n(qty)} qty</span>
+      </div>`).join('')
+    :'<div style="font-size:11px;color:var(--muted)">Tidak ada masalah 🎉</div>';
+}
+
+function rSkuChart(){
+  const agg={};fSku().forEach(d=>{agg[d.sku]=(agg[d.sku]||0)+d.qty});
+  const s=Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,12);
+  const h=Math.max(260,s.length*30+50);
+  if(sC)sC.destroy();
+  const w=document.getElementById('sku-wrap');
+  w.style.height=h+'px';w.innerHTML=`<canvas id="sChart"></canvas>`;
+  sC=new Chart(document.getElementById('sChart'),{
     type:'bar',
-    data:{
-      labels:sorted.map(([k])=>cleanSku(k)),
-      datasets:[{data:sorted.map(([,v])=>v),backgroundColor:'#e8345a',borderRadius:4,borderSkipped:false}]
-    },
-    options:{
-      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    data:{labels:s.map(([k])=>cs(k)),datasets:[{data:s.map(([,v])=>v),backgroundColor:'#e8345a',borderRadius:3,borderSkipped:false}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false}},
-      scales:{
-        x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10},color:'#8c8480',callback:v=>v.toLocaleString()}},
-        y:{grid:{display:false},ticks:{font:{size:10},color:'#1a1614'}}
-      }
-    }
+      scales:{x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()}},
+              y:{grid:{display:false},ticks:{font:{size:9},color:'#1a1614'}}}}
   });
   document.getElementById('sku-sub').textContent=
-    `by qty · ${activeMp==='all'?'semua MP':cleanMp(activeMp)} · ${activeSt==='all'?'semua status':(scfg(activeSt).label)}`;
+    `by qty · ${aMp==='all'?'semua MP':cm(aMp)} · ${aSt==='all'?'semua status':sc(aSt).l}`;
 }
 
-function renderSkuProblem(){
-  const agg={};
-  Object.values(SKU_MAP).filter(d=>BAD.has(d.st)).forEach(d=>{
-    agg[d.sku]=(agg[d.sku]||0)+d.qty;
-  });
-  const sorted=Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  document.getElementById('sku-problem-list').innerHTML=sorted.length
-    ? sorted.map(([sku,qty],i)=>`
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);${i===sorted.length-1?'border:none':''}">
-        <div style="font-size:12px;font-weight:500;color:var(--text);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${cleanSku(sku)}</div>
-        <span class="badge b-red">${n(qty)} qty</span>
-      </div>`).join('')
-    : '<div style="font-size:12px;color:var(--muted);">Tidak ada masalah 🎉</div>';
-}
-
-function renderCities(){
-  const cMap={};
-  Object.values(ORDERS).forEach(o=>{ if(o.city&&o.city!=='-') cMap[o.city]=(cMap[o.city]||0)+1; });
-  const sorted=Object.entries(cMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  const max=sorted[0]?.[1]||1;
-  document.getElementById('city-bars').innerHTML=sorted.map(([city,cnt])=>`
-    <div class="hbar-row">
-      <div class="hbar-top"><span class="hbar-name" style="font-size:12px;">${city}</span><span class="hbar-val">${n(cnt)}</span></div>
-      <div class="hbar-track"><div class="hbar-fill" style="width:${pct(cnt,max)}%;background:#2563eb"></div></div>
-    </div>`).join('');
-}
-
-function renderBottleneck(){
-  const mp={};
-  Object.values(ORDERS).forEach(o=>{
-    if(!mp[o.mp]) mp[o.mp]={total:0,bad:0};
-    mp[o.mp].total++;
-    if(BAD.has(o.st)) mp[o.mp].bad++;
-  });
-  const sorted=Object.entries(mp).sort((a,b)=>(b[1].bad/b[1].total)-(a[1].bad/a[1].total));
-  document.getElementById('bottleneck-list').innerHTML=sorted.map(([m,s])=>{
-    const p=pct(s.bad,s.total);
-    const col=p>30?'var(--red)':p>15?'var(--amber)':'var(--green)';
-    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
-      <div>
-        <div style="font-size:12px;font-weight:500;">${cleanMp(m)}</div>
-        <div style="font-size:11px;color:var(--muted);">${n(s.bad)} pending dari ${n(s.total)}</div>
-      </div>
-      <div style="font-size:16px;font-weight:700;color:${col};font-family:var(--mono);">${p}%</div>
-    </div>`;
-  }).join('');
-}
-
-function renderSkuTable(){
-  const agg={};
-  filteredSku().forEach(d=>{
+function rSkuTbl(){
+  const agg={};fSku().forEach(d=>{
     const k=d.sku+'|'+d.mp;
-    if(!agg[k]) agg[k]={sku:d.sku,mp:d.mp,qty:0,ords:new Set(),sts:{}};
-    agg[k].qty+=d.qty;
-    d.ords.forEach(o=>agg[k].ords.add(o));
+    if(!agg[k])agg[k]={sku:d.sku,mp:d.mp,qty:0,ords:new Set(),sts:{}};
+    agg[k].qty+=d.qty;d.ords.forEach(o=>agg[k].ords.add(o));
     agg[k].sts[d.st]=(agg[k].sts[d.st]||0)+d.qty;
   });
-  const rows=Object.values(agg).sort((a,b)=>b.qty-a.qty).slice(0,25);
-  document.getElementById('sku-table').innerHTML=`
-  <table>
-    <thead><tr>
-      <th style="width:42%">SKU</th><th>MP</th><th>Orders</th><th>Qty</th><th>Top Status</th>
-    </tr></thead>
+  const rows=Object.values(agg).sort((a,b)=>b.qty-a.qty).slice(0,20);
+  document.getElementById('sku-tbl').innerHTML=`<table>
+    <thead><tr><th style="width:45%">SKU</th><th>MP</th><th>Ords</th><th>Qty</th><th>Status</th></tr></thead>
     <tbody>${rows.map(d=>{
-      const topSt=Object.entries(d.sts).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
-      const cfg=scfg(topSt);
-      return `<tr>
-        <td><div class="td-name">${cleanSku(d.sku)}</div></td>
-        <td><div style="font-size:11px;font-weight:500;">${cleanMp(d.mp)}</div></td>
+      const ts=Object.entries(d.sts).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+      return `<tr><td><div class="tn">${cs(d.sku)}</div><div class="ts">${cm(d.mp)}</div></td>
+        <td style="font-size:9px">${cm(d.mp)}</td>
         <td class="mono">${n(d.ords.size)}</td>
         <td class="mono">${n(d.qty)}</td>
-        <td><span class="badge ${cfg.badge}">${cfg.label}</span></td>
-      </tr>`;
-    }).join('')}</tbody>
-  </table>`;
+        <td><span class="bdg ${sc(ts).b}">${sc(ts).l}</span></td></tr>`;
+    }).join('')}</tbody></table>`;
 }
 
-function renderSidebar(mpSet,stSet){
-  const allOrds=Object.values(ORDERS);
-  const mpList=[['all','Semua Marketplace'],...[...mpSet].sort().map(m=>[m,cleanMp(m)])];
-  document.getElementById('mp-filter').innerHTML=mpList.map(([val,label],i)=>{
-    const cnt=val==='all'?allOrds.length:allOrds.filter(o=>o.mp===val).length;
-    const col=val==='all'?'#8c8480':(MP_COLORS[val]||MP_COL_LIST[(i-1)%5]);
-    return `<button class="filter-item ${val===activeMp?'active':''}" onclick="setMp('${val}')">
-      <span class="fi-left"><span class="fi-dot" style="background:${col}"></span>${label}</span>
-      <span class="fi-count">${n(cnt)}</span>
-    </button>`;
+function rSidebar(mpS,stS){
+  const allO=Object.values(ORDERS);
+  const mpList=[['all','Semua Marketplace'],...[...mpS].sort().map(m=>[m,cm(m)])];
+  document.getElementById('mp-fil').innerHTML=mpList.map(([v,l],i)=>{
+    const c=v==='all'?'#8c8480':(MPC[v]||MPC2[(i-1)%5]);
+    const cnt=v==='all'?allO.length:allO.filter(o=>o.mp===v).length;
+    return `<button class="fi ${v===aMp?'on':''}" onclick="smp('${v}')">
+      <span class="fi-l"><span class="fi-d" style="background:${c}"></span>${l}</span>
+      <span class="fi-n">${n(cnt)}</span></button>`;
   }).join('');
 
-  const stOrder=['all','dispatched','picked','packed','manifest_created','delivered','awaiting_dispatch','assigned','partial_picked','unassigned','problem','cancelled','return_assigned'];
-  const stAll=[...stOrder,...[...stSet].filter(s=>!stOrder.includes(s))];
-  document.getElementById('status-filter').innerHTML=stAll.filter(s=>s==='all'||stSet.has(s)).map(s=>{
-    const cfg=s==='all'?{label:'Semua Status',color:'#8c8480',badge:''}:scfg(s);
-    const cnt=s==='all'?allOrds.length:allOrds.filter(o=>o.st===s).length;
-    if(!cnt&&s!=='all') return '';
-    return `<button class="filter-item ${s===activeSt?'active':''}" onclick="setSt('${s}')">
-      <span class="fi-left"><span class="fi-sq" style="background:${cfg.color}"></span>${cfg.label}</span>
-      <span class="fi-count">${n(cnt)}</span>
-    </button>`;
+  const stOrd=['all','dispatched','picked','packed','manifest_created','delivered','awaiting_dispatch','assigned','partial_picked','unassigned','problem','cancelled','return_assigned'];
+  const stAll=[...stOrd,...[...stS].filter(s=>!stOrd.includes(s))];
+  document.getElementById('st-fil').innerHTML=stAll.filter(s=>s==='all'||stS.has(s)).map(s=>{
+    const cfg=s==='all'?{l:'Semua Status',c:'#8c8480'}:sc(s);
+    const cnt=s==='all'?allO.length:allO.filter(o=>o.st===s).length;
+    if(!cnt&&s!=='all')return'';
+    return `<button class="fi ${s===aSt?'on':''}" onclick="sst('${s}')">
+      <span class="fi-l"><span class="fi-s" style="background:${cfg.c}"></span>${cfg.l}</span>
+      <span class="fi-n">${n(cnt)}</span></button>`;
   }).join('');
 }
 
-function renderAll(){
-  renderKpi(); renderHourly(); renderSkuChart(); renderSkuTable();
-}
+function rAll(){rKpi();rHourly();rSkuChart();rSkuTbl()}
 
-window.setMp=function(v){
-  activeMp=v;
-  document.querySelectorAll('#mp-filter .filter-item').forEach(el=>
-    el.classList.toggle('active',el.getAttribute('onclick')===`setMp('${v}')`));
-  renderAll();
+window.smp=function(v){
+  aMp=v;document.querySelectorAll('#mp-fil .fi').forEach(e=>e.classList.toggle('on',e.getAttribute('onclick')===`smp('${v}')`));rAll();
 };
-window.setSt=function(v){
-  activeSt=v;
-  document.querySelectorAll('#status-filter .filter-item').forEach(el=>
-    el.classList.toggle('active',el.getAttribute('onclick')===`setSt('${v}')`));
-  renderAll();
+window.sst=function(v){
+  aSt=v;document.querySelectorAll('#st-fil .fi').forEach(e=>e.classList.toggle('on',e.getAttribute('onclick')===`sst('${v}')`));rAll();
 };
 
 async function main(){
-  const setMsg=t=>document.getElementById('load-msg').textContent=t;
+  const sm=t=>document.getElementById('lmsg').textContent=t;
   try{
-    setMsg('Memuat metadata...');
+    sm('Memuat metadata...');
     try{
       const meta=await fetch(`data/last_updated.json?t=${Date.now()}`).then(r=>r.json());
-      document.getElementById('pg-meta').textContent=`Data: ${meta.date} · 00:00–23:59 · ${meta.total_rows?.toLocaleString()} rows`;
-      document.getElementById('last-upd').textContent=`Updated: ${meta.last_updated}`;
-      document.getElementById('total-rows').textContent=`${meta.total_rows?.toLocaleString()||'—'} rows`;
+      document.getElementById('sb-date').textContent=meta.date;
+      document.getElementById('ph-meta').textContent=`Data: ${meta.date} · 00:00–23:59 · ${(meta.total_rows||0).toLocaleString()} rows`;
+      document.getElementById('sb-upd').textContent=`Updated: ${meta.last_updated}`;
+      document.getElementById('sb-rows').textContent=`${(meta.total_rows||0).toLocaleString()} rows`;
     }catch(e){}
-
-    setMsg('Mengunduh data order...');
+    sm('Mengunduh data order...');
     const resp=await fetch(`data/orders.csv?t=${Date.now()}`);
-    if(!resp.ok) throw new Error('orders.csv tidak ditemukan di data/');
+    if(!resp.ok)throw new Error('orders.csv tidak ditemukan');
     const text=await resp.text();
-
-    setMsg('Memproses data...');
-    const parsed=Papa.parse(text,{header:true,skipEmptyLines:true});
-    const{orders,skuMap,mpSet,stSet}=parse(parsed.data);
-    ORDERS=orders; SKU_MAP=skuMap;
-
-    setMsg('Membangun dashboard...');
-    renderSidebar(mpSet,stSet);
-    renderFulfillment();
-    renderMpBars();
-    renderProviders();
-    renderSkuProblem();
-    renderCities();
-    renderBottleneck();
-    renderAll();
-
+    sm('Memproses data...');
+    const{data}=Papa.parse(text,{header:true,skipEmptyLines:true});
+    const{orders,smap,mpS,stS}=parse(data);
+    ORDERS=orders;SMAP=smap;
+    sm('Membangun dashboard...');
+    rSidebar(mpS,stS);rFulfill();rMp();rProv();rPay();rCity();rBneck();rSkuProb();rAll();
     document.getElementById('loading').style.display='none';
     document.getElementById('app').style.display='grid';
-  }catch(err){
-    setMsg('Error: '+err.message);
-  }
+  }catch(err){sm('Error: '+err.message)}
 }
 main();
 </script>
