@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scarlett — Daily Order Intelligence</title>
+<title>Scarlett — Daily Order Marketplace</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -86,7 +86,7 @@ main{padding:24px 28px;overflow:hidden}
 
 /* Grid layouts */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.g3{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:14px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
 .gf{margin-bottom:14px}
 
@@ -153,7 +153,7 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order daily marketplace</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
@@ -224,18 +224,20 @@ tr:hover td{background:var(--bg3)}
       <div id="bneck"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ch"><div><div class="ct">Problem + Unassigned</div></div></div>
+      <div class="ch"><div><div class="ct">SKU Masalah</div><div class="cs">Unassigned + Problem</div></div></div>
       <div id="sku-prob"></div>
     </div>
   </div>
 
-  <div class="g3">
+  <div class="gf">
     <div class="card">
       <div class="ch">
         <div><div class="ct">Top SKU</div><div class="cs" id="sku-sub">by qty</div></div>
       </div>
       <div style="position:relative" id="sku-wrap"><canvas id="sChart"></canvas></div>
     </div>
+  </div>
+  <div class="gf">
     <div class="card">
       <div class="ch"><div><div class="ct">SKU Detail</div><div class="cs">Top 20 · qty & status</div></div></div>
       <div id="sku-tbl" style="overflow:hidden"></div>
