@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scarlett — Daily Order Marketplace</title>
+<title>Scarlett — Daily Order Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{
   --bg:#f5f4f2;--bg2:#fff;--bg3:#f0eeeb;--border:#e8e4df;--border2:#d4cdc6;
@@ -45,6 +46,10 @@ aside{background:var(--bg2);border-right:1px solid var(--border);display:flex;fl
 .fi-s{width:7px;height:7px;border-radius:2px;flex-shrink:0}
 .fi-n{font-family:var(--mono);font-size:10px;color:var(--muted2)}
 .fi.on .fi-n{color:var(--pink)}
+
+.navtab{display:flex;align-items:center;gap:8px;width:100%;padding:9px 12px;border-radius:var(--r3);font-size:12px;font-weight:600;font-family:var(--font);color:var(--muted);background:none;border:1px solid transparent;cursor:pointer;margin-bottom:4px;transition:all .15s;text-align:left}
+.navtab:hover{background:var(--bg3);color:var(--text)}
+.navtab.on{background:linear-gradient(135deg,#e8345a,#c0203f);color:#fff;box-shadow:0 2px 6px rgba(232,52,90,.25)}
 
 .sb-foot{margin-top:auto;padding:12px 18px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.7;flex-shrink:0}
 .pulse{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 2s ease infinite}
@@ -143,7 +148,7 @@ tr:hover td{background:var(--bg3)}
 <body>
 
 <div id="loading">
-  <div class="ll">Scarlett <span>Marketplace</span></div>
+  <div class="ll">Scarlett <span>Intelligence</span></div>
   <div class="lb"><div class="lf"></div></div>
   <div class="lt" id="lmsg">Memuat data order...</div>
 </div>
@@ -153,12 +158,16 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Intelligence</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
-  <div class="sb-sec"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
-  <div class="sb-sec" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
+  <div class="sb-sec" style="padding-top:14px">
+    <button class="navtab on" id="nav-overview" onclick="showPage('overview')">📦 Order Overview</button>
+    <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Level Daily</button>
+  </div>
+  <div class="sb-sec" id="order-filters"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
+  <div class="sb-sec" id="status-filters" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
   <div class="sb-foot">
     <div><span class="pulse"></span>Auto-update tiap jam</div>
     <div id="sb-upd" style="margin-top:1px">—</div>
@@ -169,13 +178,14 @@ tr:hover td{background:var(--bg3)}
 <main>
   <div class="ph">
     <div>
-      <div class="ph-title">Daily Order Overview</div>
+      <div class="ph-title" id="ph-title">Daily Order Overview</div>
       <div class="ph-meta" id="ph-meta">Memuat...</div>
       <div class="ph-meta" id="ph-wib" style="margin-top:2px;color:var(--green)">—</div>
     </div>
     <button class="btn-ref" onclick="location.reload()">↻ Refresh</button>
   </div>
 
+  <div id="page-overview">
   <div class="kpi-row" id="kpi"></div>
 
   <div class="gf">
@@ -224,7 +234,7 @@ tr:hover td{background:var(--bg3)}
       <div id="bneck"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Status Unassigned + Problem</div><div class="cs"></div></div></div>
+      <div class="ch"><div><div class="ct">SKU Masalah</div><div class="cs">Unassigned + Problem</div></div></div>
       <div id="sku-prob"></div>
     </div>
   </div>
@@ -241,6 +251,40 @@ tr:hover td{background:var(--bg3)}
     <div class="card">
       <div class="ch"><div><div class="ct">SKU Detail</div><div class="cs">Top 20 · qty & status</div></div></div>
       <div id="sku-tbl" style="overflow:hidden"></div>
+    </div>
+  </div>
+  </div>
+
+  <div id="page-stock" style="display:none">
+    <div class="kpi-row" id="stock-kpi"></div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">⚠ SKU Berisiko Habis Stock</div><div class="cs">ATP &lt; Qty terjual hari ini — perlu restock segera</div></div>
+          <span class="bdg br" id="stock-risk-count">—</span>
+        </div>
+        <div id="stock-risk-tbl" style="overflow:hidden"></div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📋 Stock vs Demand — Semua SKU Terjual Hari Ini</div><div class="cs">Diurutkan berdasarkan rasio stock tersisa</div></div>
+        </div>
+        <div id="stock-full-tbl" style="overflow:hidden"></div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📦 Stock Kosong (ATP = 0)</div><div class="cs">SKU dengan stock habis di gudang</div></div>
+          <span class="bdg bx" id="stock-zero-count">—</span>
+        </div>
+        <div id="stock-zero-tbl" style="overflow:hidden"></div>
+      </div>
     </div>
   </div>
 </main>
@@ -549,7 +593,133 @@ window.sst=function(v){
   aSt=v;document.querySelectorAll('#st-fil .fi').forEach(e=>e.classList.toggle('on',e.getAttribute('onclick')===`sst('${v}')`));rAll();
 };
 
-async function main(){
+// ── Page switching ──────────────────────────────────────────────────────────
+let STOCK_LOADED=false, STOCK_MAP={};
+
+window.showPage=function(page){
+  document.getElementById('nav-overview').classList.toggle('on',page==='overview');
+  document.getElementById('nav-stock').classList.toggle('on',page==='stock');
+  document.getElementById('page-overview').style.display=page==='overview'?'':'none';
+  document.getElementById('page-stock').style.display=page==='stock'?'':'none';
+  document.getElementById('order-filters').style.display=page==='overview'?'':'none';
+  document.getElementById('status-filters').style.display=page==='overview'?'':'none';
+  document.getElementById('ph-title').textContent=page==='overview'?'Daily Order Overview':'Stock Level Daily';
+  if(page==='stock'&&!STOCK_LOADED) loadStock();
+};
+
+// ── Stock Level ────────────────────────────────────────────────────────────
+function cleanFullSku(s){return (s||'').trim()}
+
+async function loadStock(){
+  const wrap=id=>document.getElementById(id);
+  wrap('stock-risk-tbl').innerHTML='<div style="font-size:12px;color:var(--muted);padding:8px 0">Memuat data stock...</div>';
+  wrap('stock-full-tbl').innerHTML='';
+  wrap('stock-zero-tbl').innerHTML='';
+  try{
+    const resp=await fetch(`data/inventory.xlsx?t=${Date.now()}`);
+    if(!resp.ok) throw new Error('inventory.xlsx tidak ditemukan — mungkin belum sempat tergenerate');
+    const buf=await resp.arrayBuffer();
+    const wb=XLSX.read(buf,{type:'array'});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const rows=XLSX.utils.sheet_to_json(ws,{header:1});
+
+    // Header row contains: [_, Product Name English, Product Name Local, SKU(numeric id), ATP]
+    STOCK_MAP={};
+    let totalATP=0, skuCount=0;
+    for(let i=1;i<rows.length;i++){
+      const r=rows[i];
+      const name=cleanFullSku(r[1]);
+      const atp=parseInt(r[4])||0;
+      if(!name) continue;
+      STOCK_MAP[name]=atp;
+      totalATP+=atp; skuCount++;
+    }
+    STOCK_LOADED=true;
+    renderStockPage(totalATP,skuCount);
+  }catch(err){
+    wrap('stock-risk-tbl').innerHTML=`<div style="font-size:12px;color:var(--red);padding:8px 0">Error: ${err.message}</div>`;
+  }
+}
+
+function renderStockPage(totalATP,skuCount){
+  // Aggregate today's demand per SKU (across all orders, regardless of filter)
+  const demand={};
+  Object.values(SMAP).forEach(d=>{
+    demand[d.sku]=(demand[d.sku]||0)+d.qty;
+  });
+
+  // Build combined list
+  const combined=Object.entries(demand).map(([sku,qty])=>{
+    const atp=STOCK_MAP.hasOwnProperty(sku)?STOCK_MAP[sku]:null;
+    const remain=atp===null?null:atp-qty;
+    return {sku,qty,atp,remain};
+  });
+
+  // KPI
+  const totalDemand=combined.reduce((a,c)=>a+c.qty,0);
+  const riskList=combined.filter(c=>c.atp!==null&&c.atp<c.qty).sort((a,b)=>(a.remain)-(b.remain));
+  const zeroStock=Object.entries(STOCK_MAP).filter(([sku,atp])=>atp===0&&demand[sku]>0)
+    .map(([sku])=>({sku,qty:demand[sku]||0}))
+    .sort((a,b)=>b.qty-a.qty);
+
+  document.getElementById('stock-kpi').innerHTML=`
+    <div class="kpi k-pink"><div class="kpi-lbl">Total SKU di Sistem</div><div class="kpi-val">${n(skuCount)}</div><div class="kpi-sub">dari inventory report</div></div>
+    <div class="kpi k-green"><div class="kpi-lbl">Total Stock (ATP)</div><div class="kpi-val">${n(totalATP)}</div><div class="kpi-sub">unit tersedia digudang</div></div>
+    <div class="kpi k-amber"><div class="kpi-lbl">SKU Terjual Hari Ini</div><div class="kpi-val">${n(combined.length)}</div><div class="kpi-sub">${n(totalDemand)} qty total demand</div></div>
+    <div class="kpi k-red"><div class="kpi-lbl">SKU Berisiko Habis</div><div class="kpi-val">${n(riskList.length)}</div><div class="kpi-sub">stock &lt; demand hari ini</div><span class="kpi-tag">${n(riskList.length)}</span></div>
+    <div class="kpi k-blue"><div class="kpi-lbl">SKU Stock = 0</div><div class="kpi-val">${n(zeroStock.length)}</div><div class="kpi-sub">tapi masih ada order</div></div>`;
+
+  document.getElementById('stock-risk-count').textContent=`${n(riskList.length)} SKU`;
+  document.getElementById('stock-zero-count').textContent=`${n(zeroStock.length)} SKU`;
+
+  // Risk table
+  document.getElementById('stock-risk-tbl').innerHTML = riskList.length ? `<table>
+    <thead><tr><th style="width:45%">SKU</th><th>Stock (ATP)</th><th>Terjual Hari Ini</th><th>Sisa/Defisit</th><th>Status</th></tr></thead>
+    <tbody>${riskList.slice(0,30).map(d=>{
+      const deficit=d.remain<0;
+      return `<tr>
+        <td><div class="tn">${cs(d.sku)}</div></td>
+        <td class="mono">${n(d.atp)}</td>
+        <td class="mono">${n(d.qty)}</td>
+        <td class="mono" style="color:${deficit?'var(--red)':'var(--amber)'};font-weight:700">${n(d.remain)}</td>
+        <td><span class="bdg ${deficit?'br':'ba'}">${deficit?'Stock Minus':'Menipis'}</span></td>
+      </tr>`;
+    }).join('')}</tbody></table>`
+    : `<div style="font-size:12px;color:var(--green);padding:8px 0">✓ Tidak ada SKU yang berisiko habis stock hari ini</div>`;
+
+  // Full table - sorted by ratio (remain ascending, nulls last)
+  const fullSorted=[...combined].sort((a,b)=>{
+    if(a.remain===null) return 1;
+    if(b.remain===null) return -1;
+    return a.remain-b.remain;
+  });
+  document.getElementById('stock-full-tbl').innerHTML = `<table>
+    <thead><tr><th style="width:45%">SKU</th><th>Stock (ATP)</th><th>Terjual Hari Ini</th><th>Sisa Stock</th><th>Status</th></tr></thead>
+    <tbody>${fullSorted.slice(0,50).map(d=>{
+      let badge,label;
+      if(d.atp===null){badge='bx';label='Tidak ada di inventory';}
+      else if(d.remain<0){badge='br';label='Stock Minus';}
+      else if(d.atp>0&&d.remain/d.atp<0.2){badge='ba';label='Menipis';}
+      else{badge='bg';label='Aman';}
+      return `<tr>
+        <td><div class="tn">${cs(d.sku)}</div></td>
+        <td class="mono">${d.atp===null?'—':n(d.atp)}</td>
+        <td class="mono">${n(d.qty)}</td>
+        <td class="mono">${d.remain===null?'—':n(d.remain)}</td>
+        <td><span class="bdg ${badge}">${label}</span></td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
+
+  // Zero stock table
+  document.getElementById('stock-zero-tbl').innerHTML = zeroStock.length ? `<table>
+    <thead><tr><th style="width:60%">SKU</th><th>Terjual Hari Ini (tetap masuk order)</th></tr></thead>
+    <tbody>${zeroStock.slice(0,30).map(d=>`
+      <tr><td><div class="tn">${cs(d.sku)}</div></td><td class="mono" style="color:var(--red);font-weight:700">${n(d.qty)}</td></tr>
+    `).join('')}</tbody></table>`
+    : `<div style="font-size:12px;color:var(--green);padding:8px 0">✓ Tidak ada SKU dengan stock kosong yang masih dipesan</div>`;
+}
+
+
   const sm=t=>document.getElementById('lmsg').textContent=t;
   try{
     sm('Memuat metadata...');
