@@ -672,6 +672,20 @@ function renderStockPage(totalATP,skuCount){
   document.getElementById('stock-risk-count').textContent=`${n(riskList.length)} SKU`;
   document.getElementById('stock-zero-count').textContent=`${n(zeroStock.length)} SKU`;
 
+  // DEBUG INFO — temporary
+  const demandKeys=Object.keys(demand);
+  const stockKeys=Object.keys(STOCK_MAP);
+  const matched=demandKeys.filter(k=>STOCK_MAP.hasOwnProperty(k));
+  console.log('DEBUG demand SKU count:', demandKeys.length);
+  console.log('DEBUG stock SKU count:', stockKeys.length);
+  console.log('DEBUG matched count:', matched.length);
+  console.log('DEBUG sample demand keys:', demandKeys.slice(0,5));
+  console.log('DEBUG sample stock keys:', stockKeys.slice(0,5));
+  const debugEl=document.createElement('div');
+  debugEl.style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--bg3);border-radius:var(--r3);margin-bottom:12px;font-family:var(--mono)";
+  debugEl.innerHTML=`DEBUG → Stock SKU loaded: ${stockKeys.length} | Demand SKU: ${demandKeys.length} | Matched: ${matched.length}<br>Sample stock key: "${stockKeys[0]||''}"<br>Sample demand key: "${demandKeys[0]||''}"`;
+  document.getElementById('stock-kpi').parentNode.insertBefore(debugEl, document.getElementById('stock-kpi'));
+
   // Risk table
   document.getElementById('stock-risk-tbl').innerHTML = riskList.length ? `<table>
     <thead><tr><th style="width:45%">SKU</th><th>Stock (ATP)</th><th>Terjual Hari Ini</th><th>Sisa/Defisit</th><th>Status</th></tr></thead>
