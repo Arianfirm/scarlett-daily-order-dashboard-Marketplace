@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scarlett — Daily Order Marketplace 2026 </title>
+<title>Scarlett — Daily Order Marketplace</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -158,7 +158,7 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace 2026</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Intelligence</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
@@ -622,14 +622,15 @@ async function loadStock(){
     const wb=XLSX.read(buf,{type:'array'});
     const ws=wb.Sheets[wb.SheetNames[0]];
     const rows=XLSX.utils.sheet_to_json(ws,{header:1});
+    window.__rawRows=rows.slice(0,5);
 
     // Header row contains: [_, Product Name English, Product Name Local, SKU(numeric id), ATP]
     STOCK_MAP={};
     let totalATP=0, skuCount=0;
     for(let i=1;i<rows.length;i++){
       const r=rows[i];
-      const name=cleanFullSku(r[0]);
-      const atp=parseInt(r[3])||0;
+      const name=cleanFullSku(r[2]);
+      const atp=parseInt(r[8])||0;
       if(!name) continue;
       STOCK_MAP[name]=atp;
       totalATP+=atp; skuCount++;
@@ -671,20 +672,6 @@ function renderStockPage(totalATP,skuCount){
 
   document.getElementById('stock-risk-count').textContent=`${n(riskList.length)} SKU`;
   document.getElementById('stock-zero-count').textContent=`${n(zeroStock.length)} SKU`;
-
-  // DEBUG INFO — temporary
-  const demandKeys=Object.keys(demand);
-  const stockKeys=Object.keys(STOCK_MAP);
-  const matched=demandKeys.filter(k=>STOCK_MAP.hasOwnProperty(k));
-  console.log('DEBUG demand SKU count:', demandKeys.length);
-  console.log('DEBUG stock SKU count:', stockKeys.length);
-  console.log('DEBUG matched count:', matched.length);
-  console.log('DEBUG sample demand keys:', demandKeys.slice(0,5));
-  console.log('DEBUG sample stock keys:', stockKeys.slice(0,5));
-  const debugEl=document.createElement('div');
-  debugEl.style="font-size:11px;color:var(--muted);padding:8px 12px;background:var(--bg3);border-radius:var(--r3);margin-bottom:12px;font-family:var(--mono)";
-  debugEl.innerHTML=`DEBUG → Stock SKU loaded: ${stockKeys.length} | Demand SKU: ${demandKeys.length} | Matched: ${matched.length}<br>Sample stock key: "${stockKeys[0]||''}"<br>Sample demand key: "${demandKeys[0]||''}"`;
-  document.getElementById('stock-kpi').parentNode.insertBefore(debugEl, document.getElementById('stock-kpi'));
 
   // Risk table
   document.getElementById('stock-risk-tbl').innerHTML = riskList.length ? `<table>
