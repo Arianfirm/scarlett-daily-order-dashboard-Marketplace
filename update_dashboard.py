@@ -143,6 +143,7 @@ try:
         "report_format": "xls",
         "report_occurrence_id": "5",
         "mailing_list": [""],
+        "field_ids": [str(i) for i in range(1, 51)] + [str(i) for i in range(600, 650)] + ["1220","1221","1222"],
         "filters": {"company_id": ["2"]},
         "notification_type": "email"
     }}
