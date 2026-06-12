@@ -88,6 +88,8 @@ print(f"      Columns: {cols}")
 # 5. Save
 print("\n[5/5] Saving...")
 os.makedirs("data", exist_ok=True)
+os.makedirs("data/history", exist_ok=True)
+
 with open("data/orders.csv", "w", encoding="utf-8", newline="") as f:
     f.write(csv_text)
 meta = {"date": TODAY, "last_updated": NOW,
@@ -95,4 +97,93 @@ meta = {"date": TODAY, "last_updated": NOW,
         "total_rows": len(rows), "columns": cols}
 with open("data/last_updated.json", "w") as f:
     json.dump(meta, f, indent=2)
-print(f"      ✓ Saved\n\n=== DONE — {len(rows):,} rows · {len(cols)} columns · {TODAY} ===")
+print(f"      ✓ orders.csv & last_updated.json saved")
+
+# ── 5b. Save snapshot to history (7-day retention) ─────────────────────────
+# Fail-safe: kalau bagian ini error, tidak mengganggu update dashboard utama
+try:
+    from datetime import timedelta
+
+    # Simpan snapshot hari ini (selalu overwrite — snapshot terbaru di hari itu)
+    hist_path = f"data/history/{TODAY}.csv"
+    with open(hist_path, "w", encoding="utf-8", newline="") as f:
+        f.write(csv_text)
+    print(f"      ✓ history/{TODAY}.csv saved")
+
+    # Hapus history lebih dari 7 hari
+    cutoff = datetime.now(timezone.utc).date() - timedelta(days=7)
+    removed = []
+    for fname in os.listdir("data/history"):
+        if fname.endswith(".csv"):
+            try:
+                fdate = datetime.strptime(fname[:-4], "%Y-%m-%d").date()
+                if fdate < cutoff:
+                    os.remove(os.path.join("data/history", fname))
+                    removed.append(fname)
+            except ValueError:
+                pass  # skip file dengan nama tidak sesuai format tanggal
+
+    if removed:
+        print(f"      ✓ Removed old history: {removed}")
+
+    # Update index list untuk dashboard (tanggal yang tersedia)
+    available = sorted([f[:-4] for f in os.listdir("data/history") if f.endswith(".csv")])
+    with open("data/history/index.json", "w") as f:
+        json.dump({"available_dates": available}, f, indent=2)
+    print(f"      ✓ history/index.json saved ({len(available)} dates)")
+
+except Exception as e:
+    print(f"      ⚠ History snapshot skipped (non-critical): {e}")
+
+# ── 6. Stock/Inventory Report (fail-safe, separate from order data) ───────────
+print("\n[6/6] Fetching inventory report...")
+try:
+    inv_payload = {"report_schedule": {
+        "report_type_id": "36",
+        "report_format": "xls",
+        "report_occurrence_id": "5",
+        "mailing_list": [""],
+        "filters": {"company_id": ["2"]},
+        "notification_type": "email"
+    }}
+    inv_cr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=inv_payload, timeout=30)
+    inv_cr.raise_for_status()
+    inv_cd = inv_cr.json()
+    if inv_cd.get("status_code") != 1000:
+        print(f"      ⚠ Inventory report failed: {json.dumps(inv_cd, indent=2)}")
+    else:
+        inv_id = inv_cd["data"]["id"]
+        print(f"      ✓ Inventory report created (ID: {inv_id})")
+
+        # Poll
+        inv_url = ""
+        for i in range(1, 25):
+            time.sleep(15)
+            try:
+                ich = requests.get(f"{BASE_URL}/api/v1/report_schedules/{inv_id}", headers=H, timeout=30)
+                if not ich.text.strip():
+                    print(f"      [{i:02d}/24] empty response, retrying...")
+                    continue
+                iat = ich.json().get("data", {}).get("attributes", {})
+                istatus = iat.get("status", "")
+                iurl = iat.get("report_url", "")
+                print(f"      [{i:02d}/24] status={istatus}")
+                if iurl:
+                    inv_url = iurl; print("      ✓ Inventory report ready!"); break
+            except Exception as e:
+                print(f"      [{i:02d}/24] poll error: {e}, retrying...")
+                continue
+
+        if inv_url:
+            inv_resp = requests.get(inv_url, timeout=120)
+            inv_resp.raise_for_status()
+            with open("data/inventory.xlsx", "wb") as f:
+                f.write(inv_resp.content)
+            print(f"      ✓ data/inventory.xlsx saved ({len(inv_resp.content):,} bytes)")
+        else:
+            print("      ⚠ Inventory report timeout, skipped")
+
+except Exception as e:
+    print(f"      ⚠ Inventory report skipped (non-critical): {e}")
+
+print(f"\n=== DONE — {len(rows):,} rows · {len(cols)} columns · {TODAY} ===")
