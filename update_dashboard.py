@@ -147,6 +147,8 @@ try:
         "notification_type": "email"
     }}
     inv_cr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=inv_payload, timeout=30)
+    if inv_cr.status_code != 200:
+        print(f"      ⚠ HTTP {inv_cr.status_code}: {inv_cr.text[:500]}")
     inv_cr.raise_for_status()
     inv_cd = inv_cr.json()
     if inv_cd.get("status_code") != 1000:
