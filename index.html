@@ -158,7 +158,7 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Intelligence</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace 2026</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
@@ -272,6 +272,7 @@ tr:hover td{background:var(--bg3)}
       <div class="card">
         <div class="ch">
           <div><div class="ct">📋 Stock vs Demand — Semua SKU Terjual Hari Ini</div><div class="cs">Diurutkan berdasarkan rasio stock tersisa</div></div>
+          <input type="text" id="stock-search" placeholder="Cari SKU..." style="font-size:12px;padding:6px 12px;border:1px solid var(--border2);border-radius:var(--r3);background:var(--bg2);color:var(--text);width:200px;outline:none" oninput="filterStockTable()">
         </div>
         <div id="stock-full-tbl" style="overflow:hidden"></div>
       </div>
@@ -594,7 +595,7 @@ window.sst=function(v){
 };
 
 // ── Page switching ──────────────────────────────────────────────────────────
-let STOCK_LOADED=false, STOCK_MAP={};
+let STOCK_LOADED=false, STOCK_MAP={}, STOCK_FULL_DATA=[];
 
 window.showPage=function(page){
   document.getElementById('nav-overview').classList.toggle('on',page==='overview');
@@ -609,6 +610,32 @@ window.showPage=function(page){
 
 // ── Stock Level ────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
+
+function renderStockTable(rows){
+  document.getElementById('stock-full-tbl').innerHTML = `<table>
+    <thead><tr><th style="width:45%">SKU</th><th>Stock (ATP)</th><th>Terjual Hari Ini</th><th>Sisa Stock</th><th>Status</th></tr></thead>
+    <tbody>${rows.length?rows.slice(0,50).map(d=>{
+      let badge,label;
+      if(d.atp===null){badge='bx';label='Tidak ada di inventory';}
+      else if(d.remain<0){badge='br';label='Stock Minus';}
+      else if(d.atp>0&&d.remain/d.atp<0.2){badge='ba';label='Menipis';}
+      else{badge='bg';label='Aman';}
+      return `<tr>
+        <td><div class="tn">${cs(d.sku)}</div></td>
+        <td class="mono">${d.atp===null?'—':n(d.atp)}</td>
+        <td class="mono">${n(d.qty)}</td>
+        <td class="mono">${d.remain===null?'—':n(d.remain)}</td>
+        <td><span class="bdg ${badge}">${label}</span></td>
+      </tr>`;
+    }).join(''):'<tr><td colspan="5" style="padding:16px 0;text-align:center;color:var(--muted)">Tidak ada SKU yang cocok</td></tr>'}</tbody></table>`;
+}
+
+window.filterStockTable=function(){
+  const q=document.getElementById('stock-search').value.trim().toUpperCase();
+  if(!q){ renderStockTable(STOCK_FULL_DATA); return; }
+  const filtered=STOCK_FULL_DATA.filter(d=>(d.sku||'').toUpperCase().includes(q));
+  renderStockTable(filtered);
+};
 
 async function loadStock(){
   const wrap=id=>document.getElementById(id);
@@ -694,22 +721,8 @@ function renderStockPage(totalATP,skuCount){
     if(b.remain===null) return -1;
     return a.remain-b.remain;
   });
-  document.getElementById('stock-full-tbl').innerHTML = `<table>
-    <thead><tr><th style="width:45%">SKU</th><th>Stock (ATP)</th><th>Terjual Hari Ini</th><th>Sisa Stock</th><th>Status</th></tr></thead>
-    <tbody>${fullSorted.slice(0,50).map(d=>{
-      let badge,label;
-      if(d.atp===null){badge='bx';label='Tidak ada di inventory';}
-      else if(d.remain<0){badge='br';label='Stock Minus';}
-      else if(d.atp>0&&d.remain/d.atp<0.2){badge='ba';label='Menipis';}
-      else{badge='bg';label='Aman';}
-      return `<tr>
-        <td><div class="tn">${cs(d.sku)}</div></td>
-        <td class="mono">${d.atp===null?'—':n(d.atp)}</td>
-        <td class="mono">${n(d.qty)}</td>
-        <td class="mono">${d.remain===null?'—':n(d.remain)}</td>
-        <td><span class="bdg ${badge}">${label}</span></td>
-      </tr>`;
-    }).join('')}</tbody></table>`;
+  STOCK_FULL_DATA=fullSorted;
+  renderStockTable(fullSorted);
 
   // Zero stock table
   document.getElementById('stock-zero-tbl').innerHTML = zeroStock.length ? `<table>
