@@ -165,7 +165,6 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-sec" style="padding-top:14px">
     <button class="navtab on" id="nav-overview" onclick="showPage('overview')">📦 Order Overview</button>
     <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Daily</button>
-    <button class="navtab" id="nav-allsku" onclick="showPage('allsku')">📋 Semua SKU</button>
   </div>
   <div class="sb-sec" id="order-filters"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
   <div class="sb-sec" id="status-filters" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
@@ -286,20 +285,6 @@ tr:hover td{background:var(--bg3)}
           <span class="bdg bx" id="stock-zero-count">—</span>
         </div>
         <div id="stock-zero-tbl" style="overflow:hidden"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="page-allsku" style="display:none">
-    <div class="kpi-row" id="allsku-kpi"></div>
-    <div class="gf">
-      <div class="card">
-        <div class="ch">
-          <div><div class="ct">📋 Semua SKU Dipesan Hari Ini</div><div class="cs">Diurutkan berdasarkan qty terbanyak</div></div>
-          <input type="text" id="allsku-search" placeholder="Cari SKU..." style="font-size:12px;padding:6px 12px;border:1px solid var(--border2);border-radius:var(--r3);background:var(--bg2);color:var(--text);width:200px;outline:none" oninput="filterAllSku()">
-        </div>
-        <div id="allsku-tbl" style="overflow:hidden"></div>
-        <div id="allsku-pagination" style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:14px"></div>
       </div>
     </div>
   </div>
@@ -612,98 +597,16 @@ window.sst=function(v){
 // ── Page switching ──────────────────────────────────────────────────────────
 let STOCK_LOADED=false, STOCK_MAP={}, STOCK_FULL_DATA=[];
 
-// ── All SKU Page ─────────────────────────────────────────────────────────
-let ALLSKU_DATA=[], ALLSKU_PAGE=1;
-const ALLSKU_PER_PAGE=25;
-
-function buildAllSkuData(){
-  const agg={};
-  Object.values(SMAP).forEach(d=>{
-    if(!agg[d.sku]) agg[d.sku]={sku:d.sku,qty:0,ords:new Set(),mps:new Set(),sts:{}};
-    agg[d.sku].qty+=d.qty;
-    d.ords.forEach(o=>agg[d.sku].ords.add(o));
-    agg[d.sku].mps.add(d.mp);
-    agg[d.sku].sts[d.st]=(agg[d.sku].sts[d.st]||0)+d.qty;
-  });
-  return Object.values(agg).sort((a,b)=>b.qty-a.qty);
-}
-
-function renderAllSkuPage(){
-  ALLSKU_DATA=buildAllSkuData();
-  ALLSKU_PAGE=1;
-  const totalQty=ALLSKU_DATA.reduce((a,c)=>a+c.qty,0);
-  const totalOrds=new Set();
-  ALLSKU_DATA.forEach(d=>d.ords.forEach(o=>totalOrds.add(o)));
-
-  document.getElementById('allsku-kpi').innerHTML=`
-    <div class="kpi k-pink"><div class="kpi-lbl">Total SKU Dipesan</div><div class="kpi-val">${n(ALLSKU_DATA.length)}</div><div class="kpi-sub">jenis produk berbeda hari ini</div></div>
-    <div class="kpi k-green"><div class="kpi-lbl">Total Qty</div><div class="kpi-val">${n(totalQty)}</div><div class="kpi-sub">unit dari seluruh SKU</div></div>
-    <div class="kpi k-blue"><div class="kpi-lbl">Total Unique Orders</div><div class="kpi-val">${n(totalOrds.size)}</div><div class="kpi-sub">order mengandung SKU di atas</div></div>
-    <div class="kpi k-amber"><div class="kpi-lbl">Rata-rata Qty/SKU</div><div class="kpi-val">${n(totalQty/(ALLSKU_DATA.length||1))}</div><div class="kpi-sub">per jenis produk</div></div>`;
-
-  renderAllSkuTable(ALLSKU_DATA);
-}
-
-function renderAllSkuTable(data){
-  const totalPages=Math.max(1,Math.ceil(data.length/ALLSKU_PER_PAGE));
-  if(ALLSKU_PAGE>totalPages) ALLSKU_PAGE=totalPages;
-  const start=(ALLSKU_PAGE-1)*ALLSKU_PER_PAGE;
-  const pageData=data.slice(start,start+ALLSKU_PER_PAGE);
-
-  document.getElementById('allsku-tbl').innerHTML = data.length ? `<table>
-    <thead><tr><th style="width:5%">#</th><th style="width:35%">SKU</th><th>Marketplace</th><th>Orders</th><th>Qty</th><th>Top Status</th></tr></thead>
-    <tbody>${pageData.map((d,i)=>{
-      const topSt=Object.entries(d.sts).sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
-      const mpLabel=d.mps.size>1?`${d.mps.size} marketplace`:cm([...d.mps][0]||'');
-      return `<tr>
-        <td class="mono">${start+i+1}</td>
-        <td><div class="tn">${cs(d.sku)}</div></td>
-        <td style="font-size:11px">${mpLabel}</td>
-        <td class="mono">${n(d.ords.size)}</td>
-        <td class="mono">${n(d.qty)}</td>
-        <td><span class="bdg ${sc(topSt).b}">${sc(topSt).l}</span></td>
-      </tr>`;
-    }).join('')}</tbody></table>`
-    : `<div style="font-size:12px;color:var(--muted);padding:16px 0;text-align:center">Tidak ada SKU yang cocok</div>`;
-
-  // Pagination controls
-  const pag=document.getElementById('allsku-pagination');
-  if(data.length<=ALLSKU_PER_PAGE){ pag.innerHTML=''; return; }
-  let html=`<button class="btn-ref" style="padding:5px 10px" onclick="goAllSkuPage(${ALLSKU_PAGE-1})" ${ALLSKU_PAGE===1?'disabled':''}>‹ Prev</button>`;
-  html+=`<span style="font-size:12px;color:var(--muted);font-family:var(--mono)">Halaman ${ALLSKU_PAGE} / ${totalPages}</span>`;
-  html+=`<button class="btn-ref" style="padding:5px 10px" onclick="goAllSkuPage(${ALLSKU_PAGE+1})" ${ALLSKU_PAGE===totalPages?'disabled':''}>Next ›</button>`;
-  pag.innerHTML=html;
-}
-
-window.goAllSkuPage=function(p){
-  const q=document.getElementById('allsku-search').value.trim().toUpperCase();
-  const data=q?ALLSKU_DATA.filter(d=>(d.sku||'').toUpperCase().includes(q)):ALLSKU_DATA;
-  const totalPages=Math.max(1,Math.ceil(data.length/ALLSKU_PER_PAGE));
-  if(p<1||p>totalPages) return;
-  ALLSKU_PAGE=p;
-  renderAllSkuTable(data);
-};
-
-window.filterAllSku=function(){
-  const q=document.getElementById('allsku-search').value.trim().toUpperCase();
-  ALLSKU_PAGE=1;
-  const data=q?ALLSKU_DATA.filter(d=>(d.sku||'').toUpperCase().includes(q)):ALLSKU_DATA;
-  renderAllSkuTable(data);
-};
-
 window.showPage=function(page){
   document.getElementById('nav-overview').classList.toggle('on',page==='overview');
   document.getElementById('nav-stock').classList.toggle('on',page==='stock');
-  document.getElementById('nav-allsku').classList.toggle('on',page==='allsku');
   document.getElementById('page-overview').style.display=page==='overview'?'':'none';
   document.getElementById('page-stock').style.display=page==='stock'?'':'none';
-  document.getElementById('page-allsku').style.display=page==='allsku'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  const titles={overview:'Daily Order Overview',stock:'Stock Daily',allsku:'Semua SKU Dipesan Hari Ini'};
+  const titles={overview:'Daily Order Overview',stock:'Stock Daily'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
-  if(page==='allsku') renderAllSkuPage();
 };
 
 // ── Stock Daily ────────────────────────────────────────────────────────────
