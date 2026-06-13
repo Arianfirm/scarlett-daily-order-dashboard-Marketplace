@@ -164,7 +164,7 @@ tr:hover td{background:var(--bg3)}
   </div>
   <div class="sb-sec" style="padding-top:14px">
     <button class="navtab on" id="nav-overview" onclick="showPage('overview')">📦 Order Overview</button>
-    <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Level Daily</button>
+    <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Daily</button>
   </div>
   <div class="sb-sec" id="order-filters"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
   <div class="sb-sec" id="status-filters" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
@@ -604,7 +604,7 @@ window.showPage=function(page){
   document.getElementById('page-stock').style.display=page==='stock'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  document.getElementById('ph-title').textContent=page==='overview'?'Daily Order Overview':'Stoc Daily';
+  document.getElementById('ph-title').textContent=page==='overview'?'Daily Order Overview':'Stock Daily';
   if(page==='stock'&&!STOCK_LOADED) loadStock();
 };
 
