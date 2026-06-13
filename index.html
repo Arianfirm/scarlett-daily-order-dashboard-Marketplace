@@ -604,7 +604,7 @@ window.showPage=function(page){
   document.getElementById('page-stock').style.display=page==='stock'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  document.getElementById('ph-title').textContent=page==='overview'?'Daily Order Overview':'Stock Level Daily';
+  document.getElementById('ph-title').textContent=page==='overview'?'Daily Order Overview':'Stoc Daily';
   if(page==='stock'&&!STOCK_LOADED) loadStock();
 };
 
