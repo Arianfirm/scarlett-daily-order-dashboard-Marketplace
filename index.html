@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scarlett — Daily Order Marketplace</title>
+<title>Scarlett — Daily Order Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -148,7 +148,7 @@ tr:hover td{background:var(--bg3)}
 <body>
 
 <div id="loading">
-  <div class="ll">Scarlett <span>Marketplace</span></div>
+  <div class="ll">Scarlett <span>Intelligence</span></div>
   <div class="lb"><div class="lf"></div></div>
   <div class="lt" id="lmsg">Memuat data order...</div>
 </div>
@@ -158,13 +158,14 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace 2026</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Intelligence</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
   <div class="sb-sec" style="padding-top:14px">
     <button class="navtab on" id="nav-overview" onclick="showPage('overview')">📦 Order Overview</button>
-    <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Daily</button>
+    <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Level Daily</button>
+    <button class="navtab" id="nav-history" onclick="showPage('history')">🕐 History 7 Hari</button>
   </div>
   <div class="sb-sec" id="order-filters"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
   <div class="sb-sec" id="status-filters" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
@@ -285,6 +286,43 @@ tr:hover td{background:var(--bg3)}
           <span class="bdg bx" id="stock-zero-count">—</span>
         </div>
         <div id="stock-zero-tbl" style="overflow:hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-history" style="display:none">
+    <div class="gf">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📈 Trend Order & Qty — 7 Hari Terakhir</div><div class="cs">Total unique orders dan qty per hari</div></div>
+        </div>
+        <div style="position:relative;height:180px"><canvas id="trendOrderChart"></canvas></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">✅ Trend Fulfillment Rate</div><div class="cs">% order fulfilled per hari</div></div>
+        </div>
+        <div style="position:relative;height:160px"><canvas id="trendFulfillChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📦 Trend Total Stock (ATP)</div><div class="cs">Total stock tersedia per hari</div></div>
+        </div>
+        <div style="position:relative;height:160px"><canvas id="trendStockChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📅 Detail Per Tanggal</div><div class="cs">Klik tanggal untuk lihat detail order & stock hari itu</div></div>
+        </div>
+        <div id="history-date-pills" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap"></div>
+        <div id="history-detail">
+          <div style="font-size:12px;color:var(--muted);padding:8px 0">Pilih tanggal untuk melihat detail</div>
+        </div>
       </div>
     </div>
   </div>
@@ -597,19 +635,154 @@ window.sst=function(v){
 // ── Page switching ──────────────────────────────────────────────────────────
 let STOCK_LOADED=false, STOCK_MAP={}, STOCK_FULL_DATA=[];
 
+// ── History 7 Hari ───────────────────────────────────────────────────────
+let HISTORY_LOADED=false, HISTORY_SUMMARY=[];
+let trendOrderC=null, trendFulfillC=null, trendStockC=null;
+
+function shortDate(d){
+  const dt=new Date(d+'T00:00:00');
+  return dt.toLocaleDateString('id-ID',{day:'2-digit',month:'short'});
+}
+
+async function loadHistory(){
+  const detailEl=document.getElementById('history-detail');
+  try{
+    const summary=await fetch(`data/history/daily_summary.json?t=${Date.now()}`).then(r=>r.json());
+    HISTORY_SUMMARY=summary;
+    HISTORY_LOADED=true;
+
+    const labels=summary.map(s=>shortDate(s.date));
+
+    // Trend: Orders & Qty (dual axis)
+    if(trendOrderC) trendOrderC.destroy();
+    trendOrderC=new Chart(document.getElementById('trendOrderChart'),{
+      type:'bar',
+      data:{labels,datasets:[
+        {type:'bar',label:'Orders',data:summary.map(s=>s.total_orders||0),backgroundColor:'rgba(232,52,90,.6)',borderRadius:4,yAxisID:'y',order:2},
+        {type:'line',label:'Qty',data:summary.map(s=>s.total_qty||0),borderColor:'#0d9e5c',backgroundColor:'rgba(13,158,92,.1)',borderWidth:2,pointRadius:3,tension:.3,fill:true,yAxisID:'y2',order:1}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{size:10},boxWidth:10,boxHeight:10,color:'#8c8480',usePointStyle:true}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{size:10},color:'#8c8480'}},
+          y:{position:'left',grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#e8345a',callback:v=>v.toLocaleString()},title:{display:true,text:'Orders',color:'#e8345a',font:{size:9}}},
+          y2:{position:'right',grid:{display:false},ticks:{font:{size:9},color:'#0d9e5c',callback:v=>v.toLocaleString()},title:{display:true,text:'Qty',color:'#0d9e5c',font:{size:9}}}
+        }}
+    });
+
+    // Trend: Fulfillment %
+    if(trendFulfillC) trendFulfillC.destroy();
+    trendFulfillC=new Chart(document.getElementById('trendFulfillChart'),{
+      type:'line',
+      data:{labels,datasets:[{label:'Fulfillment %',data:summary.map(s=>s.fulfillment_pct||0),borderColor:'#0d9e5c',backgroundColor:'rgba(13,158,92,.1)',borderWidth:2,pointRadius:3,tension:.3,fill:true}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.parsed.y}%`}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{size:10},color:'#8c8480'}},
+          y:{min:0,max:100,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v+'%'}}
+        }}
+    });
+
+    // Trend: Total ATP
+    if(trendStockC) trendStockC.destroy();
+    trendStockC=new Chart(document.getElementById('trendStockChart'),{
+      type:'line',
+      data:{labels,datasets:[{label:'Total ATP',data:summary.map(s=>s.total_atp),borderColor:'#1d5fd4',backgroundColor:'rgba(29,95,212,.1)',borderWidth:2,pointRadius:3,tension:.3,fill:true,spanGaps:true}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y===null?'Tidak ada data':c.parsed.y.toLocaleString()}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{size:10},color:'#8c8480'}},
+          y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()}}
+        }}
+    });
+
+    // Date pills
+    document.getElementById('history-date-pills').innerHTML=summary.map(s=>`
+      <button class="navtab" style="width:auto;margin-bottom:0;padding:8px 14px" onclick="loadHistoryDetail('${s.date}')">${s.date}</button>
+    `).join('');
+
+  }catch(err){
+    detailEl.innerHTML=`<div style="font-size:12px;color:var(--red);padding:8px 0">Error: ${err.message}</div>`;
+  }
+}
+
+window.loadHistoryDetail=async function(date){
+  const detailEl=document.getElementById('history-detail');
+  detailEl.innerHTML=`<div style="font-size:12px;color:var(--muted);padding:8px 0">Memuat data ${date}...</div>`;
+
+  // Highlight selected pill
+  document.querySelectorAll('#history-date-pills .navtab').forEach(b=>{
+    b.classList.toggle('on', b.textContent.trim()===date);
+  });
+
+  try{
+    const resp=await fetch(`data/history/${date}.csv?t=${Date.now()}`);
+    if(!resp.ok) throw new Error(`history/${date}.csv tidak ditemukan`);
+    const text=await resp.text();
+    const{data}=Papa.parse(text,{header:true,skipEmptyLines:true});
+    const{orders,smap,mpS}=parse(data);
+
+    const allOrds=Object.values(orders);
+    const total=allOrds.length;
+    let qty=0; allOrds.forEach(o=>o.items.forEach(i=>qty+=i.qty));
+    const good=allOrds.filter(o=>GOOD.has(o.st)).length;
+
+    // Per MP
+    const mpAgg={};
+    allOrds.forEach(o=>{ if(!mpAgg[o.mp]) mpAgg[o.mp]={u:0,q:0}; mpAgg[o.mp].u++; o.items.forEach(i=>mpAgg[o.mp].q+=i.qty); });
+    const mpSorted=Object.entries(mpAgg).sort((a,b)=>b[1].u-a[1].u);
+
+    // Top SKU
+    const skuAgg={};
+    Object.values(smap).forEach(d=>{ skuAgg[d.sku]=(skuAgg[d.sku]||0)+d.qty; });
+    const topSku=Object.entries(skuAgg).sort((a,b)=>b[1]-a[1]).slice(0,8);
+
+    detailEl.innerHTML=`
+      <div class="kpi-row" style="margin-bottom:16px">
+        <div class="kpi k-pink"><div class="kpi-lbl">Unique Orders</div><div class="kpi-val">${n(total)}</div><div class="kpi-sub">${date}</div></div>
+        <div class="kpi k-green"><div class="kpi-lbl">Total Qty</div><div class="kpi-val">${n(qty)}</div><div class="kpi-sub">unit terjual</div></div>
+        <div class="kpi k-amber"><div class="kpi-lbl">Fulfilled</div><div class="kpi-val">${n(good)}</div><div class="kpi-sub">${pct(good,total)}% dari total</div></div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="cs" style="margin-bottom:8px;font-weight:600">Per Marketplace</div>
+          ${mpSorted.map(([m,v],i)=>{
+            const mx=mpSorted[0][1].u||1;
+            return `<div class="hb"><div class="hb-t"><span class="hb-n">${cm(m)}</span><span class="hb-v">${n(v.u)} orders · ${n(v.q)} qty</span></div>
+            <div class="hb-tr"><div class="hb-f" style="width:${pct(v.u,mx)}%;background:${MPC[m]||MPC2[i%5]}"></div></div></div>`;
+          }).join('')}
+        </div>
+        <div>
+          <div class="cs" style="margin-bottom:8px;font-weight:600">Top SKU</div>
+          ${topSku.map(([sku,q],i)=>{
+            const mx=topSku[0][1]||1;
+            return `<div class="hb"><div class="hb-t"><span class="hb-n">${cs(sku)}</span><span class="hb-v">${n(q)} qty</span></div>
+            <div class="hb-tr"><div class="hb-f" style="width:${pct(q,mx)}%;background:#e8345a"></div></div></div>`;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }catch(err){
+    detailEl.innerHTML=`<div style="font-size:12px;color:var(--red);padding:8px 0">Error: ${err.message}</div>`;
+  }
+};
+
 window.showPage=function(page){
   document.getElementById('nav-overview').classList.toggle('on',page==='overview');
   document.getElementById('nav-stock').classList.toggle('on',page==='stock');
+  document.getElementById('nav-history').classList.toggle('on',page==='history');
   document.getElementById('page-overview').style.display=page==='overview'?'':'none';
   document.getElementById('page-stock').style.display=page==='stock'?'':'none';
+  document.getElementById('page-history').style.display=page==='history'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  const titles={overview:'Daily Order Overview',stock:'Stock Daily'};
+  const titles={overview:'Daily Order Overview',stock:'Stock Level Daily',history:'History 7 Hari'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
+  if(page==='history'&&!HISTORY_LOADED) loadHistory();
 };
 
-// ── Stock Daily ────────────────────────────────────────────────────────────
+// ── Stock Level ────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
 
 let STOCK_PAGE=1;
