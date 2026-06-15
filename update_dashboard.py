@@ -99,45 +99,18 @@ with open("data/last_updated.json", "w") as f:
     json.dump(meta, f, indent=2)
 print(f"      ✓ orders.csv & last_updated.json saved")
 
-# ── 5b. Save snapshot to history (7-day retention) ─────────────────────────
+# ── 5b. Compute & save daily summary (lightweight, 30-day trend) ───────────
 # Fail-safe: kalau bagian ini error, tidak mengganggu update dashboard utama
 try:
-    from datetime import timedelta
-
-    # Simpan snapshot hari ini (selalu overwrite — snapshot terbaru di hari itu)
-    hist_path = f"data/history/{TODAY}.csv"
-    with open(hist_path, "w", encoding="utf-8", newline="") as f:
-        f.write(csv_text)
-    print(f"      ✓ history/{TODAY}.csv saved")
-
-    # Hapus history lebih dari 7 hari
-    cutoff = datetime.now(timezone.utc).date() - timedelta(days=7)
-    removed = []
-    for fname in os.listdir("data/history"):
-        if fname.endswith(".csv"):
-            try:
-                fdate = datetime.strptime(fname[:-4], "%Y-%m-%d").date()
-                if fdate < cutoff:
-                    os.remove(os.path.join("data/history", fname))
-                    removed.append(fname)
-            except ValueError:
-                pass  # skip file dengan nama tidak sesuai format tanggal
-
-    if removed:
-        print(f"      ✓ Removed old history: {removed}")
-
-    # Update index list untuk dashboard (tanggal yang tersedia)
-    available = sorted([f[:-4] for f in os.listdir("data/history") if f.endswith(".csv")])
-    with open("data/history/index.json", "w") as f:
-        json.dump({"available_dates": available}, f, indent=2)
-    print(f"      ✓ history/index.json saved ({len(available)} dates)")
-
-    # ── Compute & save daily summary (lightweight, for trend charts) ───────
+    # ── Compute & save daily summary (lightweight, for 30-day trend charts) ──
     GOOD_STATUS = {"dispatched","picked","packed","manifest_created","delivered",
                     "qc_done","received_at_warehouse","assigned","partial_picked"}
     BAD_STATUS = {"unassigned","problem"}
 
+    import re as _re
     orders_seen = {}
+    hourly_orders = [0]*24
+    hourly_qty = [0]*24
     for r in rows:
         on = (r.get("Order Number") or "").strip()
         if not on:
@@ -145,14 +118,34 @@ try:
         st = (r.get("Order Status") or "").strip().lower().replace(" ", "_")
         qty = int(r.get("Ordered Quantity") or 0)
         if on not in orders_seen:
-            orders_seen[on] = {"st": st, "qty": 0}
+            order_date_str = r.get("Order Date") or ""
+            hm = _re.search(r",\s*(\d{2}):", order_date_str)
+            hr = int(hm.group(1)) if hm else 0
+            orders_seen[on] = {"st": st, "qty": 0, "hr": hr}
+            hourly_orders[hr] += 1
         orders_seen[on]["qty"] += qty
+        hourly_qty[orders_seen[on]["hr"]] += qty
 
     total_orders = len(orders_seen)
     total_qty = sum(o["qty"] for o in orders_seen.values())
     good_count = sum(1 for o in orders_seen.values() if o["st"] in GOOD_STATUS)
     bad_count = sum(1 for o in orders_seen.values() if o["st"] in BAD_STATUS)
     fulfillment_pct = round(good_count / total_orders * 100, 1) if total_orders else 0
+
+    peak_hour = hourly_orders.index(max(hourly_orders)) if total_orders else None
+    peak_hour_orders = hourly_orders[peak_hour] if peak_hour is not None else 0
+    peak_hour_qty = hourly_qty[peak_hour] if peak_hour is not None else 0
+
+    # Day type label: gajian (25/30/31 or twin date like 6/6, 7/7)
+    _d = datetime.strptime(TODAY, "%Y-%m-%d")
+    day_of_month = _d.day
+    month = _d.month
+    if day_of_month in (25, 30, 31):
+        day_type = "gajian"
+    elif day_of_month == month and day_of_month <= 12:
+        day_type = "tanggal_kembar"
+    else:
+        day_type = "biasa"
 
     summary_entry = {
         "date": TODAY,
@@ -162,6 +155,12 @@ try:
         "pending": bad_count,
         "fulfillment_pct": fulfillment_pct,
         "total_atp": None,  # filled later if inventory report succeeds
+        "peak_hour": peak_hour,
+        "peak_hour_orders": peak_hour_orders,
+        "peak_hour_qty": peak_hour_qty,
+        "hourly_orders": hourly_orders,
+        "hourly_qty": hourly_qty,
+        "day_type": day_type,
         "last_updated": NOW
     }
 
@@ -178,7 +177,7 @@ try:
     summary_list = [s for s in summary_list if s.get("date") != TODAY]
     summary_list.append(summary_entry)
     # Keep only last 7 days (by date string, sorted)
-    summary_list = sorted(summary_list, key=lambda s: s["date"])[-7:]
+    summary_list = sorted(summary_list, key=lambda s: s["date"])[-30:]
 
     with open(summary_path, "w") as f:
         json.dump(summary_list, f, indent=2)
@@ -236,62 +235,37 @@ try:
                 f.write(inv_resp.content)
             print(f"      ✓ data/inventory.xlsx saved ({len(inv_resp.content):,} bytes)")
 
-            # Save snapshot to history (7-day retention, fail-safe)
+            # Update daily_summary.json with total_atp for today (fail-safe)
             try:
-                os.makedirs("data/history/inventory", exist_ok=True)
-                inv_hist_path = f"data/history/inventory/{TODAY}.xlsx"
-                with open(inv_hist_path, "wb") as f:
-                    f.write(inv_resp.content)
-                print(f"      ✓ history/inventory/{TODAY}.xlsx saved")
+                import openpyxl
+                wb_inv = openpyxl.load_workbook(io.BytesIO(inv_resp.content), read_only=True, data_only=True)
+                ws_inv = wb_inv.active
+                total_atp = 0
+                sku_count = 0
+                for idx, row in enumerate(ws_inv.iter_rows(values_only=True)):
+                    if idx == 0:
+                        continue  # header
+                    try:
+                        atp_val = row[8]  # ATP column (0-indexed: col 9)
+                        total_atp += int(atp_val) if atp_val not in (None, "") else 0
+                        sku_count += 1
+                    except (ValueError, IndexError, TypeError):
+                        pass
 
-                from datetime import timedelta
-                cutoff = datetime.now(timezone.utc).date() - timedelta(days=7)
-                removed = []
-                for fname in os.listdir("data/history/inventory"):
-                    if fname.endswith(".xlsx"):
-                        try:
-                            fdate = datetime.strptime(fname[:-5], "%Y-%m-%d").date()
-                            if fdate < cutoff:
-                                os.remove(os.path.join("data/history/inventory", fname))
-                                removed.append(fname)
-                        except ValueError:
-                            pass
-                if removed:
-                    print(f"      ✓ Removed old inventory history: {removed}")
-
-                # Update daily_summary.json with total_atp for today
-                try:
-                    import openpyxl
-                    wb_inv = openpyxl.load_workbook(io.BytesIO(inv_resp.content), read_only=True, data_only=True)
-                    ws_inv = wb_inv.active
-                    total_atp = 0
-                    sku_count = 0
-                    for idx, row in enumerate(ws_inv.iter_rows(values_only=True)):
-                        if idx == 0:
-                            continue  # header
-                        try:
-                            atp_val = row[8]  # ATP column (0-indexed: col 9)
-                            total_atp += int(atp_val) if atp_val not in (None, "") else 0
-                            sku_count += 1
-                        except (ValueError, IndexError, TypeError):
-                            pass
-
-                    summary_path = "data/history/daily_summary.json"
-                    if os.path.exists(summary_path):
-                        with open(summary_path) as f:
-                            summary_list = json.load(f)
-                        for s in summary_list:
-                            if s.get("date") == TODAY:
-                                s["total_atp"] = total_atp
-                                s["sku_count"] = sku_count
-                        with open(summary_path, "w") as f:
-                            json.dump(summary_list, f, indent=2)
-                        print(f"      ✓ daily_summary.json updated with total_atp={total_atp:,}")
-                except Exception as e:
-                    print(f"      ⚠ ATP summary update skipped: {e}")
-
+                summary_path = "data/history/daily_summary.json"
+                if os.path.exists(summary_path):
+                    with open(summary_path) as f:
+                        summary_list = json.load(f)
+                    for s in summary_list:
+                        if s.get("date") == TODAY:
+                            s["total_atp"] = total_atp
+                            s["sku_count"] = sku_count
+                    with open(summary_path, "w") as f:
+                        json.dump(summary_list, f, indent=2)
+                    print(f"      ✓ daily_summary.json updated with total_atp={total_atp:,}")
             except Exception as e:
-                print(f"      ⚠ Inventory history snapshot skipped (non-critical): {e}")
+                print(f"      ⚠ ATP summary update skipped: {e}")
+
         else:
             print("      ⚠ Inventory report timeout, skipped")
 
