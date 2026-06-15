@@ -162,7 +162,7 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace 2026</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
@@ -171,6 +171,7 @@ tr:hover td{background:var(--bg3)}
     <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Daily</button>
     <button class="navtab" id="nav-history" onclick="showPage('history')">🕐 History 30 Hari</button>
     <button class="navtab" id="nav-warehouse" onclick="showPage('warehouse')">🏭 Warehouse</button>
+    <button class="navtab" id="nav-trend" onclick="showPage('trend')">📈 Trend Per Jam</button>
   </div>
   <div class="sb-sec" id="order-filters"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
   <div class="sb-sec" id="status-filters" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
@@ -351,13 +352,16 @@ tr:hover td{background:var(--bg3)}
       </div>
     </div>
 
-    <div class="g2">
+    <div class="gf">
       <div class="card">
         <div class="ch">
-          <div><div class="ct">⭐ Productivity</div><div class="cs">Top performer berdasarkan jumlah order ditangani</div></div>
+          <div><div class="ct">⭐ Productivity</div><div class="cs">Top vs Low performer berdasarkan jumlah order ditangani</div></div>
         </div>
         <div id="wh-productivity"></div>
       </div>
+    </div>
+
+    <div class="gf">
       <div class="card">
         <div class="ch">
           <div><div class="ct">⏱ SLA — Rata-rata Waktu Proses</div><div class="cs">Order → Picking → Packing → Dispatch</div></div>
@@ -365,7 +369,9 @@ tr:hover td{background:var(--bg3)}
         <div id="wh-sla"></div>
       </div>
     </div>
+  </div>
 
+  <div id="page-trend" style="display:none">
     <div class="g3col">
       <div class="card">
         <div class="ch">
@@ -384,6 +390,21 @@ tr:hover td{background:var(--bg3)}
           <div><div class="ct">🚚 Dispatch Per Jam</div></div>
         </div>
         <div style="position:relative;height:160px"><canvas id="dispatchHourChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📤 Picking — Detail Per Jam</div><div class="cs">Jumlah picker aktif, output, dan rata-rata per picker</div></div>
+        </div>
+        <div id="pick-hour-tbl" style="overflow:hidden"></div>
+      </div>
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📦 Packing — Detail Per Jam</div><div class="cs">Jumlah packer aktif, output, dan rata-rata per packer</div></div>
+        </div>
+        <div id="pack-hour-tbl" style="overflow:hidden"></div>
       </div>
     </div>
   </div>
@@ -871,21 +892,39 @@ async function loadWarehouse(){
     }).join('');
 
     // Productivity
-    function renderProdList(arr,icon){
+    function renderProdList(arr,icon,barColor){
       if(!arr||!arr.length) return `<div style="font-size:12px;color:var(--muted);padding:8px 0">Tidak ada data</div>`;
-      const max=arr[0][1]||1;
+      const max=Math.max(...arr.map(a=>a[1]))||1;
       return arr.map(([name,cnt])=>`<div class="hb">
         <div class="hb-t"><span class="hb-n">${icon} ${name}</span><span class="hb-v">${n(cnt)} orders</span></div>
-        <div class="hb-tr"><div class="hb-f" style="width:${p(cnt,max)}%;background:#e8345a"></div></div>
+        <div class="hb-tr"><div class="hb-f" style="width:${p(cnt,max)}%;background:${barColor}"></div></div>
       </div>`).join('');
     }
     document.getElementById('wh-productivity').innerHTML=`
-      <div class="cs" style="margin-bottom:6px;font-weight:600">🏆 Top Picker</div>
-      ${renderProdList(wh.top_picker,'📤')}
-      <div class="cs" style="margin:14px 0 6px;font-weight:600">🏆 Top Packer</div>
-      ${renderProdList(wh.top_packer,'📦')}
-      <div class="cs" style="margin:14px 0 6px;font-weight:600">🏆 Top Dispatcher</div>
-      ${renderProdList(wh.top_dispatcher,'🚚')}`;
+      <div class="g2" style="margin-bottom:0">
+        <div>
+          <div class="cs" style="margin-bottom:6px;font-weight:600">🏆 Top Picker</div>
+          ${renderProdList(wh.top_picker,'📤','#e8345a')}
+        </div>
+        <div>
+          <div class="cs" style="margin-bottom:6px;font-weight:600">🔻 Low Picker</div>
+          ${renderProdList(wh.low_picker,'📤','#94a3b8')}
+        </div>
+      </div>
+      <div class="g2" style="margin-top:14px;margin-bottom:0">
+        <div>
+          <div class="cs" style="margin-bottom:6px;font-weight:600">🏆 Top Packer</div>
+          ${renderProdList(wh.top_packer,'📦','#1d5fd4')}
+        </div>
+        <div>
+          <div class="cs" style="margin-bottom:6px;font-weight:600">🔻 Low Packer</div>
+          ${renderProdList(wh.low_packer,'📦','#94a3b8')}
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <div class="cs" style="margin-bottom:6px;font-weight:600">🏆 Top Dispatcher</div>
+        ${renderProdList(wh.top_dispatcher,'🚚','#0d9e5c')}
+      </div>`;
 
     // SLA
     function slaRow(label,minutes){
@@ -903,7 +942,21 @@ async function loadWarehouse(){
       slaRow('Avg Picking → Packing', wh.avg_pack_min) +
       slaRow('Avg Packing → Dispatch', wh.avg_dispatch_min);
 
-    // Hourly charts
+    WAREHOUSE_LOADED=true;
+  }catch(err){
+    kpiEl.innerHTML=`<div class="kpi k-red" style="grid-column:1/-1"><div class="kpi-lbl">Error</div><div class="kpi-sub" style="margin-top:8px;font-size:12px">${err.message}</div></div>`;
+  }
+}
+
+// ── Trend Per Jam (Picking / Packing / Dispatch) ────────────────────────────
+let TREND_LOADED=false;
+
+async function loadTrendCharts(){
+  try{
+    const summary=HISTORY_SUMMARY&&HISTORY_SUMMARY.length?HISTORY_SUMMARY:await fetch(`data/history/daily_summary.json?t=${Date.now()}`).then(r=>r.json());
+    const today=summary[summary.length-1];
+    const wh=today&&today.warehouse;
+
     const hLabels=Array.from({length:24},(_,i)=>i.toString().padStart(2,'0')+':00');
     function hourlyChart(canvasId,data,color){
       return new Chart(document.getElementById(canvasId),{
@@ -918,13 +971,40 @@ async function loadWarehouse(){
     if(pickingHourC) pickingHourC.destroy();
     if(packingHourC) packingHourC.destroy();
     if(dispatchHourC) dispatchHourC.destroy();
-    pickingHourC=hourlyChart('pickingHourChart',wh.pick_hours,'rgba(29,95,212,.6)');
-    packingHourC=hourlyChart('packingHourChart',wh.pack_hours,'rgba(124,58,237,.6)');
-    dispatchHourC=hourlyChart('dispatchHourChart',wh.dispatch_hours,'rgba(13,158,92,.6)');
+    pickingHourC=hourlyChart('pickingHourChart',wh&&wh.pick_hours,'rgba(29,95,212,.6)');
+    packingHourC=hourlyChart('packingHourChart',wh&&wh.pack_hours,'rgba(124,58,237,.6)');
+    dispatchHourC=hourlyChart('dispatchHourChart',wh&&wh.dispatch_hours,'rgba(13,158,92,.6)');
 
-    WAREHOUSE_LOADED=true;
+    // Per-hour detail tables: Jam | Jumlah Picker/Packer | Output | Rata-rata
+    function hourTable(outputArr, workerArr, workerLabel){
+      const rows=hLabels.map((lbl,h)=>{
+        const out=(outputArr&&outputArr[h])||0;
+        const workers=(workerArr&&workerArr[h])||0;
+        if(out===0&&workers===0) return null;
+        const avg=workers>0?(out/workers).toFixed(1):'—';
+        return `<tr>
+          <td class="mono">${lbl}</td>
+          <td class="mono">${n(workers)}</td>
+          <td class="mono">${n(out)}</td>
+          <td class="mono" style="font-weight:700;color:var(--pink)">${avg}</td>
+        </tr>`;
+      }).filter(Boolean);
+      if(!rows.length) return `<div style="font-size:12px;color:var(--muted);padding:8px 0">Tidak ada data</div>`;
+      return `<table>
+        <thead><tr><th>Jam</th><th>Jumlah ${workerLabel}</th><th>Output</th><th>Rata-rata / ${workerLabel}</th></tr></thead>
+        <tbody>${rows.join('')}</tbody></table>`;
+    }
+    document.getElementById('pick-hour-tbl').innerHTML=hourTable(wh&&wh.pick_hours, wh&&wh.pick_hour_pickers, 'Picker');
+    document.getElementById('pack-hour-tbl').innerHTML=hourTable(wh&&wh.pack_hours, wh&&wh.pack_hour_packers, 'Packer');
+
+    if(!wh){
+      document.getElementById('page-trend').insertAdjacentHTML('afterbegin',
+        `<div class="card" style="margin-bottom:14px"><div class="kpi-sub" style="font-size:12px;color:var(--muted)">Data warehouse belum tersedia di daily_summary.json — chart menampilkan 0 untuk semua jam.</div></div>`);
+    }
+    TREND_LOADED=true;
   }catch(err){
-    kpiEl.innerHTML=`<div class="kpi k-red" style="grid-column:1/-1"><div class="kpi-lbl">Error</div><div class="kpi-sub" style="margin-top:8px;font-size:12px">${err.message}</div></div>`;
+    document.getElementById('page-trend').insertAdjacentHTML('afterbegin',
+      `<div class="card" style="margin-bottom:14px"><div class="kpi-sub" style="font-size:12px;color:var(--red)">Error: ${err.message}</div></div>`);
   }
 }
 
@@ -933,17 +1013,20 @@ window.showPage=function(page){
   document.getElementById('nav-stock').classList.toggle('on',page==='stock');
   document.getElementById('nav-history').classList.toggle('on',page==='history');
   document.getElementById('nav-warehouse').classList.toggle('on',page==='warehouse');
+  document.getElementById('nav-trend').classList.toggle('on',page==='trend');
   document.getElementById('page-overview').style.display=page==='overview'?'':'none';
   document.getElementById('page-stock').style.display=page==='stock'?'':'none';
   document.getElementById('page-history').style.display=page==='history'?'':'none';
   document.getElementById('page-warehouse').style.display=page==='warehouse'?'':'none';
+  document.getElementById('page-trend').style.display=page==='trend'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 30 Hari',warehouse:'Warehouse Performance'};
+  const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 30 Hari',warehouse:'Warehouse Performance',trend:'Trend Per Jam — Picking, Packing, Dispatch'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
   if(page==='history'&&!HISTORY_LOADED) loadHistory();
   if(page==='warehouse'&&!WAREHOUSE_LOADED) loadWarehouse();
+  if(page==='trend'&&!TREND_LOADED) loadTrendCharts();
 };
 
 // ── Stock Daily ────────────────────────────────────────────────────────────
