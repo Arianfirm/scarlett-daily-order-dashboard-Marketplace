@@ -272,4 +272,126 @@ try:
 except Exception as e:
     print(f"      ⚠ Inventory report skipped (non-critical): {e}")
 
+# ── 7. Generic CSV report fetcher (for Picking & Packing line reports) ────────
+def fetch_csv_report(report_type_id, name, save_path):
+    """
+    Fetch a CSV-format report (Picking/Packing line reports), fail-safe.
+    Returns (rows, columns) or (None, None) on failure.
+    """
+    print(f"\n[7] Fetching {name} report (type_id={report_type_id})...")
+    try:
+        payload = {"report_schedule": {
+            "report_type_id": report_type_id,
+            "report_format": "csv",
+            "report_occurrence_id": "5",
+            "mailing_list": [""],
+            "field_ids": [str(i) for i in range(1, 101)]
+                        + [str(i) for i in range(600, 700)]
+                        + [str(i) for i in range(1200, 1230)],
+            "filters": {"company_id": ["2"]},
+            "from_date": TODAY, "end_date": TODAY,
+            "notification_type": "email", "carrier_code": []
+        }}
+        cr_ = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload, timeout=30)
+        if cr_.status_code != 200:
+            print(f"      ⚠ HTTP {cr_.status_code}: {cr_.text[:500]}")
+        cr_.raise_for_status()
+        cd_ = cr_.json()
+        if cd_.get("status_code") != 1000:
+            print(f"      ⚠ {name} report failed: {json.dumps(cd_, indent=2)[:500]}")
+            return None, None
+        rid = cd_["data"]["id"]
+        print(f"      ✓ {name} report created (ID: {rid})")
+
+        url_ = ""
+        for i in range(1, 25):
+            time.sleep(15)
+            try:
+                ch_ = requests.get(f"{BASE_URL}/api/v1/report_schedules/{rid}", headers=H, timeout=30)
+                if not ch_.text.strip():
+                    print(f"      [{i:02d}/24] empty response, retrying...")
+                    continue
+                at_ = ch_.json().get("data", {}).get("attributes", {})
+                status_ = at_.get("status", "")
+                u_ = at_.get("report_url", "")
+                print(f"      [{i:02d}/24] status={status_}")
+                if u_:
+                    url_ = u_; print(f"      ✓ {name} report ready!"); break
+            except Exception as e:
+                print(f"      [{i:02d}/24] poll error: {e}, retrying...")
+                continue
+
+        if not url_:
+            print(f"      ⚠ {name} report timeout, skipped")
+            return None, None
+
+        resp_ = requests.get(url_, timeout=120)
+        resp_.raise_for_status()
+        text_ = resp_.content.decode("utf-8-sig")
+        reader_ = csv.DictReader(io.StringIO(text_))
+        rows_ = list(reader_)
+        cols_ = reader_.fieldnames or []
+        print(f"      ✓ {len(rows_):,} rows · {len(cols_)} columns")
+        print(f"      Columns: {cols_}")
+
+        with open(save_path, "w", encoding="utf-8", newline="") as f:
+            f.write(text_)
+        print(f"      ✓ {save_path} saved")
+        return rows_, cols_
+
+    except Exception as e:
+        print(f"      ⚠ {name} report skipped (non-critical): {e}")
+        return None, None
+
+# ── 8. Picking Line Report (type 14) ───────────────────────────────────────────
+picking_rows, picking_cols = fetch_csv_report("14", "Picking Line", "data/picking.csv")
+
+# ── 9. Packing Line Report (type 16) ───────────────────────────────────────────
+packing_rows, packing_cols = fetch_csv_report("16", "Packing Line", "data/packing.csv")
+
+# ── 10. Update daily_summary.json with warehouse KPIs (fail-safe) ─────────────
+try:
+    def _count_unique_orders(rws, cols_):
+        if not rws:
+            return 0, 0
+        order_col = next((c for c in cols_ if "order" in c.lower() and "number" in c.lower()), None)
+        qty_col = next((c for c in cols_ if "qty" in c.lower() or "quantity" in c.lower()), None)
+        if not order_col:
+            return 0, 0
+        uniq = set()
+        total_qty = 0
+        for r in rws:
+            on = (r.get(order_col) or "").strip()
+            if on:
+                uniq.add(on)
+            if qty_col:
+                try:
+                    total_qty += int(float(r.get(qty_col) or 0))
+                except (ValueError, TypeError):
+                    pass
+        return len(uniq), total_qty
+
+    picked_orders, picked_qty = _count_unique_orders(picking_rows, picking_cols)
+    packed_orders, packed_qty = _count_unique_orders(packing_rows, packing_cols)
+
+    summary_path = "data/history/daily_summary.json"
+    if os.path.exists(summary_path):
+        with open(summary_path) as f:
+            summary_list = json.load(f)
+        for s in summary_list:
+            if s.get("date") == TODAY:
+                s["picking_lines"] = len(picking_rows) if picking_rows else 0
+                s["packing_lines"] = len(packing_rows) if packing_rows else 0
+                s["picked_orders"] = picked_orders
+                s["packed_orders"] = packed_orders
+                total_o = s.get("total_orders") or 0
+                s["picking_completion_pct"] = round(picked_orders/total_o*100,1) if total_o else 0
+                s["packing_completion_pct"] = round(packed_orders/total_o*100,1) if total_o else 0
+        with open(summary_path, "w") as f:
+            json.dump(summary_list, f, indent=2)
+        print(f"\n      ✓ daily_summary.json updated with warehouse KPIs "
+              f"(picked_orders={picked_orders}, packed_orders={packed_orders})")
+except Exception as e:
+    print(f"      ⚠ Warehouse summary update skipped (non-critical): {e}")
+
 print(f"\n=== DONE — {len(rows):,} rows · {len(cols)} columns · {TODAY} ===")
