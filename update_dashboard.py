@@ -285,6 +285,9 @@ try:
         "report_format": "csv",
         "report_occurrence_id": "5",
         "mailing_list": [""],
+        "field_ids": [str(i) for i in range(1, 101)]
+                    + [str(i) for i in range(600, 700)]
+                    + [str(i) for i in range(1200, 1300)],
         "filters": {"company_id": ["2"]},
         "from_date": TODAY, "end_date": TODAY,
         "notification_type": "email"
