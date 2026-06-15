@@ -285,9 +285,7 @@ try:
         "report_format": "csv",
         "report_occurrence_id": "5",
         "mailing_list": [""],
-        "field_ids": [str(i) for i in range(1, 101)]
-                    + [str(i) for i in range(600, 700)]
-                    + [str(i) for i in range(1200, 1300)],
+        "field_ids": [str(i) for i in range(1, 2000)],
         "filters": {"company_id": ["2"]},
         "from_date": TODAY, "end_date": TODAY,
         "notification_type": "email"
@@ -359,6 +357,11 @@ try:
     c_disp_t = _col(processing_cols, "dispatch time")
     c_disp_by= _col(processing_cols, "dispatched by")
     c_order_date = _col(processing_cols, "order date")
+
+    print(f"      Detected columns: order={c_order!r}, status={c_status!r}, order_date={c_order_date!r}")
+    print(f"      pick_time={c_pick_t!r}, picked_by={c_pick_by!r}")
+    print(f"      pack_time={c_pack_t!r}, packed_by={c_pack_by!r}")
+    print(f"      disp_time={c_disp_t!r}, dispatched_by={c_disp_by!r}")
 
     import re as _re2
     def _parse_dt(s):
