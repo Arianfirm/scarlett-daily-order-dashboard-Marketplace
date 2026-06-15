@@ -148,7 +148,7 @@ tr:hover td{background:var(--bg3)}
 <body>
 
 <div id="loading">
-  <div class="ll">Scarlett <span>Mareketplace</span></div>
+  <div class="ll">Scarlett <span>Marketplace</span></div>
   <div class="lb"><div class="lf"></div></div>
   <div class="lt" id="lmsg">Memuat data order...</div>
 </div>
@@ -158,14 +158,14 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace 2026</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
   <div class="sb-sec" style="padding-top:14px">
     <button class="navtab on" id="nav-overview" onclick="showPage('overview')">📦 Order Overview</button>
     <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Daily</button>
-    <button class="navtab" id="nav-history" onclick="showPage('history')">🕐 History 7 Hari</button>
+    <button class="navtab" id="nav-history" onclick="showPage('history')">🕐 History 30 Hari</button>
   </div>
   <div class="sb-sec" id="order-filters"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
   <div class="sb-sec" id="status-filters" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
@@ -231,7 +231,7 @@ tr:hover td{background:var(--bg3)}
       <div id="city-bars"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">% pending per MP</div><div class="cs"></div></div></div>
+      <div class="ch"><div><div class="ct"> pending per MPk</div><div class="cs">% pending per MP</div></div></div>
       <div id="bneck"></div>
     </div>
     <div class="card">
@@ -294,7 +294,7 @@ tr:hover td{background:var(--bg3)}
     <div class="gf">
       <div class="card">
         <div class="ch">
-          <div><div class="ct">📈 Trend Order & Qty — 7 Hari Terakhir</div><div class="cs">Total unique orders dan qty per hari</div></div>
+          <div><div class="ct">📈 Trend Order & Qty — 30 Hari Terakhir</div><div class="cs">Total unique orders dan qty per hari</div></div>
         </div>
         <div style="position:relative;height:180px"><canvas id="trendOrderChart"></canvas></div>
       </div>
@@ -317,12 +317,19 @@ tr:hover td{background:var(--bg3)}
     <div class="gf">
       <div class="card">
         <div class="ch">
-          <div><div class="ct">📅 Detail Per Tanggal</div><div class="cs">Klik tanggal untuk lihat detail order & stock hari itu</div></div>
+          <div><div class="ct">⏰ Peak Hour Comparison — 30 Hari</div><div class="cs">Jam paling banyak order masuk per hari, dengan tipe hari (biasa / gajian / tanggal kembar)</div></div>
+        </div>
+        <div id="peak-hour-list"></div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📅 Order & Qty Per Jam — Pilih Tanggal</div><div class="cs">Snapshot 00:00–23:59, pilih tanggal untuk bandingkan pola jam</div></div>
         </div>
         <div id="history-date-pills" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap"></div>
-        <div id="history-detail">
-          <div style="font-size:12px;color:var(--muted);padding:8px 0">Pilih tanggal untuk melihat detail</div>
-        </div>
+        <div style="position:relative;height:200px"><canvas id="hourlyDetailChart"></canvas></div>
       </div>
     </div>
   </div>
@@ -635,7 +642,7 @@ window.sst=function(v){
 // ── Page switching ──────────────────────────────────────────────────────────
 let STOCK_LOADED=false, STOCK_MAP={}, STOCK_FULL_DATA=[];
 
-// ── History 7 Hari ───────────────────────────────────────────────────────
+// ── History 30 Hari (summary only) ───────────────────────────────────────────────────────
 let HISTORY_LOADED=false, HISTORY_SUMMARY=[];
 let trendOrderC=null, trendFulfillC=null, trendStockC=null;
 
@@ -645,7 +652,6 @@ function shortDate(d){
 }
 
 async function loadHistory(){
-  const detailEl=document.getElementById('history-detail');
   try{
     const summary=await fetch(`data/history/daily_summary.json?t=${Date.now()}`).then(r=>r.json());
     HISTORY_SUMMARY=summary;
@@ -696,76 +702,71 @@ async function loadHistory(){
         }}
     });
 
-    // Date pills
+    // Peak Hour Comparison
+    const dayTypeLabel={biasa:'Hari Biasa',gajian:'Gajian',tanggal_kembar:'Tanggal Kembar'};
+    const dayTypeBadge={biasa:'bx',gajian:'bg',tanggal_kembar:'bpk'};
+    const peakRows = [...summary].reverse().map(s=>{
+      const ph=s.peak_hour;
+      const phLabel=(ph===null||ph===undefined)?'—':`${ph.toString().padStart(2,'0')}:00`;
+      const dt=s.day_type||'biasa';
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:12px;font-weight:600;font-family:var(--mono);width:90px">${s.date}</span>
+          <span class="bdg ${dayTypeBadge[dt]}">${dayTypeLabel[dt]}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:18px">
+          <span style="font-size:12px;color:var(--muted)">Peak: <strong style="color:var(--pink);font-family:var(--mono)">${phLabel}</strong></span>
+          <span style="font-size:12px;color:var(--muted)">${n(s.peak_hour_orders||0)} orders · ${n(s.peak_hour_qty||0)} qty</span>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('peak-hour-list').innerHTML =
+      summary.length>10
+        ? `<div style="max-height:420px;overflow-y:auto">${peakRows}</div>`
+        : peakRows;
+
+
+    // Date pills — semua tanggal yang ada di summary (hingga 30 hari)
+    let hourlyDetailC=null;
     document.getElementById('history-date-pills').innerHTML=summary.map(s=>`
-      <button class="navtab" style="width:auto;margin-bottom:0;padding:8px 14px" onclick="loadHistoryDetail('${s.date}')">${s.date}</button>
+      <button class="navtab" style="width:auto;margin-bottom:0;padding:8px 14px" onclick="showHourlyDetail('${s.date}')">${s.date}</button>
     `).join('');
 
+    window.showHourlyDetail=function(date){
+      document.querySelectorAll('#history-date-pills .navtab').forEach(b=>{
+        b.classList.toggle('on', b.textContent.trim()===date);
+      });
+      const entry=HISTORY_SUMMARY.find(s=>s.date===date);
+      if(!entry||!entry.hourly_orders){
+        if(hourlyDetailC) hourlyDetailC.destroy();
+        return;
+      }
+      const hLabels=Array.from({length:24},(_,i)=>i.toString().padStart(2,'0')+':00');
+      const pk=entry.peak_hour;
+      if(hourlyDetailC) hourlyDetailC.destroy();
+      hourlyDetailC=new Chart(document.getElementById('hourlyDetailChart'),{
+        type:'bar',
+        data:{labels:hLabels,datasets:[
+          {type:'bar',label:'Orders',data:entry.hourly_orders,backgroundColor:entry.hourly_orders.map((_,i)=>i===pk?'#e8345a':'rgba(232,52,90,.2)'),borderRadius:3,yAxisID:'y',order:2},
+          {type:'line',label:'Qty',data:entry.hourly_qty,borderColor:'#0d9e5c',backgroundColor:'rgba(13,158,92,.1)',borderWidth:2,pointRadius:2,tension:.3,fill:true,yAxisID:'y2',order:1}
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{size:10},boxWidth:10,boxHeight:10,color:'#8c8480',usePointStyle:true}}},
+          scales:{
+            x:{grid:{display:false},ticks:{font:{size:9},color:'#8c8480',maxRotation:0}},
+            y:{position:'left',grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#e8345a',callback:v=>v.toLocaleString()},title:{display:true,text:'Orders',color:'#e8345a',font:{size:9}}},
+            y2:{position:'right',grid:{display:false},ticks:{font:{size:9},color:'#0d9e5c',callback:v=>v.toLocaleString()},title:{display:true,text:'Qty',color:'#0d9e5c',font:{size:9}}}
+          }}
+      });
+    };
+
+    // Auto-select latest date
+    if(summary.length) showHourlyDetail(summary[summary.length-1].date);
+
   }catch(err){
-    detailEl.innerHTML=`<div style="font-size:12px;color:var(--red);padding:8px 0">Error: ${err.message}</div>`;
+    document.getElementById('history-date-pills').innerHTML=`<div style="font-size:12px;color:var(--red);padding:8px 0">Error: ${err.message}</div>`;
   }
 }
-
-window.loadHistoryDetail=async function(date){
-  const detailEl=document.getElementById('history-detail');
-  detailEl.innerHTML=`<div style="font-size:12px;color:var(--muted);padding:8px 0">Memuat data ${date}...</div>`;
-
-  // Highlight selected pill
-  document.querySelectorAll('#history-date-pills .navtab').forEach(b=>{
-    b.classList.toggle('on', b.textContent.trim()===date);
-  });
-
-  try{
-    const resp=await fetch(`data/history/${date}.csv?t=${Date.now()}`);
-    if(!resp.ok) throw new Error(`history/${date}.csv tidak ditemukan`);
-    const text=await resp.text();
-    const{data}=Papa.parse(text,{header:true,skipEmptyLines:true});
-    const{orders,smap,mpS}=parse(data);
-
-    const allOrds=Object.values(orders);
-    const total=allOrds.length;
-    let qty=0; allOrds.forEach(o=>o.items.forEach(i=>qty+=i.qty));
-    const good=allOrds.filter(o=>GOOD.has(o.st)).length;
-
-    // Per MP
-    const mpAgg={};
-    allOrds.forEach(o=>{ if(!mpAgg[o.mp]) mpAgg[o.mp]={u:0,q:0}; mpAgg[o.mp].u++; o.items.forEach(i=>mpAgg[o.mp].q+=i.qty); });
-    const mpSorted=Object.entries(mpAgg).sort((a,b)=>b[1].u-a[1].u);
-
-    // Top SKU
-    const skuAgg={};
-    Object.values(smap).forEach(d=>{ skuAgg[d.sku]=(skuAgg[d.sku]||0)+d.qty; });
-    const topSku=Object.entries(skuAgg).sort((a,b)=>b[1]-a[1]).slice(0,8);
-
-    detailEl.innerHTML=`
-      <div class="kpi-row" style="margin-bottom:16px">
-        <div class="kpi k-pink"><div class="kpi-lbl">Unique Orders</div><div class="kpi-val">${n(total)}</div><div class="kpi-sub">${date}</div></div>
-        <div class="kpi k-green"><div class="kpi-lbl">Total Qty</div><div class="kpi-val">${n(qty)}</div><div class="kpi-sub">unit terjual</div></div>
-        <div class="kpi k-amber"><div class="kpi-lbl">Fulfilled</div><div class="kpi-val">${n(good)}</div><div class="kpi-sub">${p(good,total)}% dari total</div></div>
-      </div>
-      <div class="g2">
-        <div>
-          <div class="cs" style="margin-bottom:8px;font-weight:600">Per Marketplace</div>
-          ${mpSorted.map(([m,v],i)=>{
-            const mx=mpSorted[0][1].u||1;
-            return `<div class="hb"><div class="hb-t"><span class="hb-n">${cm(m)}</span><span class="hb-v">${n(v.u)} orders · ${n(v.q)} qty</span></div>
-            <div class="hb-tr"><div class="hb-f" style="width:${p(v.u,mx)}%;background:${MPC[m]||MPC2[i%5]}"></div></div></div>`;
-          }).join('')}
-        </div>
-        <div>
-          <div class="cs" style="margin-bottom:8px;font-weight:600">Top SKU</div>
-          ${topSku.map(([sku,q],i)=>{
-            const mx=topSku[0][1]||1;
-            return `<div class="hb"><div class="hb-t"><span class="hb-n">${cs(sku)}</span><span class="hb-v">${n(q)} qty</span></div>
-            <div class="hb-tr"><div class="hb-f" style="width:${p(q,mx)}%;background:#e8345a"></div></div></div>`;
-          }).join('')}
-        </div>
-      </div>
-    `;
-  }catch(err){
-    detailEl.innerHTML=`<div style="font-size:12px;color:var(--red);padding:8px 0">Error: ${err.message}</div>`;
-  }
-};
 
 window.showPage=function(page){
   document.getElementById('nav-overview').classList.toggle('on',page==='overview');
@@ -776,7 +777,7 @@ window.showPage=function(page){
   document.getElementById('page-history').style.display=page==='history'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 7 Hari'};
+  const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 30 Hari'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
   if(page==='history'&&!HISTORY_LOADED) loadHistory();
