@@ -72,6 +72,7 @@ main{padding:24px 28px;overflow:hidden}
 .k-amber::after{background:linear-gradient(90deg,#c97a06,#fbbf24)}
 .k-blue::after{background:linear-gradient(90deg,#1d5fd4,#60a5fa)}
 .k-red::after{background:linear-gradient(90deg,#cc2222,#f87171)}
+.k-purple::after{background:linear-gradient(90deg,#7c3aed,#c4b5fd)}
 .kpi-lbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
 .kpi-val{font-size:26px;font-weight:700;letter-spacing:-.04em;line-height:1}
 .kpi-sub{font-size:10px;color:var(--muted2);margin-top:4px}
@@ -81,6 +82,7 @@ main{padding:24px 28px;overflow:hidden}
 .k-amber .kpi-tag{background:var(--amber-bg);color:var(--amber)}
 .k-blue .kpi-tag{background:var(--blue-bg);color:var(--blue)}
 .k-red .kpi-tag{background:var(--red-bg);color:var(--red)}
+.k-purple .kpi-tag{background:var(--purple-bg);color:var(--purple)}
 
 /* Cards */
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh)}
@@ -166,6 +168,7 @@ tr:hover td{background:var(--bg3)}
     <button class="navtab on" id="nav-overview" onclick="showPage('overview')">📦 Order Overview</button>
     <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Daily</button>
     <button class="navtab" id="nav-history" onclick="showPage('history')">🕐 History 30 Hari</button>
+    <button class="navtab" id="nav-warehouse" onclick="showPage('warehouse')">🏭 Warehouse</button>
   </div>
   <div class="sb-sec" id="order-filters"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
   <div class="sb-sec" id="status-filters" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
@@ -231,7 +234,7 @@ tr:hover td{background:var(--bg3)}
       <div id="city-bars"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct"> pending per MPk</div><div class="cs">% pending per MP</div></div></div>
+      <div class="ch"><div><div class="ct">% pending per MP</div><div class="cs"></div></div></div>
       <div id="bneck"></div>
     </div>
     <div class="card">
@@ -330,6 +333,60 @@ tr:hover td{background:var(--bg3)}
         </div>
         <div id="history-date-pills" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap"></div>
         <div style="position:relative;height:200px"><canvas id="hourlyDetailChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-warehouse" style="display:none">
+    <div class="kpi-row" id="wh-kpi"></div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">🔄 Warehouse Funnel</div><div class="cs">Orders Created → Picked → Packed → Dispatched</div></div>
+        </div>
+        <div id="wh-funnel"></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📤 Picking Per Jam</div><div class="cs">Jumlah picking line per jam</div></div>
+        </div>
+        <div style="position:relative;height:160px"><canvas id="pickingHourChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📦 Packing Per Jam</div><div class="cs">Jumlah packing line per jam</div></div>
+        </div>
+        <div style="position:relative;height:160px"><canvas id="packingHourChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">🏆 Top Picked SKU</div><div class="cs">Berdasarkan qty picking</div></div>
+        </div>
+        <div style="position:relative" id="topPickedWrap"><canvas id="topPickedChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">🏆 Top Packed SKU</div><div class="cs">Berdasarkan qty packing</div></div>
+        </div>
+        <div style="position:relative" id="topPackedWrap"><canvas id="topPackedChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch">
+          <div><div class="ct">📋 Warehouse Detail — SKU</div><div class="cs">Orders vs Picked Qty vs Packed Qty</div></div>
+          <input type="text" id="wh-search" placeholder="Cari SKU..." style="font-size:12px;padding:6px 12px;border:1px solid var(--border2);border-radius:var(--r3);background:var(--bg2);color:var(--text);width:200px;outline:none" oninput="filterWhTable()">
+        </div>
+        <div id="wh-detail-tbl" style="overflow:hidden"></div>
+        <div id="wh-pagination" style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:14px"></div>
       </div>
     </div>
   </div>
@@ -768,19 +825,242 @@ async function loadHistory(){
   }
 }
 
+// ── Warehouse Performance ──────────────────────────────────────────────────
+let WAREHOUSE_LOADED=false;
+let pickingHourC=null, packingHourC=null, topPickedC=null, topPackedC=null;
+let WH_TABLE_DATA=[], WH_PAGE=1;
+const WH_PER_PAGE=25;
+
+// Cari nama kolom yang cocok dari beberapa kandidat (case-insensitive, partial match)
+function findCol(cols, candidates){
+  for(const cand of candidates){
+    const found=cols.find(c=>c.toLowerCase().includes(cand.toLowerCase()));
+    if(found) return found;
+  }
+  return null;
+}
+
+function parseLineReport(rows){
+  if(!rows||!rows.length) return {byOrder:{},bySku:{},hourly:Array(24).fill(0),cols:[],orderCol:null,skuCol:null,qtyCol:null,timeCol:null};
+  const cols=Object.keys(rows[0]);
+  const orderCol=findCol(cols,['order number','order no','order id']);
+  const skuCol=findCol(cols,['item name','sku','product name']);
+  const qtyCol=findCol(cols,['picked quantity','packed quantity','quantity','qty']);
+  const timeCol=findCol(cols,['picking time','packing time','picked at','packed at','date','time']);
+
+  const byOrder={}, bySku={}, hourly=Array(24).fill(0);
+  rows.forEach(r=>{
+    const on=orderCol?(r[orderCol]||'').trim():'';
+    const sku=skuCol?(r[skuCol]||'').trim():'';
+    const qty=qtyCol?(parseFloat(r[qtyCol])||0):1; // fallback: count as 1 line
+    if(on) byOrder[on]=(byOrder[on]||0)+qty;
+    if(sku) bySku[sku]=(bySku[sku]||0)+qty;
+    if(timeCol){
+      const ts=r[timeCol]||'';
+      const hm=ts.match(/(\d{1,2}):\d{2}/);
+      if(hm){ const h=parseInt(hm[1]); if(h>=0&&h<24) hourly[h]++; }
+    }
+  });
+  return {byOrder,bySku,hourly,cols,orderCol,skuCol,qtyCol,timeCol,rowCount:rows.length};
+}
+
+async function loadWarehouse(){
+  try{
+    document.getElementById('wh-kpi').innerHTML=`<div style="font-size:12px;color:var(--muted);padding:8px 0">Memuat data warehouse...</div>`;
+
+    let pickRows=[], packRows=[];
+    try{
+      const pr=await fetch(`data/picking.csv?t=${Date.now()}`);
+      if(pr.ok){ const t=await pr.text(); pickRows=Papa.parse(t,{header:true,skipEmptyLines:true}).data; }
+    }catch(e){}
+    try{
+      const pr=await fetch(`data/packing.csv?t=${Date.now()}`);
+      if(pr.ok){ const t=await pr.text(); packRows=Papa.parse(t,{header:true,skipEmptyLines:true}).data; }
+    }catch(e){}
+
+    const pick=parseLineReport(pickRows);
+    const pack=parseLineReport(packRows);
+
+    if(!pickRows.length && !packRows.length){
+      document.getElementById('wh-kpi').innerHTML=`<div class="kpi k-red" style="grid-column:1/-1"><div class="kpi-lbl">Data Tidak Tersedia</div><div class="kpi-sub" style="margin-top:8px;font-size:12px">File data/picking.csv dan data/packing.csv belum tersedia. Pastikan update_dashboard.py sudah generate kedua file ini.</div></div>`;
+      WAREHOUSE_LOADED=true;
+      return;
+    }
+
+    // Total orders (from existing ORDERS data, page Overview)
+    const totalOrders=Object.keys(ORDERS||{}).length;
+    const pickedOrders=Object.keys(pick.byOrder).length;
+    const packedOrders=Object.keys(pack.byOrder).length;
+    const dispatchedOrders=Object.values(ORDERS||{}).filter(o=>GOOD.has(o.st)).length;
+
+    const pickPct=p(pickedOrders,totalOrders);
+    const packPct=p(packedOrders,totalOrders);
+
+    document.getElementById('wh-kpi').innerHTML=`
+      <div class="kpi k-pink"><div class="kpi-lbl">Total Orders</div><div class="kpi-val">${n(totalOrders)}</div><div class="kpi-sub">order hari ini</div></div>
+      <div class="kpi k-blue"><div class="kpi-lbl">Total Picking Lines</div><div class="kpi-val">${n(pick.rowCount||0)}</div><div class="kpi-sub">${n(pickedOrders)} unique orders</div></div>
+      <div class="kpi k-purple"><div class="kpi-lbl">Total Packing Lines</div><div class="kpi-val">${n(pack.rowCount||0)}</div><div class="kpi-sub">${n(packedOrders)} unique orders</div></div>
+      <div class="kpi k-green"><div class="kpi-lbl">Picking Completion</div><div class="kpi-val">${pickPct}%</div><div class="kpi-sub">${n(pickedOrders)} / ${n(totalOrders)} orders</div><span class="kpi-tag">${pickPct}%</span></div>
+      <div class="kpi k-amber"><div class="kpi-lbl">Packing Completion</div><div class="kpi-val">${packPct}%</div><div class="kpi-sub">${n(packedOrders)} / ${n(totalOrders)} orders</div><span class="kpi-tag">${packPct}%</span></div>`;
+
+    // Funnel
+    const funnelSteps=[
+      {label:'Orders Created',val:totalOrders,color:'#e8345a'},
+      {label:'Picked',val:pickedOrders,color:'#1d5fd4'},
+      {label:'Packed',val:packedOrders,color:'#7c3aed'},
+      {label:'Dispatched',val:dispatchedOrders,color:'#0d9e5c'},
+    ];
+    const maxVal=funnelSteps[0].val||1;
+    document.getElementById('wh-funnel').innerHTML=funnelSteps.map((s,i)=>{
+      const w=p(s.val,maxVal);
+      const dropPct=i>0?p(funnelSteps[i-1].val-s.val,funnelSteps[i-1].val||1):0;
+      return `<div style="margin-bottom:14px">
+        <div class="hb-t"><span class="hb-n">${s.label}</span><span class="hb-v">${n(s.val)} orders${i>0?` <span style="color:var(--muted)">(${dropPct}% drop)</span>`:''}</span></div>
+        <div class="hb-tr" style="height:14px"><div class="hb-f" style="width:${w}%;background:${s.color};border-radius:4px"></div></div>
+      </div>`;
+    }).join('');
+
+    // Picking per hour
+    if(pickingHourC) pickingHourC.destroy();
+    pickingHourC=new Chart(document.getElementById('pickingHourChart'),{
+      type:'bar',
+      data:{labels:Array.from({length:24},(_,i)=>i.toString().padStart(2,'0')+':00'),
+        datasets:[{data:pick.hourly,backgroundColor:'rgba(29,95,212,.6)',borderRadius:3,borderSkipped:false}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{x:{grid:{display:false},ticks:{font:{size:9},color:'#8c8480',maxRotation:0}},
+                y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()}}}}
+    });
+    if(!pick.timeCol){
+      document.getElementById('pickingHourChart').parentElement.insertAdjacentHTML('beforeend',
+        `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);background:var(--bg2)">Kolom waktu picking tidak ditemukan di data</div>`);
+    }
+
+    // Packing per hour
+    if(packingHourC) packingHourC.destroy();
+    packingHourC=new Chart(document.getElementById('packingHourChart'),{
+      type:'bar',
+      data:{labels:Array.from({length:24},(_,i)=>i.toString().padStart(2,'0')+':00'),
+        datasets:[{data:pack.hourly,backgroundColor:'rgba(124,58,237,.6)',borderRadius:3,borderSkipped:false}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{x:{grid:{display:false},ticks:{font:{size:9},color:'#8c8480',maxRotation:0}},
+                y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()}}}}
+    });
+    if(!pack.timeCol){
+      document.getElementById('packingHourChart').parentElement.insertAdjacentHTML('beforeend',
+        `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);background:var(--bg2)">Kolom waktu packing tidak ditemukan di data</div>`);
+    }
+
+    // Top Picked SKU
+    renderTopChart('topPickedChart','topPickedWrap',pick.bySku,'#1d5fd4',(c)=>topPickedC=c);
+    // Top Packed SKU
+    renderTopChart('topPackedChart','topPackedWrap',pack.bySku,'#7c3aed',(c)=>topPackedC=c);
+
+    // Detail table: SKU vs Orders vs Picked Qty vs Packed Qty
+    const skuSet=new Set([...Object.keys(pick.bySku),...Object.keys(pack.bySku)]);
+    const orderDemand={}; // from existing SMAP
+    Object.values(SMAP||{}).forEach(d=>{ orderDemand[d.sku]=(orderDemand[d.sku]||0)+d.qty; });
+    Object.keys(orderDemand).forEach(s=>skuSet.add(s));
+
+    WH_TABLE_DATA=[...skuSet].map(sku=>{
+      const ordered=orderDemand[sku]||0;
+      const picked=pick.bySku[sku]||0;
+      const packed=pack.bySku[sku]||0;
+      let status,badge;
+      if(packed>=ordered&&ordered>0){status='Complete';badge='bg';}
+      else if(picked>0&&packed<picked){status='Picking Done';badge='bb';}
+      else if(picked===0&&ordered>0){status='Belum Dipicking';badge='br';}
+      else{status='In Progress';badge='ba';}
+      return {sku,ordered,picked,packed,status,badge};
+    }).sort((a,b)=>b.ordered-a.ordered);
+
+    WH_PAGE=1;
+    renderWhTable(WH_TABLE_DATA);
+
+    WAREHOUSE_LOADED=true;
+  }catch(err){
+    document.getElementById('wh-kpi').innerHTML=`<div class="kpi k-red" style="grid-column:1/-1"><div class="kpi-lbl">Error</div><div class="kpi-sub" style="margin-top:8px;font-size:12px">${err.message}</div></div>`;
+  }
+}
+
+function renderTopChart(canvasId,wrapId,bySku,color,setRef){
+  const sorted=Object.entries(bySku).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const h=Math.max(220,sorted.length*30+50);
+  const wrap=document.getElementById(wrapId);
+  wrap.style.height=h+'px';
+  wrap.innerHTML=`<canvas id="${canvasId}"></canvas>`;
+  const c=new Chart(document.getElementById(canvasId),{
+    type:'bar',
+    data:{labels:sorted.map(([k])=>cs(k)),datasets:[{data:sorted.map(([,v])=>v),backgroundColor:color,borderRadius:3,borderSkipped:false}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()}},
+              y:{grid:{display:false},ticks:{font:{size:9},color:'#1a1614'}}}}
+  });
+  setRef(c);
+  if(!sorted.length){
+    wrap.innerHTML+=`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted)">Tidak ada data SKU</div>`;
+  }
+}
+
+function renderWhTable(data){
+  const totalPages=Math.max(1,Math.ceil(data.length/WH_PER_PAGE));
+  if(WH_PAGE>totalPages) WH_PAGE=totalPages;
+  const start=(WH_PAGE-1)*WH_PER_PAGE;
+  const pageData=data.slice(start,start+WH_PER_PAGE);
+
+  document.getElementById('wh-detail-tbl').innerHTML=`<table>
+    <thead><tr><th style="width:40%">SKU</th><th>Orders (Qty)</th><th>Picked Qty</th><th>Packed Qty</th><th>Status</th></tr></thead>
+    <tbody>${pageData.length?pageData.map(d=>`
+      <tr>
+        <td><div class="tn">${cs(d.sku)}</div></td>
+        <td class="mono">${n(d.ordered)}</td>
+        <td class="mono">${n(d.picked)}</td>
+        <td class="mono">${n(d.packed)}</td>
+        <td><span class="bdg ${d.badge}">${d.status}</span></td>
+      </tr>`).join(''):'<tr><td colspan="5" style="padding:16px 0;text-align:center;color:var(--muted)">Tidak ada data</td></tr>'}</tbody></table>`;
+
+  const pagEl=document.getElementById('wh-pagination');
+  if(data.length<=WH_PER_PAGE){ pagEl.innerHTML=''; return; }
+  pagEl.innerHTML=`
+    <button class="btn-ref" style="padding:5px 10px" onclick="goWhPage(${WH_PAGE-1})" ${WH_PAGE===1?'disabled':''}>‹ Prev</button>
+    <span style="font-size:12px;color:var(--muted);font-family:var(--mono)">Halaman ${WH_PAGE} / ${totalPages} (${n(data.length)} SKU)</span>
+    <button class="btn-ref" style="padding:5px 10px" onclick="goWhPage(${WH_PAGE+1})" ${WH_PAGE===totalPages?'disabled':''}>Next ›</button>`;
+}
+
+window.goWhPage=function(pg){
+  const q=document.getElementById('wh-search').value.trim().toUpperCase();
+  const data=q?WH_TABLE_DATA.filter(d=>(d.sku||'').toUpperCase().includes(q)):WH_TABLE_DATA;
+  const totalPages=Math.max(1,Math.ceil(data.length/WH_PER_PAGE));
+  if(pg<1||pg>totalPages) return;
+  WH_PAGE=pg;
+  renderWhTable(data);
+};
+
+window.filterWhTable=function(){
+  WH_PAGE=1;
+  const q=document.getElementById('wh-search').value.trim().toUpperCase();
+  const data=q?WH_TABLE_DATA.filter(d=>(d.sku||'').toUpperCase().includes(q)):WH_TABLE_DATA;
+  renderWhTable(data);
+};
+
 window.showPage=function(page){
   document.getElementById('nav-overview').classList.toggle('on',page==='overview');
   document.getElementById('nav-stock').classList.toggle('on',page==='stock');
   document.getElementById('nav-history').classList.toggle('on',page==='history');
+  document.getElementById('nav-warehouse').classList.toggle('on',page==='warehouse');
   document.getElementById('page-overview').style.display=page==='overview'?'':'none';
   document.getElementById('page-stock').style.display=page==='stock'?'':'none';
   document.getElementById('page-history').style.display=page==='history'?'':'none';
+  document.getElementById('page-warehouse').style.display=page==='warehouse'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 30 Hari'};
+  const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 30 Hari',warehouse:'Warehouse Performance'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
   if(page==='history'&&!HISTORY_LOADED) loadHistory();
+  if(page==='warehouse'&&!WAREHOUSE_LOADED) loadWarehouse();
 };
 
 // ── Stock Daily ────────────────────────────────────────────────────────────
