@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scarlett — Daily Order Marketplace</title>
+<title>Scarlett Daily Order Marketplace </title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -372,24 +372,28 @@ tr:hover td{background:var(--bg3)}
   </div>
 
   <div id="page-trend" style="display:none">
-    <div class="g3col">
+    <div class="gf">
       <div class="card">
         <div class="ch">
           <div><div class="ct">📤 Picking Per Jam</div></div>
         </div>
-        <div style="position:relative;height:160px"><canvas id="pickingHourChart"></canvas></div>
+        <div style="position:relative;height:280px"><canvas id="pickingHourChart"></canvas></div>
       </div>
+    </div>
+    <div class="gf">
       <div class="card">
         <div class="ch">
           <div><div class="ct">📦 Packing Per Jam</div></div>
         </div>
-        <div style="position:relative;height:160px"><canvas id="packingHourChart"></canvas></div>
+        <div style="position:relative;height:280px"><canvas id="packingHourChart"></canvas></div>
       </div>
+    </div>
+    <div class="gf">
       <div class="card">
         <div class="ch">
           <div><div class="ct">🚚 Dispatch Per Jam</div></div>
         </div>
-        <div style="position:relative;height:160px"><canvas id="dispatchHourChart"></canvas></div>
+        <div style="position:relative;height:280px"><canvas id="dispatchHourChart"></canvas></div>
       </div>
     </div>
 
@@ -1029,7 +1033,7 @@ window.showPage=function(page){
   if(page==='trend'&&!TREND_LOADED) loadTrendCharts();
 };
 
-// ── Stock Daily ────────────────────────────────────────────────────────────
+// ── Stock Daily────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
 
 let STOCK_PAGE=1;
