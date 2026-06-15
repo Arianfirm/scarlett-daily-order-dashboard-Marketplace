@@ -23,12 +23,12 @@
   },
   {
     "date": "2026-06-15",
-    "total_orders": 16909,
-    "total_qty": 26170,
-    "fulfilled": 13064,
-    "pending": 454,
-    "fulfillment_pct": 77.3,
-    "total_atp": 44092882,
+    "total_orders": 17559,
+    "total_qty": 27096,
+    "fulfilled": 12818,
+    "pending": 1069,
+    "fulfillment_pct": 73.0,
+    "total_atp": 44091521,
     "peak_hour": 12,
     "peak_hour_orders": 1819,
     "peak_hour_qty": 2392,
@@ -50,7 +50,7 @@
       1311,
       1337,
       1154,
-      0,
+      650,
       0,
       0,
       0,
@@ -76,7 +76,7 @@
       2235,
       2350,
       1685,
-      0,
+      926,
       0,
       0,
       0,
@@ -85,7 +85,13 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-15 10:00:30 UTC",
-    "sku_count": 2119
+    "last_updated": "2026-06-15 10:30:54 UTC",
+    "sku_count": 2119,
+    "picking_lines": 1151,
+    "packing_lines": 2754,
+    "picked_orders": 880,
+    "packed_orders": 0,
+    "picking_completion_pct": 5.0,
+    "packing_completion_pct": 0.0
   }
 ]
