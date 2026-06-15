@@ -25,10 +25,10 @@
     "date": "2026-06-15",
     "total_orders": 25615,
     "total_qty": 38853,
-    "fulfilled": 22653,
+    "fulfilled": 22647,
     "pending": 188,
     "fulfillment_pct": 88.4,
-    "total_atp": 44137167,
+    "total_atp": 44134971,
     "peak_hour": 12,
     "peak_hour_orders": 1819,
     "peak_hour_qty": 2392,
@@ -85,68 +85,68 @@
       1204
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-15 23:00:32 UTC",
+    "last_updated": "2026-06-15 23:50:03 UTC",
     "sku_count": 2119,
     "warehouse": {
-      "total_orders": 53207,
-      "picked_orders": 51207,
-      "packed_orders": 51492,
-      "dispatched_orders": 49468,
-      "pending_orders": 3739,
-      "avg_pick_min": 133.6,
-      "avg_pack_min": 116.0,
-      "avg_dispatch_min": -291.8,
+      "total_orders": 0,
+      "picked_orders": 0,
+      "packed_orders": 0,
+      "dispatched_orders": 0,
+      "pending_orders": 0,
+      "avg_pick_min": null,
+      "avg_pack_min": null,
+      "avg_dispatch_min": null,
       "pick_hours": [
-        16,
-        5431,
-        1586,
-        913,
-        6,
-        2056,
-        3576,
-        291,
-        3035,
-        5206,
-        3348,
-        2059,
-        59,
-        7346,
-        6301,
-        4147,
-        3727,
-        741,
-        3050,
-        3186,
-        5857,
-        3040,
-        3748,
-        2208
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ],
       "pack_hours": [
-        41,
-        3812,
-        4050,
-        2049,
-        26,
-        1941,
-        2879,
-        1366,
-        533,
-        4305,
-        4264,
-        2770,
-        61,
-        3529,
-        4833,
-        4837,
-        5250,
-        1916,
-        1789,
-        3419,
-        3455,
-        5900,
-        4990,
-        3257
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ],
       "dispatch_hours": [
         0,
@@ -156,7 +156,6 @@
         0,
         0,
         0,
-        68500,
         0,
         0,
         0,
@@ -164,177 +163,73 @@
         0,
         0,
         0,
-        2,
         0,
         0,
         0,
         0,
-        3,
-        2,
+        0,
+        0,
+        0,
+        0,
         0,
         0
       ],
-      "top_picker": [
-        [
-          "YUSUP PACKERSERATUSSEMBILAN",
-          3709
-        ],
-        [
-          "TAUFIK PACKERSERATUSTUJUH",
-          2998
-        ],
-        [
-          "FERY PACKERDUASATUSEMBILAN",
-          2791
-        ],
-        [
-          "ABIJAR PACKERTIGAEMPATSATU",
-          2726
-        ],
-        [
-          "ADITIA PICKERDUAPULUH",
-          2678
-        ]
-      ],
-      "top_packer": [
-        [
-          "SITI PACKERSERATUSLIMADUA",
-          1153
-        ],
-        [
-          "ALDA PACKERSEMBILANEMPAT",
-          848
-        ],
-        [
-          "ANAHULWATUN PACKERTUJUHENAM",
-          843
-        ],
-        [
-          "TIKA PACKERSERATUSDELAPAN",
-          816
-        ],
-        [
-          "SALMINAH PACKERSERATUSSEBELAS",
-          742
-        ]
-      ],
-      "top_dispatcher": [
-        [
-          "ahmad wandi",
-          20761
-        ],
-        [
-          "Sapta Siswana",
-          15115
-        ],
-        [
-          "Komarudin dispatch",
-          5355
-        ],
-        [
-          "MUHMMAD ADITYA",
-          4614
-        ],
-        [
-          "adriansyah maulana",
-          4546
-        ]
-      ],
-      "low_picker": [
-        [
-          "Karya Pickerenambelas",
-          1
-        ],
-        [
-          "LUGI DUASATU",
-          1
-        ],
-        [
-          "ASMADI PICKERTIGA",
-          2
-        ],
-        [
-          "SANTOSO PickerSembilan",
-          3
-        ],
-        [
-          "Suryo Pickerempat",
-          3
-        ]
-      ],
-      "low_packer": [
-        [
-          "ALDITRI PACKERDELAPANBELAS",
-          1
-        ],
-        [
-          "ADJI PACKERSERATUSEMPATBELAS",
-          1
-        ],
-        [
-          "CHORRINA PACKERSERATUSTIGAEMPAT",
-          1
-        ],
-        [
-          "YAHYA PACKERTIGADUAEMPAT",
-          1
-        ],
-        [
-          "AKMAL PACKERTIGADUAENAM",
-          1
-        ]
-      ],
+      "top_picker": [],
+      "top_packer": [],
+      "top_dispatcher": [],
+      "low_picker": [],
+      "low_packer": [],
       "pick_hour_pickers": [
-        8,
-        47,
-        42,
-        33,
-        3,
-        41,
-        42,
-        18,
-        43,
-        47,
-        47,
-        46,
-        14,
-        46,
-        46,
-        48,
-        44,
-        35,
-        45,
-        47,
-        44,
-        44,
-        47,
-        42
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ],
       "pack_hour_packers": [
-        18,
-        205,
-        200,
-        181,
-        11,
-        173,
-        180,
-        133,
-        92,
-        185,
-        205,
-        182,
-        24,
-        204,
-        208,
-        217,
-        213,
-        181,
-        172,
-        203,
-        197,
-        220,
-        222,
-        210
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
       ]
     }
   }
