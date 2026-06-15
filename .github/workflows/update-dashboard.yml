@@ -36,7 +36,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/orders.csv data/last_updated.json data/history/
           if [ -f data/inventory.xlsx ]; then git add data/inventory.xlsx; fi
-          if [ -f data/picking.csv ]; then git add data/picking.csv; fi
-          if [ -f data/packing.csv ]; then git add data/packing.csv; fi
+          if [ -f data/order_processing.csv ]; then git add data/order_processing.csv; fi
           git diff --staged --quiet || git commit -m "chore: update data $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
