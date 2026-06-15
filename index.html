@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scarlett — Daily Order Marketplace</title>
+<title>Scarlett — Daily Order Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -118,7 +118,7 @@ td{padding:7px 0;font-size:11px;border-bottom:1px solid var(--border);vertical-a
 td:not(:first-child){text-align:right}
 tr:last-child td{border:none}
 tr:hover td{background:var(--bg3)}
-.tn{font-weight:500;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tn{font-weight:500;max-width:320px;overflow:visible;white-space:normal;word-break:break-word;line-height:1.4}
 .ts{font-size:9px;color:var(--muted2);margin-top:1px}
 .mono{font-family:var(--mono)}
 
@@ -148,7 +148,7 @@ tr:hover td{background:var(--bg3)}
 <body>
 
 <div id="loading">
-  <div class="ll">Scarlett <span>Marketplace</span></div>
+  <div class="ll">Scarlett <span>Intelligence</span></div>
   <div class="lb"><div class="lf"></div></div>
   <div class="lt" id="lmsg">Memuat data order...</div>
 </div>
@@ -158,13 +158,13 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Intelligence</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
   <div class="sb-sec" style="padding-top:14px">
     <button class="navtab on" id="nav-overview" onclick="showPage('overview')">📦 Order Overview</button>
-    <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Daily</button>
+    <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Level Daily</button>
     <button class="navtab" id="nav-history" onclick="showPage('history')">🕐 History 7 Hari</button>
   </div>
   <div class="sb-sec" id="order-filters"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
@@ -231,11 +231,11 @@ tr:hover td{background:var(--bg3)}
       <div id="city-bars"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">% pending per MP</div><div class="cs"></div></div></div>
+      <div class="ch"><div><div class="ct">Bottleneck</div><div class="cs">% pending per MP</div></div></div>
       <div id="bneck"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Unassigned + Problem</div><div class="cs"></div></div></div>
+      <div class="ch"><div><div class="ct">SKU Masalah</div><div class="cs">Unassigned + Problem</div></div></div>
       <div id="sku-prob"></div>
     </div>
   </div>
@@ -776,13 +776,13 @@ window.showPage=function(page){
   document.getElementById('page-history').style.display=page==='history'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 7 Hari'};
+  const titles={overview:'Daily Order Overview',stock:'Stock Level Daily',history:'History 7 Hari'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
   if(page==='history'&&!HISTORY_LOADED) loadHistory();
 };
 
-// ── Stock Daily ────────────────────────────────────────────────────────────
+// ── Stock Level ────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
 
 let STOCK_PAGE=1;
