@@ -379,6 +379,8 @@ try:
     orders_proc = {}
     picker_count, packer_count, dispatcher_count = {}, {}, {}
     pick_hours, pack_hours, disp_hours = [0]*24, [0]*24, [0]*24
+    pick_hour_pickers = [set() for _ in range(24)]
+    pack_hour_packers = [set() for _ in range(24)]
     pick_deltas, pack_deltas, disp_deltas = [], [], []
 
     for r in processing_rows:
@@ -395,6 +397,10 @@ try:
             if pt:
                 orders_proc[on]["picked"] = True
                 pick_hours[pt.hour] += 1
+                if c_pick_by:
+                    pb_h = (r.get(c_pick_by) or "").strip()
+                    if pb_h:
+                        pick_hour_pickers[pt.hour].add(pb_h)
                 if order_dt:
                     pick_deltas.append((pt - order_dt).total_seconds() / 60)
         if c_pick_by:
@@ -407,6 +413,10 @@ try:
             if pkt:
                 orders_proc[on]["packed"] = True
                 pack_hours[pkt.hour] += 1
+                if c_pack_by:
+                    pkb_h = (r.get(c_pack_by) or "").strip()
+                    if pkb_h:
+                        pack_hour_packers[pkt.hour].add(pkb_h)
                 if c_pick_t:
                     pt2 = _parse_dt(r.get(c_pick_t) or "")
                     if pt2:
@@ -443,6 +453,11 @@ try:
     top_picker = sorted(picker_count.items(), key=lambda x: -x[1])[:5]
     top_packer = sorted(packer_count.items(), key=lambda x: -x[1])[:5]
     top_dispatcher = sorted(dispatcher_count.items(), key=lambda x: -x[1])[:5]
+    low_picker = sorted(picker_count.items(), key=lambda x: x[1])[:5]
+    low_packer = sorted(packer_count.items(), key=lambda x: x[1])[:5]
+
+    pick_hour_picker_counts = [len(s) for s in pick_hour_pickers]
+    pack_hour_packer_counts = [len(s) for s in pack_hour_packers]
 
     warehouse_summary = {
         "total_orders": total_proc_orders,
@@ -459,6 +474,10 @@ try:
         "top_picker": top_picker,
         "top_packer": top_packer,
         "top_dispatcher": top_dispatcher,
+        "low_picker": low_picker,
+        "low_packer": low_packer,
+        "pick_hour_pickers": pick_hour_picker_counts,
+        "pack_hour_packers": pack_hour_packer_counts,
     }
 
     summary_path = "data/history/daily_summary.json"
