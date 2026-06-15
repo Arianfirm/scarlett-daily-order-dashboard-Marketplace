@@ -23,12 +23,12 @@
   },
   {
     "date": "2026-06-15",
-    "total_orders": 23801,
-    "total_qty": 36147,
-    "fulfilled": 18652,
-    "pending": 780,
-    "fulfillment_pct": 78.4,
-    "total_atp": 44078045,
+    "total_orders": 24081,
+    "total_qty": 36554,
+    "fulfilled": 18694,
+    "pending": 1054,
+    "fulfillment_pct": 77.6,
+    "total_atp": 44077330,
     "peak_hour": 12,
     "peak_hour_orders": 1819,
     "peak_hour_qty": 2392,
@@ -54,8 +54,8 @@
       1341,
       1147,
       1671,
-      1460,
-      0,
+      1461,
+      279,
       0
     ],
     "hourly_qty": [
@@ -80,73 +80,73 @@
       1981,
       1670,
       2326,
-      2140,
-      0,
+      2141,
+      406,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-15 14:59:35 UTC",
+    "last_updated": "2026-06-15 15:14:06 UTC",
     "sku_count": 2119,
     "warehouse": {
-      "total_orders": 0,
-      "picked_orders": 0,
-      "packed_orders": 0,
-      "dispatched_orders": 0,
-      "pending_orders": 0,
-      "avg_pick_min": null,
-      "avg_pack_min": null,
-      "avg_dispatch_min": null,
+      "total_orders": 55763,
+      "picked_orders": 53006,
+      "packed_orders": 51019,
+      "dispatched_orders": 46934,
+      "pending_orders": 8829,
+      "avg_pick_min": 131.9,
+      "avg_pack_min": 117.2,
+      "avg_dispatch_min": -259.4,
       "pick_hours": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        16,
+        5437,
+        1606,
+        903,
+        7,
+        2056,
+        3594,
+        294,
+        3012,
+        5218,
+        3345,
+        2049,
+        56,
+        7391,
+        6323,
+        4156,
+        3765,
+        766,
+        3122,
+        3363,
+        6815,
+        3867,
+        3849,
+        2234
       ],
       "pack_hours": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        44,
+        3817,
+        4069,
+        2062,
+        26,
+        1943,
+        2887,
+        1376,
+        546,
+        4316,
+        4251,
+        2774,
+        63,
+        3521,
+        4846,
+        4847,
+        5262,
+        1922,
+        1800,
+        3441,
+        3564,
+        6244,
+        4069,
+        3010
       ],
       "dispatch_hours": [
         0,
@@ -156,6 +156,7 @@
         0,
         0,
         0,
+        65318,
         0,
         0,
         0,
@@ -163,20 +164,82 @@
         0,
         0,
         0,
+        2,
         0,
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
+        3,
+        2,
         0,
         0
       ],
-      "top_picker": [],
-      "top_packer": [],
-      "top_dispatcher": []
+      "top_picker": [
+        [
+          "YUSUP PACKERSERATUSSEMBILAN",
+          3768
+        ],
+        [
+          "ABIJAR PACKERTIGAEMPATSATU",
+          3028
+        ],
+        [
+          "TAUFIK PACKERSERATUSTUJUH",
+          3026
+        ],
+        [
+          "FERY PACKERDUASATUSEMBILAN",
+          2821
+        ],
+        [
+          "TEGAR EMPATBELAS",
+          2683
+        ]
+      ],
+      "top_packer": [
+        [
+          "SITI PACKERSERATUSLIMADUA",
+          1162
+        ],
+        [
+          "ALDA PACKERSEMBILANEMPAT",
+          847
+        ],
+        [
+          "TIKA PACKERSERATUSDELAPAN",
+          815
+        ],
+        [
+          "ANAHULWATUN PACKERTUJUHENAM",
+          752
+        ],
+        [
+          "SALMINAH PACKERSERATUSSEBELAS",
+          750
+        ]
+      ],
+      "top_dispatcher": [
+        [
+          "ahmad wandi",
+          20787
+        ],
+        [
+          "Sapta Siswana",
+          12921
+        ],
+        [
+          "Komarudin dispatch",
+          5200
+        ],
+        [
+          "MUHMMAD ADITYA",
+          4607
+        ],
+        [
+          "adriansyah maulana",
+          4564
+        ]
+      ]
     }
   }
 ]
