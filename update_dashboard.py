@@ -46,13 +46,14 @@ payload = {"report_schedule": {
 }}
 cr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload, timeout=30)
 cd = cr.json() if cr.text.strip() else {}
+report_reused = False
 if cr.status_code == 400:
-    # "Same Report Schedule already exists" — extract existing report number
     err_msg = cd.get("errors","")
     import re as _re2
     m = _re2.search(r'Report schedule number:\s*(\d+)', err_msg)
     if m:
         report_id = m.group(1)
+        report_reused = True
         print(f"      ✓ Report already exists, reusing (ID: {report_id})")
     else:
         print(f"      ✗ HTTP 400: {cd}"); exit(1)
@@ -63,27 +64,41 @@ else:
     report_id = cd["data"]["id"]
     print(f"      ✓ Report created (ID: {report_id})")
 
-# 3. Poll
+# 3. Poll — if reused, check immediately for existing URL
 print("\n[3/5] Waiting for report...")
 report_url = ""
-for i in range(1, 25):
-    time.sleep(15)
-    try:
-        ch = requests.get(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
-        if not ch.text.strip():
-            print(f"      [{i:02d}/24] empty response, retrying...")
-            continue
-        at = ch.json().get("data", {}).get("attributes", {})
-        status = at.get("status","")
-        url    = at.get("report_url","")
-        print(f"      [{i:02d}/24] status={status}")
-        if url:
-            report_url = url; print("      ✓ Report ready!"); break
-    except Exception as e:
-        print(f"      [{i:02d}/24] poll error: {e}, retrying...")
-        continue
+
+# Check immediately first (works for reused/already-completed reports)
+try:
+    ch0 = requests.get(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
+    if ch0.text.strip():
+        at0 = ch0.json().get("data", {}).get("attributes", {})
+        url0 = at0.get("report_url","")
+        if url0:
+            report_url = url0
+            print(f"      ✓ Report ready immediately!")
+except Exception:
+    pass
+
 if not report_url:
-    print("      ✗ Timeout"); exit(1)
+    for i in range(1, 25):
+        time.sleep(15)
+        try:
+            ch = requests.get(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
+            if not ch.text.strip():
+                print(f"      [{i:02d}/24] empty response, retrying...")
+                continue
+            at = ch.json().get("data", {}).get("attributes", {})
+            status = at.get("status","")
+            url    = at.get("report_url","")
+            print(f"      [{i:02d}/24] status={status}")
+            if url:
+                report_url = url; print("      ✓ Report ready!"); break
+        except Exception as e:
+            print(f"      [{i:02d}/24] poll error: {e}, retrying...")
+            continue
+    if not report_url:
+        print("      ✗ Timeout"); exit(1)
 
 # 4. Download
 print("\n[4/5] Downloading CSV...")
@@ -228,8 +243,20 @@ try:
         inv_id = inv_cd["data"]["id"]
         print(f"      ✓ Inventory report created (ID: {inv_id})")
 
-        # Poll
-        inv_url = ""
+    # Poll — check immediately first for reused reports
+    inv_url = ""
+    try:
+        ich0 = requests.get(f"{BASE_URL}/api/v1/report_schedules/{inv_id}", headers=H, timeout=30)
+        if ich0.text.strip():
+            iat0 = ich0.json().get("data", {}).get("attributes", {})
+            iurl0 = iat0.get("report_url","")
+            if iurl0:
+                inv_url = iurl0
+                print(f"      ✓ Inventory report ready immediately!")
+    except Exception:
+        pass
+
+    if not inv_url:
         for i in range(1, 25):
             time.sleep(15)
             try:
@@ -328,7 +355,20 @@ try:
         proc_id = pcd["data"]["id"]
         print(f"      ✓ Order Processing report created (ID: {proc_id})")
 
-        proc_url = ""
+    # Poll — check immediately first for reused reports
+    proc_url = ""
+    try:
+        pch0 = requests.get(f"{BASE_URL}/api/v1/report_schedules/{proc_id}", headers=H, timeout=30)
+        if pch0.text.strip():
+            pat0 = pch0.json().get("data", {}).get("attributes", {})
+            purl0 = pat0.get("report_url","")
+            if purl0:
+                proc_url = purl0
+                print(f"      ✓ Order Processing report ready immediately!")
+    except Exception:
+        pass
+
+    if not proc_url:
         for i in range(1, 25):
             time.sleep(15)
             try:
