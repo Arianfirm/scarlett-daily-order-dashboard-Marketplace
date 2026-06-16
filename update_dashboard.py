@@ -345,16 +345,54 @@ try:
         "notification_type": "email"
     }}
     pcr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=proc_payload, timeout=30)
-    if pcr.status_code != 200:
-        print(f"      ⚠ HTTP {pcr.status_code}: {pcr.text[:500]}")
-    pcr.raise_for_status()
-    pcd = pcr.json()
-    if pcd.get("status_code") != 1000:
-        print(f"      ⚠ Order Processing report failed: {json.dumps(pcd, indent=2)[:500]}")
-    else:
-        proc_id = pcd["data"]["id"]
-        print(f"      ✓ Order Processing report created (ID: {proc_id})")
+    proc_id = None
 
+    if pcr.status_code == 200:
+        pcd = pcr.json()
+        if pcd.get("status_code") != 1000:
+            print(f"      ⚠ Order Processing report failed: {json.dumps(pcd, indent=2)[:500]}")
+        else:
+            proc_id = pcd["data"]["id"]
+            print(f"      ✓ Order Processing report created (ID: {proc_id})")
+    else:
+        try:
+            perr = pcr.json()
+        except Exception:
+            perr = {}
+        perr_msg = str(perr.get("message") or perr.get("error") or pcr.text)
+        print(f"      ✗ HTTP {pcr.status_code} — {perr_msg[:300]}")
+        if "same report schedule" in perr_msg.lower():
+            print(f"      ↩ Duplicate — querying existing schedule list...")
+            plr = requests.get(
+                f"{BASE_URL}/api/v1/report_schedules",
+                headers=H,
+                params={"from_date": TODAY, "end_date": TODAY},
+                timeout=30
+            )
+            print(f"      List HTTP {plr.status_code}")
+            if plr.status_code == 200 and plr.text.strip():
+                pld = plr.json()
+                pitems = pld.get("data") or []
+                if isinstance(pitems, dict):
+                    pitems = [pitems]
+                for pitem in pitems:
+                    pattrs = pitem.get("attributes") or {}
+                    piid   = str(pitem.get("id") or "").strip()
+                    pfd    = str(pattrs.get("from_date") or pattrs.get("date") or "")
+                    ped    = str(pattrs.get("end_date") or "")
+                    print(f"      Candidate: id={piid} | from={pfd!r} | end={ped!r}")
+                    if piid and TODAY in pfd and TODAY in ped:
+                        proc_id = piid
+                        print(f"      ✓ Selected existing schedule ID: {proc_id}")
+                        break
+                if not proc_id:
+                    print(f"      Full list: {json.dumps(pld)[:800]}")
+            else:
+                print(f"      List endpoint: {plr.text[:300]}")
+        else:
+            print(f"      ✗ Unhandled error: {perr_msg}")
+
+    if proc_id:
         proc_url = ""
         for i in range(1, 25):
             time.sleep(15)
@@ -388,6 +426,8 @@ try:
             print(f"      ✓ data/order_processing.csv saved")
         else:
             print("      ⚠ Order Processing report timeout, skipped")
+    else:
+        print("      ⚠ Order Processing: no valid schedule ID found, skipping")
 
 except Exception as e:
     print(f"      ⚠ Order Processing report skipped (non-critical): {e}")
