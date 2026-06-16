@@ -20,110 +20,77 @@ jwt = r.json()["jwt"]
 print("      ✓ Login success")
 H = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
 
-# 2. Create report - FIXED: FIND AND DELETE ACTIVE REPORT
+# 2. Create report - FIXED VERSION WITH DELAYS
 print("\n[2/5] Creating report...")
 
-def _find_and_delete_duplicate(report_type_id="3"):
-    """Find existing report of type 3 and delete it"""
-    try:
-        print(f"      Checking existing reports (type_id={report_type_id})...")
-        # List all reports
-        resp = requests.get(f"{BASE_URL}/api/v1/report_schedules?per_page=100", headers=H, timeout=30)
-        if resp.status_code != 200:
-            print(f"      ⚠ Cannot list reports: {resp.status_code}")
-            return False
-        
-        data = resp.json()
-        items = data.get("data", [])
-        
-        for item in items:
-            attrs = item.get("attributes", {})
-            if str(attrs.get("report_type_id", "")) == str(report_type_id):
-                # Check if it's for today
-                from_date = attrs.get("from_date", "")
-                if from_date == TODAY:
-                    report_id = item.get("id")
-                    print(f"      ⚠ Found active report for today (ID: {report_id}), deleting...")
-                    del_resp = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
-                    print(f"      ✓ Delete status: {del_resp.status_code}")
-                    if del_resp.status_code in [200, 204]:
-                        print(f"      ✓ Successfully deleted report {report_id}")
-                        return True
-        print(f"      ✓ No active report found for today")
-        return True
-    except Exception as e:
-        print(f"      ⚠ Error finding/deleting: {e}")
-        return False
-
 def _create_report_safe(payload_dict, label="Report"):
-    """Create report, delete existing first"""
+    """Create report, auto-delete if duplicate exists then retry with safe delays."""
+    import re as _rex
     
-    # 1. Find and delete any existing report first
-    if not _find_and_delete_duplicate("3"):
-        print(f"      ⚠ Could not delete existing report, will try anyway...")
-    
-    # 2. Wait a moment for delete to process
-    time.sleep(2)
-    
-    # 3. Create new report
-    print(f"      Creating new {label}...")
+    # First attempt
+    print(f"      Attempting to create {label}...")
     resp = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
     cd = resp.json() if resp.text.strip() else {}
-    
-    # If still duplicate, try to list and delete again
-    if resp.status_code == 400 and "already exists" in str(cd.get("errors", "")):
-        print(f"      ⚠ Still duplicate, trying to find and delete...")
-        import re as _rex
-        
-        # Try to find the actual report ID from error
+
+    # If 400 with "already exists" error
+    if resp.status_code == 400:
         err = cd.get("errors", "")
+        print(f"      DEBUG: Error response: {err}")
+        
+        # Extract ID from error message
         m = _rex.search(r'Report schedule number:\s*(\d+)', str(err))
         if m:
             dup_id = m.group(1)
-            print(f"      ⚠ Duplicate ID from error: {dup_id}")
+            print(f"      ⚠ Duplicate found (ID: {dup_id}), deleting...")
             
-            # Try to delete by this ID
+            # DELETE the duplicate
             dr = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{dup_id}", headers=H, timeout=30)
-            print(f"      Delete status: {dr.status_code}")
+            print(f"      ✓ Deleted (status: {dr.status_code})")
             
-            if dr.status_code in [200, 204]:
-                print(f"      ✓ Deleted duplicate, retrying...")
-                time.sleep(2)
-                # Retry create
-                resp2 = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
-                cd2 = resp2.json() if resp2.text.strip() else {}
+            # BERI JEDA WAKTU (Crucial agar server Anchanto selesai memproses penghapusan database)
+            print("      ⏳ Waiting 5 seconds for API to clear the queue...")
+            time.sleep(5)
+            
+            # RETRY 1 - create new report after deletion
+            print(f"      Retrying POST...")
+            resp2 = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
+            cd2 = resp2.json() if resp2.text.strip() else {}
+            
+            if resp2.status_code == 400:
+                err2 = cd2.get("errors", "")
+                print(f"      ⚠ Retry 1 got 400: {err2}")
+                m2 = _rex.search(r'Report schedule number:\s*(\d+)', str(err2))
                 
-                if resp2.status_code == 200:
-                    rid = cd2.get("data", {}).get("id")
-                    if rid:
-                        print(f"      ✓ {label} created (ID: {rid}) ← ID baru!")
-                        return rid
-                else:
-                    # Last resort: list all and delete manually
-                    print(f"      ⚠ Retry failed, trying to list and delete all type 3...")
-                    list_resp = requests.get(f"{BASE_URL}/api/v1/report_schedules?per_page=100", headers=H, timeout=30)
-                    if list_resp.status_code == 200:
-                        items = list_resp.json().get("data", [])
-                        for item in items:
-                            attrs = item.get("attributes", {})
-                            if str(attrs.get("report_type_id", "")) == "3":
-                                rid = item.get("id")
-                                print(f"      Deleting report {rid}...")
-                                requests.delete(f"{BASE_URL}/api/v1/report_schedules/{rid}", headers=H, timeout=30)
-                        
-                        # Final attempt
-                        time.sleep(3)
-                        resp3 = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
-                        cd3 = resp3.json() if resp3.text.strip() else {}
-                        if resp3.status_code == 200:
-                            rid = cd3.get("data", {}).get("id")
-                            if rid:
-                                print(f"      ✓ {label} created (ID: {rid}) ← ID baru!")
-                                return rid
-        
-        raise Exception(f"{label} failed: {resp.status_code} - {cd}")
-    
-    # Success
+                if m2:
+                    # Jika masih dianggap duplikat oleh server, tunggu lebih lama lagi
+                    print(f"      ⏳ Server database still locked. Waiting 10 seconds more...")
+                    time.sleep(10)
+                    
+                    print(f"      Retrying POST for the last time...")
+                    resp3 = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
+                    cd3 = resp3.json() if resp3.text.strip() else {}
+                    
+                    if resp3.status_code != 200:
+                        raise Exception(f"{label} retry failed after multiple attempts: {cd3}")
+                    
+                    rid = cd3.get("data", {}).get("id")
+                    print(f"      ✓ {label} created after ultimate retry (ID: {rid})")
+                    return rid
+
+            if resp2.status_code != 200:
+                raise Exception(f"{label} retry failed: {resp2.status_code} - {cd2}")
+            
+            # Success after retry 1
+            rid = cd2.get("data", {}).get("id")
+            if not rid:
+                raise Exception(f"{label} retry: no ID in response: {cd2}")
+            print(f"      ✓ {label} created (ID: {rid}) ← ID baru!")
+            return rid
+        else:
+            # 400 but not duplicate - raise error
+            raise Exception(f"{label} 400: {cd}")
+
+    # Success on first attempt
     if resp.status_code == 200:
         rid = cd.get("data", {}).get("id")
         if not rid:
@@ -131,6 +98,7 @@ def _create_report_safe(payload_dict, label="Report"):
         print(f"      ✓ {label} created (ID: {rid})")
         return rid
     
+    # Other error
     raise Exception(f"{label} failed: {resp.status_code} - {cd}")
 
 payload = {"report_schedule": {
@@ -154,7 +122,6 @@ report_id = _create_report_safe(payload, "B2C Order Report")
 print("\n[3/5] Waiting for report...")
 report_url = ""
 
-# Check immediately first
 try:
     ch0 = requests.get(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
     if ch0.text.strip():
@@ -510,17 +477,11 @@ try:
     c_coll = _col(processing_cols, "collection date")
 
     print(f"      Detected columns: order={c_order!r}, status={c_status!r}, order_date={c_order_date!r}, qty={c_qty!r}")
-    print(f"      pick_time={c_pick_t!r}, picked_by={c_pick_by!r}")
-    print(f"      pack_time={c_pack_t!r}, packed_by={c_pack_by!r}")
-    print(f"      disp_time={c_disp_t!r}, dispatched_by={c_disp_by!r}")
-    print(f"      collection_date={c_coll!r}")
 
     today_prefix = datetime.strptime(TODAY, "%Y-%m-%d").strftime("%d/%m/%Y")
     def _is_today(val):
         v = (val or "").strip()
         return v.startswith(today_prefix) or v.startswith(TODAY)
-
-    print(f"      Filter per-activity: only counting times starting with {today_prefix}")
 
     import re as _re2
     def _parse_dt(s):
@@ -611,12 +572,6 @@ try:
                 dispatcher_count[db] = dispatcher_count.get(db, 0) + 1
 
     total_proc_orders = len(orders_proc)
-    today_pick = [h for h in range(24) if pick_hour_orders[h]]
-    today_pack = [h for h in range(24) if pack_hour_orders[h]]
-    today_disp = [h for h in range(24) if disp_hours[h]]
-    print(f"      DEBUG Picking today  : active hours={today_pick}, total orders={sum(len(s) for s in pick_hour_orders)}")
-    print(f"      DEBUG Packing today  : active hours={today_pack}, total orders={sum(len(s) for s in pack_hour_orders)}")
-    print(f"      DEBUG Dispatch today : active hours={today_disp}, total dispatched={sum(disp_hours)}")
     picked_orders = sum(1 for o in orders_proc.values() if o["picked"])
     packed_orders = sum(1 for o in orders_proc.values() if o["packed"])
     dispatched_orders = sum(1 for o in orders_proc.values() if o["dispatched"])
@@ -675,8 +630,7 @@ try:
             s["warehouse"] = warehouse_summary
     with open(summary_path, "w") as f:
         json.dump(summary_list, f, indent=2)
-    print(f"      ✓ daily_summary.json updated with warehouse KPIs "
-          f"(picked={picked_orders}, packed={packed_orders}, dispatched={dispatched_orders}, pending={pending_orders})")
+    print(f"      ✓ daily_summary.json updated with warehouse KPIs")
 
 except Exception as e:
     print(f"      ⚠ Warehouse KPI computation skipped (non-critical): {e}")
