@@ -38,4 +38,5 @@ jobs:
           if [ -f data/inventory.xlsx ]; then git add data/inventory.xlsx; fi
           if [ -f data/order_processing.csv ]; then git add data/order_processing.csv; fi
           git diff --staged --quiet || git commit -m "chore: update data $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
           git push
