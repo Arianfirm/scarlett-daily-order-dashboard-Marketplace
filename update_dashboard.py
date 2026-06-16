@@ -1,189 +1,99 @@
 import os, requests, json, time, csv, io
 from datetime import datetime, timezone
 
-EMAIL    = os.getenv("ACHANTO_EMAIL")
-PASSWORD = os.getenv("ACHANTO_PASSWORD")
+EMAIL, PASSWORD = os.getenv("ACHANTO_EMAIL"), os.getenv("ACHANTO_PASSWORD")
 BASE_URL = "https://wms-api.anchanto.com"
-TODAY    = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-NOW      = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+TODAY = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+NOW = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
-print(f"=== Scarlett Dashboard Updater ===")
-print(f"Run time : {NOW}")
-print(f"Fetching : {TODAY} 00:00 → 23:59")
+print(f"=== Scarlett Dashboard Updater ===\nRun time : {NOW}\nFetching : {TODAY}")
 
-# 1. Login
 print("\n[1/5] Login...")
-r = requests.post(f"{BASE_URL}/api/login",
-    json={"api_user": {"email": EMAIL, "password": PASSWORD}}, timeout=30)
+r = requests.post(f"{BASE_URL}/api/login", json={"api_user": {"email": EMAIL, "password": PASSWORD}}, timeout=30)
 r.raise_for_status()
-jwt = r.json()["jwt"]
-print("      ✓ Login success")
-H = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
+H = {"Authorization": f"Bearer {r.json()['jwt']}", "Content-Type": "application/json"}
 
-
-# ── Helper: Get Actual Database ID for Duplicate Reports ──
 def _get_actual_report_id_by_type(report_type_id):
-    """Mencari ID database internal asli berdasarkan report_type_id untuk bypass bug Schedule Number"""
     try:
         list_resp = requests.get(f"{BASE_URL}/api/v1/report_schedules?page=1&per_page=10", headers=H, timeout=30)
         if list_resp.status_code == 200:
-            data_list = list_resp.json().get("data", [])
-            for item in data_list:
-                attrs = item.get("attributes", {})
-                if str(attrs.get("report_type_id")) == str(report_type_id):
-                    actual_id = item.get("id")
-                    if actual_id:
-                        return actual_id
-    except Exception as e:
-        print(f"      ⚠ Gagal mencari ID duplikat via list API: {e}")
+            for item in list_resp.json().get("data", []):
+                if str(item.get("attributes", {}).get("report_type_id")) == str(report_type_id):
+                    return item.get("id")
+    except Exception as e: print(f"      ⚠ List API error: {e}")
     return None
-
-
-# 2. Create report - FIXED DUPLICATE ID HANDLER
-print("\n[2/5] Creating report...")
 
 def _create_report_safe(payload_dict, label="Report"):
     import copy
     current_payload = copy.deepcopy(payload_dict)
     target_type_id = current_payload["report_schedule"]["report_type_id"]
-    
-    print(f"      Attempting to create {label}...")
+    print(f"      Creating {label}...")
     resp = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=current_payload, timeout=30)
     cd = resp.json() if resp.text.strip() else {}
 
-    # Jika terkena block duplikat 400
     if resp.status_code == 400:
-        err = cd.get("errors", "")
-        print(f"      ⚠ Server blocked with error: {err}")
-        
-        # AUDIT FIX: Cari ID Database asli, bukan Schedule Number
+        print(f"      ⚠ Blocked 400: {cd.get('errors', '')}")
         actual_id = _get_actual_report_id_by_type(target_type_id)
-        
         if actual_id:
-            print(f"      ✓ Berhasil menemukan ID Database asli untuk duplikat: {actual_id}")
-            print(f"      -> Attempting to clear actual ID: {actual_id} from queue...")
-            dr = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{actual_id}", headers=H, timeout=30)
-            print(f"      -> Delete status: {dr.status_code}")
-        
-        print("      ⏳ Waiting 5 seconds...")
+            print(f"      -> Clearing actual ID: {actual_id}...")
+            requests.delete(f"{BASE_URL}/api/v1/report_schedules/{actual_id}", headers=H, timeout=30)
         time.sleep(5)
-        
-        print(f"      🔄 Modifying campaign_code filter to bypass server lock...")
-        bypass_string = f"bypass_{int(time.time())}"
         if "filters" in current_payload["report_schedule"]:
-            current_payload["report_schedule"]["filters"]["campaign_code"] = [bypass_string]
-            
-        print(f"      Retrying POST with modified parameters...")
+            current_payload["report_schedule"]["filters"]["campaign_code"] = [f"bypass_{int(time.time())}"]
         resp2 = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=current_payload, timeout=30)
-        cd2 = resp2.json() if resp2.text.strip() else {}
-        
-        if resp2.status_code == 200:
-            rid = cd2.get("data", {}).get("id")
-            print(f"      ✓ {label} successfully created via bypass technique (ID: {rid})")
-            return rid
-            
-        # Fallback: Jika bypass gagal, gunakan ID database asli yang ditemukan tadi agar polling tidak timeout
-        if actual_id:
-            print(f"      🔄 Fallback: Menggunakan ID database asli {actual_id} untuk proses Polling.")
-            return actual_id
-            
-        raise Exception(f"{label} failed on duplicate handler: {resp2.status_code} - {cd2}")
-
-    if resp.status_code == 200:
-        rid = cd.get("data", {}).get("id")
-        if not rid:
-            raise Exception(f"{label} no ID in response: {cd}")
-        print(f"      ✓ {label} created (ID: {rid})")
-        return rid
-    raise Exception(f"{label} failed: {resp.status_code} - {cd}")
+        if resp2.status_code == 200: return resp2.json()["data"]["id"]
+        if actual_id: return actual_id
+        raise Exception(f"{label} duplicate handler failed")
+    resp.raise_for_status()
+    return cd["data"]["id"]
 
 payload = {"report_schedule": {
-    "report_type_id": "3", "report_format": "csv",
-    "report_occurrence_id": "5", "mailing_list": [""],
-    "field_ids": [
-        "12","14","16","22","623","28","1220",
-        "29","30","31","32","33","34","35","36",
-        "50","51","52","53","54","55","56","57","58","59","60",
-        "61","62","63","64","65","66","67","68","69","70",
-        "71","72","73","74","75","76","77","78","79","80",
-        "1300","1301","1302","1303","1304","1305",
-    ],
-    "filters": {"company_id": ["2"], "campaign_code": []},
-    "from_date": TODAY, "end_date": TODAY,
-    "notification_type": "email", "carrier_code": []
+    "report_type_id": "3", "report_format": "csv", "report_occurrence_id": "5", "mailing_list": [""],
+    "field_ids": ["12","14","16","22","623","28","1220","29","30","31","32","33","34","35","36","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","1300","1301","1302","1303","1304","1305"],
+    "filters": {"company_id": ["2"], "campaign_code": []}, "from_date": TODAY, "end_date": TODAY, "notification_type": "email"
 }}
 report_id = _create_report_safe(payload, "B2C Order Report")
 
-# 3. Poll
 print("\n[3/5] Waiting for report...")
 report_url = ""
-try:
-    ch0 = requests.get(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
-    if ch0.text.strip():
-        at0 = ch0.json().get("data", {}).get("attributes", {})
-        url0 = at0.get("report_url","")
-        if url0:
-            report_url = url0
-            print(f"      ✓ Report ready immediately!")
-except Exception:
-    pass
+for i in range(1, 25):
+    time.sleep(15)
+    try:
+        ch = requests.get(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
+        if not ch.text.strip(): continue
+        iat = ch.json().get("data", {}).get("attributes", {})
+        print(f"      [{i:02d}/24] status={iat.get('status','')}")
+        if iat.get("report_url"):
+            report_url = iat["report_url"]
+            break
+    except Exception: continue
+if not report_url: exit(1)
 
-if not report_url:
-    for i in range(1, 25):
-        time.sleep(15)
-        try:
-            ch = requests.get(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
-            if not ch.text.strip(): continue
-            at = ch.json().get("data", {}).get("attributes", {})
-            status = at.get("status", "")
-            url = at.get("report_url","")
-            print(f"      [{i:02d}/24] status={status}")
-            if url:
-                report_url = url
-                print("      ✓ Report ready!")
-                break
-        except Exception:
-            continue
-    if not report_url:
-        print("      ✗ Timeout")
-        exit(1)
-
-# 4. Download
 print("\n[4/5] Downloading CSV...")
 cr2 = requests.get(report_url, timeout=120)
 cr2.raise_for_status()
 csv_text = cr2.content.decode("utf-8-sig")
 reader = csv.DictReader(io.StringIO(csv_text))
 rows = list(reader)
-cols = reader.fieldnames or []
-print(f"      ✓ {len(rows):,} rows · {len(cols)} columns")
 
-# 5. Save
 print("\n[5/5] Saving...")
-os.makedirs("data", exist_ok=True)
 os.makedirs("data/history", exist_ok=True)
-with open("data/orders.csv", "w", encoding="utf-8", newline="") as f:
-    f.write(csv_text)
-meta = {"date": TODAY, "last_updated": NOW, "run_at_hour": datetime.now(timezone.utc).hour, "total_rows": len(rows), "columns": cols}
-with open("data/last_updated.json", "w") as f:
-    json.dump(meta, f, indent=2)
+with open("data/orders.csv", "w", encoding="utf-8", newline="") as f: f.write(csv_text)
+meta = {"date": TODAY, "last_updated": NOW, "run_at_hour": datetime.now(timezone.utc).hour, "total_rows": len(rows), "columns": reader.fieldnames or []}
+with open("data/last_updated.json", "w") as f: json.dump(meta, f, indent=2)
 
-# ── 5b. Compute & save daily summary ──
 try:
     GOOD_STATUS = {"dispatched","picked","packed","manifest_created","delivered","qc_done","received_at_warehouse","assigned","partial_picked"}
     BAD_STATUS = {"unassigned","problem"}
     import re as _re
-    orders_seen = {}
-    hourly_orders = [0]*24
-    hourly_qty = [0]*24
+    orders_seen, hourly_orders, hourly_qty = {}, [0]*24, [0]*24
     for r in rows:
         on = (r.get("Order Number") or "").strip()
         if not on: continue
         st = (r.get("Order Status") or "").strip().lower().replace(" ", "_")
         qty = int(r.get("Ordered Quantity") or 0)
         if on not in orders_seen:
-            order_date_str = r.get("Order Date") or ""
-            hm = _re.search(r",\s*(\d{2}):", order_date_str)
+            hm = _re.search(r",\s*(\d{2}):", r.get("Order Date") or "")
             hr = int(hm.group(1)) if hm else 0
             orders_seen[on] = {"st": st, "qty": 0, "hr": hr}
             hourly_orders[hr] += 1
@@ -191,23 +101,19 @@ try:
         hourly_qty[orders_seen[on]["hr"]] += qty
 
     total_orders = len(orders_seen)
-    total_qty = sum(o["qty"] for o in orders_seen.values())
     good_count = sum(1 for o in orders_seen.values() if o["st"] in GOOD_STATUS)
     bad_count = sum(1 for o in orders_seen.values() if o["st"] in BAD_STATUS)
-    fulfillment_pct = round(good_count / total_orders * 100, 1) if total_orders else 0
     peak_hour = hourly_orders.index(max(hourly_orders)) if total_orders else None
-    peak_hour_orders = hourly_orders[peak_hour] if peak_hour is not None else 0
-    peak_hour_qty = hourly_qty[peak_hour] if peak_hour is not None else 0
 
     _d = datetime.strptime(TODAY, "%Y-%m-%d")
-    day_of_month = _d.day
-    month = _d.month
-    day_type = "gajian" if day_of_month in (25, 30, 31) else ("tanggal_kembar" if day_of_month == month and day_of_month <= 12 else "biasa")
+    day_type = "gajian" if _d.day in (25, 30, 31) else ("tanggal_kembar" if _d.day == _d.month and _d.day <= 12 else "biasa")
 
     summary_entry = {
-        "date": TODAY, "total_orders": total_orders, "total_qty": total_qty, "fulfilled": good_count, "pending": bad_count,
-        "fulfillment_pct": fulfillment_pct, "total_atp": None, "peak_hour": peak_hour, "peak_hour_orders": peak_hour_orders,
-        "peak_hour_qty": peak_hour_qty, "hourly_orders": hourly_orders, "hourly_qty": hourly_qty, "day_type": day_type, "last_updated": NOW
+        "date": TODAY, "total_orders": total_orders, "total_qty": sum(o["qty"] for o in orders_seen.values()),
+        "fulfilled": good_count, "pending": bad_count, "fulfillment_pct": round(good_count / total_orders * 100, 1) if total_orders else 0,
+        "total_atp": None, "peak_hour": peak_hour, "peak_hour_orders": hourly_orders[peak_hour] if peak_hour is not None else 0,
+        "peak_hour_qty": hourly_qty[peak_hour] if peak_hour is not None else 0, "hourly_orders": hourly_orders, "hourly_qty": hourly_qty,
+        "day_type": day_type, "last_updated": NOW
     }
 
     summary_path = "data/history/daily_summary.json"
@@ -215,16 +121,13 @@ try:
     if os.path.exists(summary_path):
         try:
             with open(summary_path) as f: summary_list = json.load(f)
-        except Exception: summary_list = []
+        except: pass
     summary_list = [s for s in summary_list if s.get("date") != TODAY]
     summary_list.append(summary_entry)
-    summary_list = sorted(summary_list, key=lambda s: s["date"])[-30:]
-    with open(summary_path, "w") as f: json.dump(summary_list, f, indent=2)
-    print(f"      ✓ history/daily_summary.json updated")
-except Exception as e:
-    print(f"      ⚠ History snapshot skipped: {e}")
+    with open(summary_path, "w") as f: json.dump(sorted(summary_list, key=lambda s: s["date"])[-30:], f, indent=2)
+    print("      ✓ daily_summary.json updated")
+except Exception as e: print(f"      ⚠ Summary error: {e}")
 
-# ── 6. Stock/Inventory Report - FIXED DUPLICATE ID HANDLER ──
 print("\n[6/6] Fetching inventory report...")
 try:
     inv_payload = {"report_schedule": {
@@ -233,64 +136,39 @@ try:
         "filters": {"company_id": ["2"]}, "notification_type": "email"
     }}
     inv_cr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=inv_payload, timeout=30)
-    inv_cd = inv_cr.json() if inv_cr.text.strip() else {}
-    
     if inv_cr.status_code == 400:
-        print(f"      ⚠ Inventory report blocked (Duplicate). Searching actual ID...")
-        # AUDIT FIX: Ambil Database ID asli untuk tipe '36'
-        actual_inv_id = _get_actual_report_id_by_type("36")
-        if actual_inv_id:
-            inv_id = actual_inv_id
-            print(f"      ✓ Inventory report already exists, reusing actual ID: {inv_id}")
-        else:
-            raise Exception(f"Inventory duplicate ID not found in list API")
+        inv_id = _get_actual_report_id_by_type("36")
     else:
         inv_cr.raise_for_status()
-        inv_id = inv_cd["data"]["id"]
-        print(f"      ✓ Inventory report created (ID: {inv_id})")
+        inv_id = inv_cr.json()["data"]["id"]
 
-    inv_url = ""
-    for i in range(1, 25):
-        time.sleep(15)
-        try:
-            ich = requests.get(f"{BASE_URL}/api/v1/report_schedules/{inv_id}", headers=H, timeout=30)
-            if not ich.text.strip(): continue
-            iat = ich.json().get("data", {}).get("attributes", {})
-            istatus = iat.get("status", "")
-            print(f"      [{i:02d}/24] Inventory status={istatus}")
-            inv_url = iat.get("report_url","")
-            if inv_url:
-                print("      ✓ Inventory report ready!")
-                break
-        except Exception: continue
-
-    if inv_url:
-        inv_resp = requests.get(inv_url, timeout=120)
-        with open("data/inventory.xlsx", "wb") as f: f.write(inv_resp.content)
-        try:
+    if inv_id:
+        inv_url = ""
+        for i in range(1, 15):
+            time.sleep(15)
+            try:
+                iat = requests.get(f"{BASE_URL}/api/v1/report_schedules/{inv_id}", headers=H, timeout=30).json().get("data", {}).get("attributes", {})
+                if iat.get("report_url"):
+                    inv_url = iat["report_url"]
+                    break
+            except: continue
+        if inv_url:
+            inv_resp = requests.get(inv_url, timeout=120)
+            with open("data/inventory.xlsx", "wb") as f: f.write(inv_resp.content)
             import openpyxl
             wb_inv = openpyxl.load_workbook(io.BytesIO(inv_resp.content), read_only=True, data_only=True)
-            ws_inv = wb_inv.active
             total_atp, sku_count = 0, 0
-            for idx, row in enumerate(ws_inv.iter_rows(values_only=True)):
+            for idx, row in enumerate(wb_inv.active.iter_rows(values_only=True)):
                 if idx == 0: continue
-                try:
-                    atp_val = row[8] if len(row) > 8 else None
-                    total_atp += int(atp_val) if atp_val not in (None, "") else 0
-                    sku_count += 1
-                except Exception: pass
-            if os.path.exists(summary_path):
-                with open(summary_path) as f: summary_list = json.load(f)
-                for s in summary_list:
-                    if s.get("date") == TODAY:
-                        s["total_atp"] = total_atp
-                        s["sku_count"] = sku_count
-                with open(summary_path, "w") as f: json.dump(summary_list, f, indent=2)
-        except Exception: pass
-except Exception as e:
-    print(f"      ⚠ Inventory skipped: {e}")
+                if len(row) > 8 and row[8] not in (None, ""):
+                    try: total_atp += int(row[8]); sku_count += 1
+                    except: pass
+            with open(summary_path) as f: summary_list = json.load(f)
+            for s in summary_list:
+                if s.get("date") == TODAY: s["total_atp"], s["sku_count"] = total_atp, sku_count
+            with open(summary_path, "w") as f: json.dump(summary_list, f, indent=2)
+except Exception as e: print(f"      ⚠ Inventory error: {e}")
 
-# ── 7. B2C Order Processing Report ──
 print("\n[7] Fetching B2C Order Processing report...")
 processing_rows, processing_cols = [], []
 try:
@@ -300,44 +178,30 @@ try:
         "from_date": TODAY, "end_date": TODAY, "notification_type": "email"
     }}
     pcr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=proc_payload, timeout=30)
-    pcd = pcr.json() if pcr.text.strip() else {}
-    
     if pcr.status_code == 400:
-        print(f"      ⚠ Order Processing blocked (Duplicate). Triggering bypass...")
         time.sleep(3)
         proc_payload["report_schedule"]["filters"]["campaign_code"] = [f"bypass_proc_{int(time.time())}"]
         pcr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=proc_payload, timeout=30)
-        pcd = pcr.json() if pcr.text.strip() else {}
-        
     pcr.raise_for_status()
-    proc_id = pcd["data"]["id"]
+    proc_id = pcr.json()["data"]["id"]
 
     proc_url = ""
-    for i in range(1, 25):
+    for i in range(1, 15):
         time.sleep(15)
         try:
-            pch = requests.get(f"{BASE_URL}/api/v1/report_schedules/{proc_id}", headers=H, timeout=30)
-            if not pch.text.strip(): continue
-            pat = pch.json().get("data", {}).get("attributes", {})
-            pstatus = pat.get("status", "")
-            print(f"      [{i:02d}/24] Processing status={pstatus}")
-            proc_url = pat.get("report_url","")
-            if proc_url:
-                print("      ✓ Order Processing report ready!")
+            pat = requests.get(f"{BASE_URL}/api/v1/report_schedules/{proc_id}", headers=H, timeout=30).json().get("data", {}).get("attributes", {})
+            if pat.get("report_url"):
+                proc_url = pat["report_url"]
                 break
-        except Exception: continue
-
+        except: continue
     if proc_url:
-        presp = requests.get(proc_url, timeout=120)
-        proc_text = presp.content.decode("utf-8-sig")
+        proc_text = requests.get(proc_url, timeout=120).content.decode("utf-8-sig")
         preader = csv.DictReader(io.StringIO(proc_text))
         processing_rows = list(preader)
         processing_cols = preader.fieldnames or []
         with open("data/order_processing.csv", "w", encoding="utf-8", newline="") as f: f.write(proc_text)
-except Exception as e:
-    print(f"      ⚠ Order Processing skipped: {e}")
+except Exception as e: print(f"      ⚠ Order Processing error: {e}")
 
-# ── 8. Generate Warehouse KPIs ──
 print("\n[8] Computing warehouse KPIs...")
 try:
     def _col(cols_, *candidates):
@@ -345,38 +209,28 @@ try:
             for c in cols_:
                 if cand.lower() in c.lower(): return c
         return None
-    c_order = _col(processing_cols, "order number")
-    c_status = _col(processing_cols, "order status")
-    c_pick_t = _col(processing_cols, "picking time")
-    c_pick_by = _col(processing_cols, "picked by")
-    c_pack_t = _col(processing_cols, "packing time")
-    c_pack_by = _col(processing_cols, "packed by")
-    c_disp_t = _col(processing_cols, "dispatch time")
-    c_disp_by = _col(processing_cols, "dispatched by")
-    c_order_date = _col(processing_cols, "order date")
-    c_qty = _col(processing_cols, "total ordered qty", "ordered quantity", "qty")
+    c_order, c_pick_t, c_pick_by, c_pack_t, c_pack_by, c_disp_t, c_disp_by, c_order_date, c_qty = [
+        _col(processing_cols, x) for x in ["order number", "picking time", "picked by", "packing time", "packed by", "dispatch time", "dispatched by", "order date", "qty"]
+    ]
+    if not c_qty: c_qty = _col(processing_cols, "total ordered qty", "ordered quantity")
 
     today_prefix = datetime.strptime(TODAY, "%Y-%m-%d").strftime("%d/%m/%Y")
-    def _is_today(val): return (val or "").strip().startswith(today_prefix) or (val or "").strip().startswith(TODAY)
+    def _is_today(v): return (v or "").strip().startswith(today_prefix) or (v or "").strip().startswith(TODAY)
     def _parse_dt(s):
         if not s or not s.strip(): return None
         for fmt in ("%d/%m/%Y, %H:%M:%S", "%d/%m/%Y %H:%M:%S", "%Y-%m-%d %H:%M:%S"):
             try: return datetime.strptime(s.strip(), fmt)
-            except ValueError: continue
+            except: continue
         return None
 
-    orders_proc = {}
-    picker_count, packer_count, dispatcher_count = {}, {}, {}
+    orders_proc, picker_count, packer_count, dispatcher_count = {}, {}, {}, {}
     pick_hours, pack_hours, disp_hours = [0]*24, [0]*24, [0]*24
-    pick_hour_pickers = [set() for _ in range(24)]
-    pack_hour_packers = [set() for _ in range(24)]
-    pick_hour_orders = [set() for _ in range(24)]
-    pack_hour_orders = [set() for _ in range(24)]
+    pick_hour_pickers, pack_hour_packers, pick_hour_orders, pack_hour_orders = [set() for _ in range(24)], [set() for _ in range(24)], [set() for _ in range(24)], [set() for _ in range(24)]
     pick_hour_qty, pack_hour_qty = [0]*24, [0]*24
     pick_deltas, pack_deltas, disp_deltas = [], [], []
 
     for r in processing_rows:
-        on = (r.get(c_order) or "").strip() if c_order else ""
+        on = (r.get(c_order) or "").strip()
         if not on: continue
         if on not in orders_proc: orders_proc[on] = {"picked": False, "packed": False, "dispatched": False}
         order_dt = _parse_dt(r.get(c_order_date) or "")
@@ -385,7 +239,6 @@ try:
             pt = _parse_dt(r.get(c_pick_t))
             if pt:
                 orders_proc[on]["picked"] = True
-                pick_hours[pt.hour] += 1
                 pick_hour_orders[pt.hour].add(on)
                 if c_qty:
                     try: pick_hour_qty[pt.hour] += int(float(r.get(c_qty) or 0))
@@ -402,7 +255,6 @@ try:
             pkt = _parse_dt(r.get(c_pack_t))
             if pkt:
                 orders_proc[on]["packed"] = True
-                pack_hours[pkt.hour] += 1
                 pack_hour_orders[pkt.hour].add(on)
                 if c_qty:
                     try: pack_hour_qty[pkt.hour] += int(float(r.get(c_qty) or 0))
@@ -447,13 +299,11 @@ try:
         "pick_hour_qty": pick_hour_qty, "pack_hour_qty": pack_hour_qty,
     }
 
-    if os.path.exists(summary_path):
-        with open(summary_path) as f: summary_list = json.load(f)
-        for s in summary_list:
-            if s.get("date") == TODAY: s["warehouse"] = warehouse_summary
-        with open(summary_path, "w") as f: json.dump(summary_list, f, indent=2)
-        print(f"      ✓ daily_summary.json updated with warehouse KPIs")
-except Exception as e:
-    print(f"      ⚠ Warehouse KPI skipped: {e}")
+    with open(summary_path) as f: summary_list = json.load(f)
+    for s in summary_list:
+        if s.get("date") == TODAY: s["warehouse"] = warehouse_summary
+    with open(summary_path, "w") as f: json.dump(summary_list, f, indent=2)
+    print("      ✓ daily_summary.json updated with warehouse KPIs")
+except Exception as e: print(f"      ⚠ Warehouse KPI error: {e}")
 
 print(f"\n=== DONE — {len(rows):,} rows · {TODAY} ===")
