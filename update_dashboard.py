@@ -366,17 +366,30 @@ try:
     print(f"      disp_time={c_disp_t!r}, dispatched_by={c_disp_by!r}")
     print(f"      collection_date={c_coll!r}")
 
-    # Filter hanya baris dengan Collection Date == TODAY
-    if c_coll:
-        before = len(processing_rows)
-        processing_rows = [r for r in processing_rows
-                           if (r.get(c_coll) or "").strip().startswith(
-                               datetime.strptime(TODAY, "%Y-%m-%d").strftime("%d/%m/%Y")
-                           ) or (r.get(c_coll) or "").strip().startswith(TODAY)]
-        after = len(processing_rows)
-        print(f"      Filter Collection Date={TODAY}: {before} → {after} rows")
-    else:
-        print(f"      ⚠ 'Collection Date' column not found — no date filter applied!")
+    # Filter hanya baris dengan aktivitas picking/packing/dispatch pada TODAY
+    # Collection Date selalu kosong di report ini — gunakan Picking Time sebagai anchor
+    today_prefix_dmy = datetime.strptime(TODAY, "%Y-%m-%d").strftime("%d/%m/%Y")
+    today_prefix_ymd = TODAY  # fallback format
+
+    def _is_today(val):
+        if not val or not val.strip():
+            return False
+        v = val.strip()
+        return v.startswith(today_prefix_dmy) or v.startswith(today_prefix_ymd)
+
+    before = len(processing_rows)
+    processing_rows = [r for r in processing_rows if (
+        (c_pick_t and _is_today(r.get(c_pick_t,''))) or
+        (c_pack_t and _is_today(r.get(c_pack_t,''))) or
+        (c_disp_t and _is_today(r.get(c_disp_t,'')))
+    )]
+    after = len(processing_rows)
+    print(f"      Filter today ({TODAY}): {before} → {after} rows (date prefix: {today_prefix_dmy})")
+
+    # Debug sample setelah filter
+    if processing_rows:
+        sample = processing_rows[0]
+        print(f"      Sample after filter: Picking={sample.get(c_pick_t,'')!r}, Packing={sample.get(c_pack_t,'')!r}")
 
     import re as _re2
     def _parse_dt(s):
