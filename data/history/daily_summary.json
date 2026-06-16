@@ -235,15 +235,15 @@
   },
   {
     "date": "2026-06-16",
-    "total_orders": 12322,
-    "total_qty": 20130,
-    "fulfilled": 8187,
-    "pending": 1355,
-    "fulfillment_pct": 66.4,
-    "total_atp": 44115720,
-    "peak_hour": 9,
-    "peak_hour_orders": 1705,
-    "peak_hour_qty": 2900,
+    "total_orders": 14184,
+    "total_qty": 22658,
+    "fulfilled": 8175,
+    "pending": 3126,
+    "fulfillment_pct": 57.6,
+    "total_atp": 44113275,
+    "peak_hour": 12,
+    "peak_hour_orders": 1888,
+    "peak_hour_qty": 2557,
     "hourly_orders": [
       1350,
       527,
@@ -257,8 +257,8 @@
       1705,
       1560,
       1521,
-      29,
-      0,
+      1888,
+      3,
       0,
       0,
       0,
@@ -283,8 +283,8 @@
       2900,
       2734,
       2264,
-      32,
-      0,
+      2557,
+      3,
       0,
       0,
       0,
@@ -297,30 +297,30 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-16 05:00:30 UTC",
+    "last_updated": "2026-06-16 06:00:38 UTC",
     "sku_count": 2119,
     "warehouse": {
-      "total_orders": 29583,
-      "picked_orders": 11653,
-      "packed_orders": 11451,
+      "total_orders": 33170,
+      "picked_orders": 11634,
+      "packed_orders": 11466,
       "dispatched_orders": 9996,
-      "pending_orders": 19587,
-      "avg_pick_min": 110.2,
-      "avg_pack_min": 74.4,
+      "pending_orders": 23174,
+      "avg_pick_min": 110.3,
+      "avg_pack_min": 75.1,
       "avg_dispatch_min": 507.2,
       "pick_hours": [
         6,
-        2131,
+        2130,
         434,
-        222,
+        221,
         0,
         663,
-        872,
-        1228,
+        871,
+        1227,
         1208,
-        2269,
-        2031,
-        698,
+        2264,
+        2026,
+        693,
         0,
         0,
         0,
@@ -347,8 +347,8 @@
         2420,
         1971,
         1000,
-        0,
-        0,
+        13,
+        2,
         0,
         0,
         0,
@@ -389,23 +389,23 @@
       "top_picker": [
         [
           "YAHYA PACKERTIGADUAEMPAT",
-          975
-        ],
-        [
-          "BUDI PACKERSERATUSDELAPANTIGA",
           974
         ],
         [
+          "BUDI PACKERSERATUSDELAPANTIGA",
+          973
+        ],
+        [
           "OPAN PICKERDUA",
-          943
+          940
         ],
         [
           "AKMAL PACKERTIGADUAENAM",
-          876
+          875
         ],
         [
           "PAJRIANSYAH PACKERTIGADUATUJUH",
-          867
+          865
         ]
       ],
       "top_packer": [
@@ -480,6 +480,10 @@
           1
         ],
         [
+          "UDIN PACKERDUASEMBILANSATU",
+          1
+        ],
+        [
           "SABRI PACKERDUADELAPANTUJUH",
           2
         ],
@@ -490,10 +494,6 @@
         [
           "Abdul Rosid",
           2
-        ],
-        [
-          "ANI PACKEREMPATTIGASEMBILAN",
-          6
         ]
       ],
       "pick_hour_pickers": [
@@ -535,8 +535,8 @@
         65,
         59,
         39,
-        0,
-        0,
+        3,
+        1,
         0,
         0,
         0,
@@ -550,17 +550,17 @@
       ],
       "pick_hour_orders": [
         6,
-        2131,
+        2130,
         434,
-        222,
+        221,
         0,
         663,
-        872,
-        1228,
+        871,
+        1227,
         1208,
-        2269,
-        2031,
-        698,
+        2264,
+        2026,
+        693,
         0,
         0,
         0,
@@ -587,8 +587,8 @@
         2420,
         1971,
         1000,
-        0,
-        0,
+        13,
+        2,
         0,
         0,
         0,
@@ -602,17 +602,17 @@
       ],
       "pick_hour_qty": [
         8,
-        3129,
+        3124,
         628,
-        299,
+        298,
         0,
         996,
-        1369,
-        1998,
+        1368,
+        1996,
         2088,
-        3775,
-        3896,
-        1563,
+        3768,
+        3888,
+        1558,
         0,
         0,
         0,
@@ -639,8 +639,8 @@
         4169,
         3434,
         2056,
-        0,
-        0,
+        22,
+        2,
         0,
         0,
         0,
