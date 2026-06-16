@@ -457,7 +457,7 @@ function parse(rows){
     const mp=(r['Marketplace']||'').trim();
     const st=(r['Order Status']||'').trim().toLowerCase().replace(/ /g,'_');
     const sku=(r['Item Name']||'').trim();
-    const qty=parseInt(r['Ordered Quantity'])||0;
+    const qty=parseInt(r['Total Ordered Qty']||r['Ordered Quantity']||r['Ordered Qty'])||0;
     const prov=(r['Shipping Provider']||'').trim();
     // Shipping City tidak tersedia di API — extract dari Shipping Address Line
     // Format: "*****, KAB. BOGOR, KECAMATAN, PROVINSI, ID, POSTCODE"
