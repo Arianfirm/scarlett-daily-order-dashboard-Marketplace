@@ -59,8 +59,9 @@ else:
     err_msg = str(err.get("message") or err.get("error") or cr.text)
     print(f"      ✗ HTTP {cr.status_code} — {err_msg[:300]}")
     if "same report schedule" in err_msg.lower():
+        print("=== DUPLICATE REPORT HANDLER ACTIVE ===")
         # Jangan pakai angka dari pesan error — lookup langsung ke API
-        print(f"      ↩ Duplicate schedule — querying report_schedules list...")
+        print("=== LOOKUP EXISTING REPORT ===")
         report_id = None
         try:
             lr = requests.get(
