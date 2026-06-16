@@ -235,12 +235,12 @@
   },
   {
     "date": "2026-06-16",
-    "total_orders": 16923,
-    "total_qty": 26603,
-    "fulfilled": 12996,
-    "pending": 393,
-    "fulfillment_pct": 76.8,
-    "total_atp": null,
+    "total_orders": 17578,
+    "total_qty": 27568,
+    "fulfilled": 13879,
+    "pending": 134,
+    "fulfillment_pct": 79.0,
+    "total_atp": 44104232,
     "peak_hour": 12,
     "peak_hour_orders": 1888,
     "peak_hour_qty": 2557,
@@ -260,7 +260,7 @@
       1888,
       1442,
       1300,
-      0,
+      655,
       0,
       0,
       0,
@@ -286,7 +286,7 @@
       2557,
       2073,
       1875,
-      0,
+      965,
       0,
       0,
       0,
@@ -297,33 +297,34 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-16 08:00:38 UTC",
+    "last_updated": "2026-06-16 08:31:00 UTC",
+    "sku_count": 2119,
     "warehouse": {
-      "total_orders": 39363,
-      "picked_orders": 16865,
-      "packed_orders": 15015,
-      "dispatched_orders": 12799,
-      "pending_orders": 26564,
-      "avg_pick_min": 98.9,
-      "avg_pack_min": 78.3,
-      "avg_dispatch_min": 356.1,
+      "total_orders": 40739,
+      "picked_orders": 17282,
+      "packed_orders": 15825,
+      "dispatched_orders": 13832,
+      "pending_orders": 26907,
+      "avg_pick_min": 97.2,
+      "avg_pack_min": 78.5,
+      "avg_dispatch_min": 296.5,
       "pick_hours": [
         6,
-        2129,
+        2128,
         433,
         220,
         0,
         662,
         871,
-        1225,
+        1224,
         1207,
         2255,
         2017,
         690,
         0,
-        2704,
+        2702,
         2499,
-        192,
+        615,
         0,
         0,
         0,
@@ -349,7 +350,7 @@
         13,
         1091,
         2135,
-        325,
+        1135,
         0,
         0,
         0,
@@ -367,7 +368,7 @@
         2,
         5,
         0,
-        16329,
+        17655,
         0,
         0,
         0,
@@ -388,19 +389,19 @@
       "top_picker": [
         [
           "OPAN PICKERDUA",
-          1843
+          1998
         ],
         [
           "YAHYA PACKERTIGADUAEMPAT",
-          1684
-        ],
-        [
-          "FADIL PACKERSERATUSDUALIMA",
-          1563
+          1796
         ],
         [
           "PAJRIANSYAH PACKERTIGADUATUJUH",
-          1548
+          1679
+        ],
+        [
+          "FADIL PACKERSERATUSDUALIMA",
+          1562
         ],
         [
           "AKMAL PACKERTIGADUAENAM",
@@ -410,23 +411,23 @@
       "top_packer": [
         [
           "RUNI ENAMDELAPAN",
-          338
+          380
+        ],
+        [
+          "HASSANAH PACKEREMPATDUADELAPAN",
+          346
         ],
         [
           "DAVINA PACKERTIGASEMBILANDELAPAN",
-          319
+          343
+        ],
+        [
+          "NURUL PACKERSERATUSEMPATSATU",
+          324
         ],
         [
           "ANAHULWATUN PACKERTUJUHENAM",
           315
-        ],
-        [
-          "TATIA PACKERSERATUSLIMA",
-          288
-        ],
-        [
-          "NURUL PACKERSERATUSEMPATSATU",
-          287
         ]
       ],
       "top_dispatcher": [
@@ -436,19 +437,19 @@
         ],
         [
           "HAERUDIN DISPATCH",
-          3359
+          3815
         ],
         [
           "JOSHUA DISPATCH",
           3220
         ],
         [
-          "FRAN DISPATCH",
-          1069
+          "MUHMMAD ADITYA",
+          1233
         ],
         [
-          "Sapta Siswana",
-          954
+          "FRAN DISPATCH",
+          1069
         ]
       ],
       "low_picker": [
@@ -537,7 +538,7 @@
         3,
         44,
         60,
-        38,
+        54,
         0,
         0,
         0,
@@ -549,21 +550,21 @@
       ],
       "pick_hour_orders": [
         6,
-        2129,
+        2128,
         433,
         220,
         0,
         662,
         871,
-        1225,
+        1224,
         1207,
         2255,
         2017,
         690,
         0,
-        2704,
+        2702,
         2499,
-        192,
+        615,
         0,
         0,
         0,
@@ -589,7 +590,7 @@
         13,
         1091,
         2135,
-        325,
+        1135,
         0,
         0,
         0,
@@ -601,21 +602,21 @@
       ],
       "pick_hour_qty": [
         8,
-        3123,
+        3122,
         627,
         297,
         0,
         995,
         1368,
-        1994,
+        1993,
         2087,
         3758,
         3875,
         1555,
         0,
-        3540,
+        3537,
         3645,
-        233,
+        826,
         0,
         0,
         0,
@@ -641,7 +642,7 @@
         22,
         1969,
         3005,
-        464,
+        1905,
         0,
         0,
         0,
