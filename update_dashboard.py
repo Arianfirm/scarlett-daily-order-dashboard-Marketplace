@@ -162,6 +162,13 @@ try:
     BAD_STATUS = {"unassigned","problem"}
 
     import re as _re
+
+    # Flexible qty column detection (same approach as warehouse KPI section)
+    _qty_col = next((c for c in cols if any(k in c.lower() for k in ("total ordered qty", "ordered quantity", "ordered qty"))), None)
+    print(f"      Qty column detected: {_qty_col!r}")
+    if not _qty_col:
+        print(f"      ⚠ No qty column found. Available cols: {cols}")
+
     orders_seen = {}
     hourly_orders = [0]*24
     hourly_qty = [0]*24
@@ -170,7 +177,7 @@ try:
         if not on:
             continue
         st = (r.get("Order Status") or "").strip().lower().replace(" ", "_")
-        qty = int(r.get("Ordered Quantity") or 0)
+        qty = int(float(r.get(_qty_col) or 0)) if _qty_col else 0
         if on not in orders_seen:
             order_date_str = r.get("Order Date") or ""
             hm = _re.search(r",\s*(\d{2}):", order_date_str)
@@ -182,6 +189,7 @@ try:
 
     total_orders = len(orders_seen)
     total_qty = sum(o["qty"] for o in orders_seen.values())
+    print(f"      DEBUG aggregation: total_orders={total_orders}, total_qty={total_qty}")
     good_count = sum(1 for o in orders_seen.values() if o["st"] in GOOD_STATUS)
     bad_count = sum(1 for o in orders_seen.values() if o["st"] in BAD_STATUS)
     fulfillment_pct = round(good_count / total_orders * 100, 1) if total_orders else 0
