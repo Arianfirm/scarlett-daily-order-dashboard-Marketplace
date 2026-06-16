@@ -29,6 +29,25 @@ H = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
 # Shipping Fee, Billing Name, Billing Address Line,
 # Delivery Date (DD/MM/YYYY), Dispatch Scheduled Date
 print("\n[2/5] Creating report...")
+
+# Delete any existing report of type 3 (B2C Order) to avoid "already exists" error
+def _delete_existing(report_type_id):
+    try:
+        lr = requests.get(f"{BASE_URL}/api/v1/report_schedules?per_page=50", headers=H, timeout=30)
+        if lr.status_code == 200 and lr.text.strip():
+            items = lr.json().get("data", [])
+            for item in items:
+                attrs = item.get("attributes", {})
+                if str(attrs.get("report_type_id","")) == str(report_type_id):
+                    rid = item.get("id")
+                    if rid:
+                        dr = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{rid}", headers=H, timeout=30)
+                        print(f"      ✓ Deleted old report type {report_type_id} (ID: {rid}), status: {dr.status_code}")
+    except Exception as e:
+        print(f"      ⚠ Delete existing skipped: {e}")
+
+_delete_existing("3")
+
 payload = {"report_schedule": {
     "report_type_id": "3", "report_format": "csv",
     "report_occurrence_id": "5", "mailing_list": [""],
@@ -214,6 +233,7 @@ except Exception as e:
 
 # ── 6. Stock/Inventory Report (fail-safe, separate from order data) ───────────
 print("\n[6/6] Fetching inventory report...")
+_delete_existing("36")
 try:
     inv_payload = {"report_schedule": {
         "report_type_id": "36",
@@ -324,6 +344,7 @@ except Exception as e:
 # Total Ordered Qty, Picking Time, Picked By, Packing Time, Packed By,
 # Dispatch Time, Dispatched By, Completed At, Location, Packaging Material
 print("\n[7] Fetching B2C Order Processing report (type_id=39)...")
+_delete_existing("39")
 processing_rows, processing_cols = [], []
 try:
     proc_payload = {"report_schedule": {
