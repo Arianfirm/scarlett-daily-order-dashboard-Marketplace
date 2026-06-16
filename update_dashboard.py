@@ -83,7 +83,7 @@ else:
                     fd    = str(attrs.get("from_date") or attrs.get("date") or "")
                     ed    = str(attrs.get("end_date") or "")
                     print(f"      Candidate: id={iid} | type_id={rt!r} | from={fd!r} | end={ed!r}")
-                    print(f"        attr keys: {list(attrs.keys())}")
+                    print(f"        ALL attrs: {json.dumps(attrs)[:500]}")
                     # Match: from_date dan end_date = hari ini (tidak cek report_type_id)
                     if iid and TODAY in fd and TODAY in ed:
                         report_id = iid
@@ -121,7 +121,10 @@ for i in range(1, 25):
         url    = at.get("report_url","")
         print(f"      [{i:02d}/24] status={status}")
         if url:
-            report_url = url; print("      ✓ Report ready!"); break
+            report_url = url
+            print(f"      ✓ Report ready!")
+            print(f"      REPORT_URL (type3): {report_url}")
+            break
     except Exception as e:
         print(f"      [{i:02d}/24] poll error: {e}, retrying...")
         continue
@@ -130,6 +133,7 @@ if not report_url:
 
 # 4. Download
 print("\n[4/5] Downloading CSV...")
+print(f"      Downloading from: {report_url}")
 cr2 = requests.get(report_url, timeout=120)
 cr2.raise_for_status()
 csv_text = cr2.content.decode("utf-8-sig")
@@ -138,6 +142,12 @@ rows = list(reader)
 cols = reader.fieldnames or []
 print(f"      ✓ {len(rows):,} rows · {len(cols)} columns")
 print(f"      Columns: {cols}")
+# Verify this is the correct B2C Order report (must have Marketplace)
+if "Marketplace" not in (cols or []):
+    print(f"      ✗ WRONG REPORT — 'Marketplace' column missing. Got: {cols}")
+    print(f"        This appears to be the wrong report type. Expected type_id=3 (B2C Order).")
+else:
+    print(f"      ✓ Correct report confirmed (Marketplace column present)")
 
 # 5. Save
 print("\n[5/5] Saving...")
@@ -389,6 +399,7 @@ try:
                     pfd    = str(pattrs.get("from_date") or pattrs.get("date") or "")
                     ped    = str(pattrs.get("end_date") or "")
                     print(f"      Candidate: id={piid} | from={pfd!r} | end={ped!r}")
+                    print(f"        ALL attrs: {json.dumps(pattrs)[:500]}")
                     if piid and TODAY in pfd and TODAY in ped:
                         proc_id = piid
                         print(f"      ✓ Selected existing schedule ID: {proc_id}")
@@ -414,7 +425,10 @@ try:
                 purl = pat.get("report_url", "")
                 print(f"      [{i:02d}/24] status={pstatus}")
                 if purl:
-                    proc_url = purl; print("      ✓ Order Processing report ready!"); break
+                    proc_url = purl
+                    print(f"      ✓ Order Processing report ready!")
+                    print(f"      REPORT_URL (type39): {proc_url}")
+                    break
             except Exception as e:
                 print(f"      [{i:02d}/24] poll error: {e}, retrying...")
                 continue
