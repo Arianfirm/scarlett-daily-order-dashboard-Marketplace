@@ -235,12 +235,12 @@
   },
   {
     "date": "2026-06-16",
-    "total_orders": 18146,
-    "total_qty": 28402,
-    "fulfilled": 13934,
-    "pending": 524,
-    "fulfillment_pct": 76.8,
-    "total_atp": 44152376,
+    "total_orders": 19250,
+    "total_qty": 29915,
+    "fulfilled": 15644,
+    "pending": 233,
+    "fulfillment_pct": 81.3,
+    "total_atp": 44148910,
     "peak_hour": 12,
     "peak_hour_orders": 1888,
     "peak_hour_qty": 2557,
@@ -261,8 +261,8 @@
       1442,
       1300,
       1220,
-      3,
-      0,
+      1101,
+      6,
       0,
       0,
       0,
@@ -287,8 +287,8 @@
       2073,
       1875,
       1794,
-      5,
-      0,
+      1507,
+      11,
       0,
       0,
       0,
@@ -297,36 +297,36 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-16 09:00:34 UTC",
+    "last_updated": "2026-06-16 10:00:37 UTC",
     "sku_count": 2119,
     "warehouse": {
-      "total_orders": 42110,
-      "picked_orders": 17941,
-      "packed_orders": 16974,
-      "dispatched_orders": 14857,
-      "pending_orders": 27253,
-      "avg_pick_min": 94.7,
-      "avg_pack_min": 79.2,
-      "avg_dispatch_min": 240.7,
+      "total_orders": 46342,
+      "picked_orders": 19162,
+      "packed_orders": 19060,
+      "dispatched_orders": 18961,
+      "pending_orders": 27381,
+      "avg_pick_min": 90.7,
+      "avg_pack_min": 80.4,
+      "avg_dispatch_min": 289.8,
       "pick_hours": [
         6,
         2128,
         433,
-        220,
+        219,
         0,
         662,
         871,
         1224,
         1207,
         2255,
-        2017,
+        2014,
         690,
         0,
-        2702,
-        2492,
-        1281,
-        0,
-        0,
+        2700,
+        2487,
+        1274,
+        1212,
+        30,
         0,
         0,
         0,
@@ -351,8 +351,8 @@
         1091,
         2135,
         2215,
-        69,
-        0,
+        2107,
+        48,
         0,
         0,
         0,
@@ -368,7 +368,7 @@
         2,
         5,
         0,
-        19031,
+        24569,
         0,
         0,
         0,
@@ -389,45 +389,45 @@
       "top_picker": [
         [
           "OPAN PICKERDUA",
-          2066
+          2185
         ],
         [
           "YAHYA PACKERTIGADUAEMPAT",
-          1882
+          2068
         ],
         [
           "PAJRIANSYAH PACKERTIGADUATUJUH",
-          1748
+          1981
+        ],
+        [
+          "AKMAL PACKERTIGADUAENAM",
+          1864
         ],
         [
           "FADIL PACKERSERATUSDUALIMA",
-          1687
-        ],
-        [
-          "HAPIDIN PACKERDUATIGASEMBILAN",
-          1596
+          1801
         ]
       ],
       "top_packer": [
         [
-          "HASSANAH PACKEREMPATDUADELAPAN",
-          413
+          "RUNI ENAMDELAPAN",
+          461
         ],
         [
-          "RUNI ENAMDELAPAN",
-          392
+          "HASSANAH PACKEREMPATDUADELAPAN",
+          451
         ],
         [
           "DAVINA PACKERTIGASEMBILANDELAPAN",
-          382
+          426
         ],
         [
-          "NURUL PACKERSERATUSEMPATSATU",
-          352
+          "LELI PACKERTIGADELAPANLIMA",
+          426
         ],
         [
-          "FEBRIYANI PACKERTIGAEMPATSEMBILAN",
-          329
+          "ARINAH PACKERSATUSEMBILANTUJUH",
+          409
         ]
       ],
       "top_dispatcher": [
@@ -437,7 +437,7 @@
         ],
         [
           "HAERUDIN DISPATCH",
-          4784
+          6234
         ],
         [
           "JOSHUA DISPATCH",
@@ -445,11 +445,11 @@
         ],
         [
           "MUHMMAD ADITYA",
-          1640
+          2964
         ],
         [
-          "FRAN DISPATCH",
-          1069
+          "anca dwi",
+          2615
         ]
       ],
       "low_picker": [
@@ -513,8 +513,8 @@
         10,
         10,
         10,
-        0,
-        0,
+        10,
+        4,
         0,
         0,
         0,
@@ -539,8 +539,8 @@
         44,
         60,
         62,
-        29,
-        0,
+        60,
+        21,
         0,
         0,
         0,
@@ -552,21 +552,21 @@
         6,
         2128,
         433,
-        220,
+        219,
         0,
         662,
         871,
         1224,
         1207,
         2255,
-        2017,
+        2014,
         690,
         0,
-        2702,
-        2492,
-        1281,
-        0,
-        0,
+        2700,
+        2487,
+        1274,
+        1212,
+        30,
         0,
         0,
         0,
@@ -591,8 +591,8 @@
         1091,
         2135,
         2215,
-        69,
-        0,
+        2107,
+        48,
         0,
         0,
         0,
@@ -604,21 +604,21 @@
         8,
         3122,
         627,
-        297,
+        296,
         0,
         995,
         1368,
         1993,
         2087,
         3758,
-        3875,
+        3871,
         1555,
         0,
-        3537,
-        3636,
-        1870,
-        0,
-        0,
+        3535,
+        3630,
+        1862,
+        1677,
+        38,
         0,
         0,
         0,
@@ -643,8 +643,8 @@
         1969,
         3005,
         3487,
-        90,
-        0,
+        3014,
+        69,
         0,
         0,
         0,
