@@ -45,6 +45,14 @@ payload = {"report_schedule": {
     "notification_type": "email", "carrier_code": []
 }}
 cr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload, timeout=30)
+if cr.status_code != 200:
+    print(f"      ✗ HTTP {cr.status_code}")
+    print(f"      Response text : {cr.text[:2000]}")
+    try:
+        print(f"      Response JSON : {json.dumps(cr.json(), indent=2)}")
+    except Exception:
+        print(f"      Response JSON : (not parseable)")
+    print(f"      Payload sent  : {json.dumps(payload, indent=2)}")
 cr.raise_for_status()
 cd = cr.json()
 if cd.get("status_code") != 1000:
