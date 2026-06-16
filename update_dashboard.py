@@ -52,31 +52,47 @@ if cr.status_code == 200:
     report_id = cd["data"]["id"]
     print(f"      ✓ Report created (ID: {report_id})")
 else:
-    print(f"      ✗ HTTP {cr.status_code} — {cr.text[:500]}")
     try:
         err = cr.json()
     except Exception:
         err = {}
     err_msg = str(err.get("message") or err.get("error") or cr.text)
+    print(f"      ✗ HTTP {cr.status_code} — {err_msg[:300]}")
     if "same report schedule" in err_msg.lower():
-        import re as _re_sched
-        # 1. Coba ambil ID dari field JSON (data.id atau top-level)
-        existing_id = None
-        for _src in (err.get("data") or {}, err):
-            for _key in ("id", "report_schedule_id", "schedule_id", "schedule_number"):
-                _val = str(_src.get(_key, "")).strip()
-                if _val and _val != "None":
-                    existing_id = _val; break
-            if existing_id: break
-        # 2. Fallback: ekstrak angka terpanjang dari pesan error
-        if not existing_id:
-            _nums = _re_sched.findall(r'\b\d{6,}\b', err_msg)
-            existing_id = _nums[0] if _nums else None
-        if existing_id:
-            print(f"      ↩ Duplicate — reusing existing schedule ID: {existing_id}")
-            report_id = existing_id
-        else:
-            print(f"      ✗ Duplicate but cannot extract ID. Full response: {err}"); exit(1)
+        # Jangan pakai angka dari pesan error — lookup langsung ke API
+        print(f"      ↩ Duplicate schedule — querying report_schedules list...")
+        report_id = None
+        try:
+            lr = requests.get(
+                f"{BASE_URL}/api/v1/report_schedules",
+                headers=H,
+                params={"from_date": TODAY, "end_date": TODAY},
+                timeout=30
+            )
+            print(f"      List HTTP {lr.status_code}")
+            if lr.status_code == 200 and lr.text.strip():
+                ld = lr.json()
+                items = ld.get("data") or []
+                if isinstance(items, dict):
+                    items = [items]
+                for item in items:
+                    attrs = item.get("attributes") or {}
+                    rt    = str(attrs.get("report_type_id") or "")
+                    fd    = str(attrs.get("from_date") or attrs.get("date") or "")
+                    iid   = str(item.get("id") or "").strip()
+                    print(f"      Candidate: id={iid} type_id={rt} from_date={fd}")
+                    if rt == "3" and TODAY in fd and iid:
+                        report_id = iid
+                        print(f"      ✓ Matched existing schedule ID: {report_id}")
+                        break
+                if not report_id:
+                    print(f"      Full list response: {json.dumps(ld)[:1000]}")
+            else:
+                print(f"      List endpoint: {lr.text[:500]}")
+        except Exception as e:
+            print(f"      List lookup error: {e}")
+        if not report_id:
+            print(f"      ✗ Cannot find valid existing schedule. Exiting."); exit(1)
     else:
         print(f"      ✗ Unhandled API error: {err_msg}"); exit(1)
 
