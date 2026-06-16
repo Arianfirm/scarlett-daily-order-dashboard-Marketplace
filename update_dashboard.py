@@ -366,30 +366,14 @@ try:
     print(f"      disp_time={c_disp_t!r}, dispatched_by={c_disp_by!r}")
     print(f"      collection_date={c_coll!r}")
 
-    # Filter hanya baris dengan aktivitas picking/packing/dispatch pada TODAY
-    # Collection Date selalu kosong di report ini — gunakan Picking Time sebagai anchor
-    today_prefix_dmy = datetime.strptime(TODAY, "%Y-%m-%d").strftime("%d/%m/%Y")
-    today_prefix_ymd = TODAY  # fallback format
-
+    # Filter per-activity di dalam loop (bukan pre-filter baris)
+    # karena 1 baris bisa punya Picking lama tapi Dispatch hari ini
+    today_prefix = datetime.strptime(TODAY, "%Y-%m-%d").strftime("%d/%m/%Y")
     def _is_today(val):
-        if not val or not val.strip():
-            return False
-        v = val.strip()
-        return v.startswith(today_prefix_dmy) or v.startswith(today_prefix_ymd)
+        v = (val or "").strip()
+        return v.startswith(today_prefix) or v.startswith(TODAY)
 
-    before = len(processing_rows)
-    processing_rows = [r for r in processing_rows if (
-        (c_pick_t and _is_today(r.get(c_pick_t,''))) or
-        (c_pack_t and _is_today(r.get(c_pack_t,''))) or
-        (c_disp_t and _is_today(r.get(c_disp_t,'')))
-    )]
-    after = len(processing_rows)
-    print(f"      Filter today ({TODAY}): {before} → {after} rows (date prefix: {today_prefix_dmy})")
-
-    # Debug sample setelah filter
-    if processing_rows:
-        sample = processing_rows[0]
-        print(f"      Sample after filter: Picking={sample.get(c_pick_t,'')!r}, Packing={sample.get(c_pack_t,'')!r}")
+    print(f"      Filter per-activity: only counting times starting with {today_prefix}")
 
     import re as _re2
     def _parse_dt(s):
@@ -424,7 +408,7 @@ try:
 
         order_dt = _parse_dt(r.get(c_order_date) or "") if c_order_date else None
 
-        if c_pick_t:
+        if c_pick_t and _is_today(r.get(c_pick_t, '')):
             pt = _parse_dt(r.get(c_pick_t) or "")
             if pt:
                 orders_proc[on]["picked"] = True
@@ -439,12 +423,12 @@ try:
                         pick_hour_pickers[pt.hour].add(pb_h)
                 if order_dt:
                     pick_deltas.append((pt - order_dt).total_seconds() / 60)
-        if c_pick_by:
+        if c_pick_by and _is_today(r.get(c_pick_t, '')):
             pb = (r.get(c_pick_by) or "").strip()
             if pb:
                 picker_count[pb] = picker_count.get(pb, 0) + 1
 
-        if c_pack_t:
+        if c_pack_t and _is_today(r.get(c_pack_t, '')):
             pkt = _parse_dt(r.get(c_pack_t) or "")
             if pkt:
                 orders_proc[on]["packed"] = True
@@ -461,12 +445,12 @@ try:
                     pt2 = _parse_dt(r.get(c_pick_t) or "")
                     if pt2:
                         pack_deltas.append((pkt - pt2).total_seconds() / 60)
-        if c_pack_by:
+        if c_pack_by and _is_today(r.get(c_pack_t, '')):
             pkb = (r.get(c_pack_by) or "").strip()
             if pkb:
                 packer_count[pkb] = packer_count.get(pkb, 0) + 1
 
-        if c_disp_t:
+        if c_disp_t and _is_today(r.get(c_disp_t, '')):
             dt_ = _parse_dt(r.get(c_disp_t) or "")
             if dt_:
                 orders_proc[on]["dispatched"] = True
@@ -475,23 +459,20 @@ try:
                     pkt2 = _parse_dt(r.get(c_pack_t) or "")
                     if pkt2:
                         disp_deltas.append((dt_ - pkt2).total_seconds() / 60)
-        if c_disp_by:
+        if c_disp_by and _is_today(r.get(c_disp_t, '')):
             db = (r.get(c_disp_by) or "").strip()
             if db:
                 dispatcher_count[db] = dispatcher_count.get(db, 0) + 1
 
     total_proc_orders = len(orders_proc)
 
-    # Debug: min/max timestamps per activity
-    all_pick_times = [_parse_dt(r.get(c_pick_t) or "") for r in processing_rows if c_pick_t]
-    all_pack_times = [_parse_dt(r.get(c_pack_t) or "") for r in processing_rows if c_pack_t]
-    all_disp_times = [_parse_dt(r.get(c_disp_t) or "") for r in processing_rows if c_disp_t]
-    all_pick_times = [t for t in all_pick_times if t]
-    all_pack_times = [t for t in all_pack_times if t]
-    all_disp_times = [t for t in all_disp_times if t]
-    print(f"      DEBUG Picking Time  : min={min(all_pick_times) if all_pick_times else 'N/A'} | max={max(all_pick_times) if all_pick_times else 'N/A'}")
-    print(f"      DEBUG Packing Time  : min={min(all_pack_times) if all_pack_times else 'N/A'} | max={max(all_pack_times) if all_pack_times else 'N/A'}")
-    print(f"      DEBUG Dispatch Time : min={min(all_disp_times) if all_disp_times else 'N/A'} | max={max(all_disp_times) if all_disp_times else 'N/A'}")
+    # Debug: min/max timestamps — only today's data from hour arrays
+    today_pick = [h for h in range(24) if pick_hour_orders[h]]
+    today_pack = [h for h in range(24) if pack_hour_orders[h]]
+    today_disp = [h for h in range(24) if disp_hours[h]]
+    print(f"      DEBUG Picking today  : active hours={today_pick}, total orders={sum(len(s) for s in pick_hour_orders)}")
+    print(f"      DEBUG Packing today  : active hours={today_pack}, total orders={sum(len(s) for s in pack_hour_orders)}")
+    print(f"      DEBUG Dispatch today : active hours={today_disp}, total dispatched={sum(disp_hours)}")
     picked_orders = sum(1 for o in orders_proc.values() if o["picked"])
     packed_orders = sum(1 for o in orders_proc.values() if o["packed"])
     dispatched_orders = sum(1 for o in orders_proc.values() if o["dispatched"])
