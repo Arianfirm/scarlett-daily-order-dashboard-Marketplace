@@ -20,86 +20,110 @@ jwt = r.json()["jwt"]
 print("      ✓ Login success")
 H = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
 
-# 2. Create report - FIXED VERSION
+# 2. Create report - FIXED: FIND AND DELETE ACTIVE REPORT
 print("\n[2/5] Creating report...")
 
+def _find_and_delete_duplicate(report_type_id="3"):
+    """Find existing report of type 3 and delete it"""
+    try:
+        print(f"      Checking existing reports (type_id={report_type_id})...")
+        # List all reports
+        resp = requests.get(f"{BASE_URL}/api/v1/report_schedules?per_page=100", headers=H, timeout=30)
+        if resp.status_code != 200:
+            print(f"      ⚠ Cannot list reports: {resp.status_code}")
+            return False
+        
+        data = resp.json()
+        items = data.get("data", [])
+        
+        for item in items:
+            attrs = item.get("attributes", {})
+            if str(attrs.get("report_type_id", "")) == str(report_type_id):
+                # Check if it's for today
+                from_date = attrs.get("from_date", "")
+                if from_date == TODAY:
+                    report_id = item.get("id")
+                    print(f"      ⚠ Found active report for today (ID: {report_id}), deleting...")
+                    del_resp = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{report_id}", headers=H, timeout=30)
+                    print(f"      ✓ Delete status: {del_resp.status_code}")
+                    if del_resp.status_code in [200, 204]:
+                        print(f"      ✓ Successfully deleted report {report_id}")
+                        return True
+        print(f"      ✓ No active report found for today")
+        return True
+    except Exception as e:
+        print(f"      ⚠ Error finding/deleting: {e}")
+        return False
+
 def _create_report_safe(payload_dict, label="Report"):
-    """Create report, auto-delete if duplicate exists then retry."""
-    import re as _rex
+    """Create report, delete existing first"""
     
-    # First attempt
-    print(f"      Attempting to create {label}...")
+    # 1. Find and delete any existing report first
+    if not _find_and_delete_duplicate("3"):
+        print(f"      ⚠ Could not delete existing report, will try anyway...")
+    
+    # 2. Wait a moment for delete to process
+    time.sleep(2)
+    
+    # 3. Create new report
+    print(f"      Creating new {label}...")
     resp = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
     cd = resp.json() if resp.text.strip() else {}
-
-    # If 400 with "already exists" error
-    if resp.status_code == 400:
-        err = cd.get("errors", "")
-        print(f"      DEBUG: Error response: {err}")
+    
+    # If still duplicate, try to list and delete again
+    if resp.status_code == 400 and "already exists" in str(cd.get("errors", "")):
+        print(f"      ⚠ Still duplicate, trying to find and delete...")
+        import re as _rex
         
-        # Extract ID from error message
+        # Try to find the actual report ID from error
+        err = cd.get("errors", "")
         m = _rex.search(r'Report schedule number:\s*(\d+)', str(err))
         if m:
             dup_id = m.group(1)
-            print(f"      ⚠ Duplicate found (ID: {dup_id}), deleting...")
+            print(f"      ⚠ Duplicate ID from error: {dup_id}")
             
-            # DELETE the duplicate
+            # Try to delete by this ID
             dr = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{dup_id}", headers=H, timeout=30)
-            print(f"      ✓ Deleted (status: {dr.status_code})")
+            print(f"      Delete status: {dr.status_code}")
             
-            # ONLY retry if DELETE was successful (200) or if 404 (already deleted)
-            if dr.status_code in [200, 204, 404]:
-                if dr.status_code == 404:
-                    print(f"      ⚠ Report already deleted, retrying create...")
-                else:
-                    print(f"      ✓ Successfully deleted, retrying create...")
-                
-                # RETRY - create new report after deletion
-                print(f"      Retrying POST...")
+            if dr.status_code in [200, 204]:
+                print(f"      ✓ Deleted duplicate, retrying...")
+                time.sleep(2)
+                # Retry create
                 resp2 = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
                 cd2 = resp2.json() if resp2.text.strip() else {}
                 
-                if resp2.status_code == 400:
-                    # Still duplicate? Check if same ID
-                    err2 = cd2.get("errors", "")
-                    m2 = _rex.search(r'Report schedule number:\s*(\d+)', str(err2))
-                    if m2 and m2.group(1) == dup_id:
-                        # Same ID still exists - force delete with different approach
-                        print(f"      ⚠ Report {dup_id} still exists, trying force delete...")
-                        # Try to delete with different endpoint
-                        dr2 = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{dup_id}", headers=H, timeout=30)
-                        print(f"      Force delete status: {dr2.status_code}")
-                        
-                        # Try one more time
-                        resp3 = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
-                        cd3 = resp3.json() if resp3.text.strip() else {}
-                        
-                        if resp3.status_code != 200:
-                            raise Exception(f"{label} retry failed after force delete: {cd3}")
-                        
-                        rid = cd3.get("data", {}).get("id")
-                        if not rid:
-                            raise Exception(f"{label} retry: no ID in response: {cd3}")
+                if resp2.status_code == 200:
+                    rid = cd2.get("data", {}).get("id")
+                    if rid:
                         print(f"      ✓ {label} created (ID: {rid}) ← ID baru!")
                         return rid
-                
-                if resp2.status_code != 200:
-                    raise Exception(f"{label} retry failed: {resp2.status_code} - {cd2}")
-                
-                # Success after retry
-                rid = cd2.get("data", {}).get("id")
-                if not rid:
-                    raise Exception(f"{label} retry: no ID in response: {cd2}")
-                print(f"      ✓ {label} created (ID: {rid}) ← ID baru!")
-                return rid
-            else:
-                # DELETE failed with unexpected status
-                raise Exception(f"{label} DELETE failed with status {dr.status_code}")
-        else:
-            # 400 but not duplicate - raise error
-            raise Exception(f"{label} 400: {cd}")
-
-    # Success on first attempt
+                else:
+                    # Last resort: list all and delete manually
+                    print(f"      ⚠ Retry failed, trying to list and delete all type 3...")
+                    list_resp = requests.get(f"{BASE_URL}/api/v1/report_schedules?per_page=100", headers=H, timeout=30)
+                    if list_resp.status_code == 200:
+                        items = list_resp.json().get("data", [])
+                        for item in items:
+                            attrs = item.get("attributes", {})
+                            if str(attrs.get("report_type_id", "")) == "3":
+                                rid = item.get("id")
+                                print(f"      Deleting report {rid}...")
+                                requests.delete(f"{BASE_URL}/api/v1/report_schedules/{rid}", headers=H, timeout=30)
+                        
+                        # Final attempt
+                        time.sleep(3)
+                        resp3 = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
+                        cd3 = resp3.json() if resp3.text.strip() else {}
+                        if resp3.status_code == 200:
+                            rid = cd3.get("data", {}).get("id")
+                            if rid:
+                                print(f"      ✓ {label} created (ID: {rid}) ← ID baru!")
+                                return rid
+        
+        raise Exception(f"{label} failed: {resp.status_code} - {cd}")
+    
+    # Success
     if resp.status_code == 200:
         rid = cd.get("data", {}).get("id")
         if not rid:
@@ -107,7 +131,6 @@ def _create_report_safe(payload_dict, label="Report"):
         print(f"      ✓ {label} created (ID: {rid})")
         return rid
     
-    # Other error
     raise Exception(f"{label} failed: {resp.status_code} - {cd}")
 
 payload = {"report_schedule": {
