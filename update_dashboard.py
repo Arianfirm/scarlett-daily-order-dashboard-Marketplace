@@ -358,11 +358,25 @@ try:
     c_disp_by= _col(processing_cols, "dispatched by")
     c_order_date = _col(processing_cols, "order date")
     c_qty = _col(processing_cols, "total ordered qty", "ordered quantity", "qty")
+    c_coll = _col(processing_cols, "collection date")
 
     print(f"      Detected columns: order={c_order!r}, status={c_status!r}, order_date={c_order_date!r}, qty={c_qty!r}")
     print(f"      pick_time={c_pick_t!r}, picked_by={c_pick_by!r}")
     print(f"      pack_time={c_pack_t!r}, packed_by={c_pack_by!r}")
     print(f"      disp_time={c_disp_t!r}, dispatched_by={c_disp_by!r}")
+    print(f"      collection_date={c_coll!r}")
+
+    # Filter hanya baris dengan Collection Date == TODAY
+    if c_coll:
+        before = len(processing_rows)
+        processing_rows = [r for r in processing_rows
+                           if (r.get(c_coll) or "").strip().startswith(
+                               datetime.strptime(TODAY, "%Y-%m-%d").strftime("%d/%m/%Y")
+                           ) or (r.get(c_coll) or "").strip().startswith(TODAY)]
+        after = len(processing_rows)
+        print(f"      Filter Collection Date={TODAY}: {before} → {after} rows")
+    else:
+        print(f"      ⚠ 'Collection Date' column not found — no date filter applied!")
 
     import re as _re2
     def _parse_dt(s):
@@ -454,6 +468,17 @@ try:
                 dispatcher_count[db] = dispatcher_count.get(db, 0) + 1
 
     total_proc_orders = len(orders_proc)
+
+    # Debug: min/max timestamps per activity
+    all_pick_times = [_parse_dt(r.get(c_pick_t) or "") for r in processing_rows if c_pick_t]
+    all_pack_times = [_parse_dt(r.get(c_pack_t) or "") for r in processing_rows if c_pack_t]
+    all_disp_times = [_parse_dt(r.get(c_disp_t) or "") for r in processing_rows if c_disp_t]
+    all_pick_times = [t for t in all_pick_times if t]
+    all_pack_times = [t for t in all_pack_times if t]
+    all_disp_times = [t for t in all_disp_times if t]
+    print(f"      DEBUG Picking Time  : min={min(all_pick_times) if all_pick_times else 'N/A'} | max={max(all_pick_times) if all_pick_times else 'N/A'}")
+    print(f"      DEBUG Packing Time  : min={min(all_pack_times) if all_pack_times else 'N/A'} | max={max(all_pack_times) if all_pack_times else 'N/A'}")
+    print(f"      DEBUG Dispatch Time : min={min(all_disp_times) if all_disp_times else 'N/A'} | max={max(all_disp_times) if all_disp_times else 'N/A'}")
     picked_orders = sum(1 for o in orders_proc.values() if o["picked"])
     packed_orders = sum(1 for o in orders_proc.values() if o["packed"])
     dispatched_orders = sum(1 for o in orders_proc.values() if o["dispatched"])
