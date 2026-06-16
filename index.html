@@ -998,27 +998,31 @@ async function loadTrendCharts(){
     packingHourC =dualChart('packingHourChart', wh&&wh.pack_hour_orders, wh&&wh.pack_hour_qty,  'rgba(124,58,237,.6)', 'rgba(13,158,92,1)');
     dispatchHourC=singleChart('dispatchHourChart', wh&&wh.dispatch_hours, 'rgba(13,158,92,.6)');
 
-    // Per-hour detail tables: Jam | Jumlah Picker/Packer | Output | Rata-rata
-    function hourTable(outputArr, workerArr, workerLabel){
+    // Per-hour detail tables: Jam | Worker Aktif | Unique Orders | Total Qty | Avg Orders/Worker | Avg Qty/Worker
+    function hourTable(orderArr, qtyArr, workerArr, workerLabel){
       const rows=hLabels.map((lbl,h)=>{
-        const out=(outputArr&&outputArr[h])||0;
+        const orders=(orderArr&&orderArr[h])||0;
+        const qty=(qtyArr&&qtyArr[h])||0;
         const workers=(workerArr&&workerArr[h])||0;
-        if(out===0&&workers===0) return null;
-        const avg=workers>0?(out/workers).toFixed(1):'—';
+        if(orders===0&&qty===0&&workers===0) return null;
+        const avgOrd=workers>0?(orders/workers).toFixed(1):'—';
+        const avgQty=workers>0?(qty/workers).toFixed(1):'—';
         return `<tr>
           <td class="mono">${lbl}</td>
           <td class="mono">${n(workers)}</td>
-          <td class="mono">${n(out)}</td>
-          <td class="mono" style="font-weight:700;color:var(--pink)">${avg}</td>
+          <td class="mono">${n(orders)}</td>
+          <td class="mono">${n(qty)}</td>
+          <td class="mono" style="font-weight:700;color:var(--pink)">${avgOrd}</td>
+          <td class="mono" style="font-weight:700;color:var(--blue)">${avgQty}</td>
         </tr>`;
       }).filter(Boolean);
       if(!rows.length) return `<div style="font-size:12px;color:var(--muted);padding:8px 0">Tidak ada data</div>`;
       return `<table>
-        <thead><tr><th>Jam</th><th>Jumlah ${workerLabel}</th><th>Output</th><th>Rata-rata / ${workerLabel}</th></tr></thead>
+        <thead><tr><th>Jam</th><th>${workerLabel} Aktif</th><th>Unique Orders</th><th>Total Qty</th><th>Avg Orders/${workerLabel}</th><th>Avg Qty/${workerLabel}</th></tr></thead>
         <tbody>${rows.join('')}</tbody></table>`;
     }
-    document.getElementById('pick-hour-tbl').innerHTML=hourTable(wh&&wh.pick_hour_orders, wh&&wh.pick_hour_pickers, 'Picker');
-    document.getElementById('pack-hour-tbl').innerHTML=hourTable(wh&&wh.pack_hour_orders, wh&&wh.pack_hour_packers, 'Packer');
+    document.getElementById('pick-hour-tbl').innerHTML=hourTable(wh&&wh.pick_hour_orders, wh&&wh.pick_hour_qty, wh&&wh.pick_hour_pickers, 'Picker');
+    document.getElementById('pack-hour-tbl').innerHTML=hourTable(wh&&wh.pack_hour_orders, wh&&wh.pack_hour_qty, wh&&wh.pack_hour_packers, 'Packer');
 
     if(!wh){
       document.getElementById('page-trend').insertAdjacentHTML('afterbegin',
