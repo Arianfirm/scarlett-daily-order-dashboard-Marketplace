@@ -78,16 +78,25 @@ else:
                     items = [items]
                 for item in items:
                     attrs = item.get("attributes") or {}
+                    iid   = str(item.get("id") or "").strip()
                     rt    = str(attrs.get("report_type_id") or "")
                     fd    = str(attrs.get("from_date") or attrs.get("date") or "")
-                    iid   = str(item.get("id") or "").strip()
-                    print(f"      Candidate: id={iid} type_id={rt} from_date={fd}")
-                    if rt == "3" and TODAY in fd and iid:
+                    ed    = str(attrs.get("end_date") or "")
+                    print(f"      Candidate: id={iid} | type_id={rt!r} | from={fd!r} | end={ed!r}")
+                    print(f"        attr keys: {list(attrs.keys())}")
+                    # Match: from_date dan end_date = hari ini (tidak cek report_type_id)
+                    if iid and TODAY in fd and TODAY in ed:
                         report_id = iid
-                        print(f"      ✓ Matched existing schedule ID: {report_id}")
+                        print(f"      ✓ Selected id={report_id} (from={fd}, end={ed})")
                         break
+                    else:
+                        reasons = []
+                        if not iid:           reasons.append("id kosong")
+                        if TODAY not in fd:   reasons.append(f"from_date {fd!r} bukan {TODAY}")
+                        if TODAY not in ed:   reasons.append(f"end_date {ed!r} bukan {TODAY}")
+                        print(f"        Ditolak: {', '.join(reasons) or 'unknown'}")
                 if not report_id:
-                    print(f"      Full list response: {json.dumps(ld)[:1000]}")
+                    print(f"      Full list response: {json.dumps(ld)[:1500]}")
             else:
                 print(f"      List endpoint: {lr.text[:500]}")
         except Exception as e:
