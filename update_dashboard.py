@@ -180,7 +180,7 @@ try:
         qty = int(float(r.get(_qty_col) or 0)) if _qty_col else 0
         if on not in orders_seen:
             order_date_str = r.get("Order Date") or ""
-            hm = _re.search(r",\s*(\d{2}):", order_date_str)
+            hm = _re.search(r"[,\s]+(\d{2}):", order_date_str)
             hr = int(hm.group(1)) if hm else 0
             orders_seen[on] = {"st": st, "qty": 0, "hr": hr}
             hourly_orders[hr] += 1

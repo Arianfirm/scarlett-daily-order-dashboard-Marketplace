@@ -466,7 +466,7 @@ function parse(rows){
     const city=addrParts.find(p=>/^(KAB\.|KOTA |KABUPATEN )/.test(p))||addrParts[0]||'-';
     const pay=(r['Payment Method']||'').trim();
     const ts=(r['Order Date']||'');
-    const hm=ts.match(/,\s*(\d{2}):/);
+    const hm=ts.match(/[,\s]+(\d{2}):/);
     const hr=hm?parseInt(hm[1]):0;
     mpS.add(mp);stS.add(st);
     if(!orders[on])orders[on]={mp,st,prov,city,pay,hr,items:[]};
