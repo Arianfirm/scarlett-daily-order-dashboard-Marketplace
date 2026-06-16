@@ -45,20 +45,40 @@ payload = {"report_schedule": {
     "notification_type": "email", "carrier_code": []
 }}
 cr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload, timeout=30)
-if cr.status_code != 200:
-    print(f"      ✗ HTTP {cr.status_code}")
-    print(f"      Response text : {cr.text[:2000]}")
+if cr.status_code == 200:
+    cd = cr.json()
+    if cd.get("status_code") != 1000:
+        print(f"      ✗ {json.dumps(cd, indent=2)}"); exit(1)
+    report_id = cd["data"]["id"]
+    print(f"      ✓ Report created (ID: {report_id})")
+else:
+    print(f"      ✗ HTTP {cr.status_code} — {cr.text[:500]}")
     try:
-        print(f"      Response JSON : {json.dumps(cr.json(), indent=2)}")
+        err = cr.json()
     except Exception:
-        print(f"      Response JSON : (not parseable)")
-    print(f"      Payload sent  : {json.dumps(payload, indent=2)}")
-cr.raise_for_status()
-cd = cr.json()
-if cd.get("status_code") != 1000:
-    print(f"      ✗ {json.dumps(cd, indent=2)}"); exit(1)
-report_id = cd["data"]["id"]
-print(f"      ✓ Report created (ID: {report_id})")
+        err = {}
+    err_msg = str(err.get("message") or err.get("error") or cr.text)
+    if "same report schedule" in err_msg.lower():
+        import re as _re_sched
+        # 1. Coba ambil ID dari field JSON (data.id atau top-level)
+        existing_id = None
+        for _src in (err.get("data") or {}, err):
+            for _key in ("id", "report_schedule_id", "schedule_id", "schedule_number"):
+                _val = str(_src.get(_key, "")).strip()
+                if _val and _val != "None":
+                    existing_id = _val; break
+            if existing_id: break
+        # 2. Fallback: ekstrak angka terpanjang dari pesan error
+        if not existing_id:
+            _nums = _re_sched.findall(r'\b\d{6,}\b', err_msg)
+            existing_id = _nums[0] if _nums else None
+        if existing_id:
+            print(f"      ↩ Duplicate — reusing existing schedule ID: {existing_id}")
+            report_id = existing_id
+        else:
+            print(f"      ✗ Duplicate but cannot extract ID. Full response: {err}"); exit(1)
+    else:
+        print(f"      ✗ Unhandled API error: {err_msg}"); exit(1)
 
 # 3. Poll
 print("\n[3/5] Waiting for report...")
