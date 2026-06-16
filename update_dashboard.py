@@ -357,8 +357,9 @@ try:
     c_disp_t = _col(processing_cols, "dispatch time")
     c_disp_by= _col(processing_cols, "dispatched by")
     c_order_date = _col(processing_cols, "order date")
+    c_qty = _col(processing_cols, "total ordered qty", "ordered quantity", "qty")
 
-    print(f"      Detected columns: order={c_order!r}, status={c_status!r}, order_date={c_order_date!r}")
+    print(f"      Detected columns: order={c_order!r}, status={c_status!r}, order_date={c_order_date!r}, qty={c_qty!r}")
     print(f"      pick_time={c_pick_t!r}, picked_by={c_pick_by!r}")
     print(f"      pack_time={c_pack_t!r}, packed_by={c_pack_by!r}")
     print(f"      disp_time={c_disp_t!r}, dispatched_by={c_disp_by!r}")
@@ -381,6 +382,10 @@ try:
     pick_hours, pack_hours, disp_hours = [0]*24, [0]*24, [0]*24
     pick_hour_pickers = [set() for _ in range(24)]
     pack_hour_packers = [set() for _ in range(24)]
+    pick_hour_orders = [set() for _ in range(24)]
+    pack_hour_orders = [set() for _ in range(24)]
+    pick_hour_qty = [0]*24
+    pack_hour_qty = [0]*24
     pick_deltas, pack_deltas, disp_deltas = [], [], []
 
     for r in processing_rows:
@@ -397,6 +402,10 @@ try:
             if pt:
                 orders_proc[on]["picked"] = True
                 pick_hours[pt.hour] += 1
+                pick_hour_orders[pt.hour].add(on)
+                if c_qty:
+                    try: pick_hour_qty[pt.hour] += int(float(r.get(c_qty) or 0))
+                    except: pass
                 if c_pick_by:
                     pb_h = (r.get(c_pick_by) or "").strip()
                     if pb_h:
@@ -413,6 +422,10 @@ try:
             if pkt:
                 orders_proc[on]["packed"] = True
                 pack_hours[pkt.hour] += 1
+                pack_hour_orders[pkt.hour].add(on)
+                if c_qty:
+                    try: pack_hour_qty[pkt.hour] += int(float(r.get(c_qty) or 0))
+                    except: pass
                 if c_pack_by:
                     pkb_h = (r.get(c_pack_by) or "").strip()
                     if pkb_h:
@@ -458,6 +471,8 @@ try:
 
     pick_hour_picker_counts = [len(s) for s in pick_hour_pickers]
     pack_hour_packer_counts = [len(s) for s in pack_hour_packers]
+    pick_hour_order_counts  = [len(s) for s in pick_hour_orders]
+    pack_hour_order_counts  = [len(s) for s in pack_hour_orders]
 
     warehouse_summary = {
         "total_orders": total_proc_orders,
@@ -468,8 +483,8 @@ try:
         "avg_pick_min": avg_pick_min,
         "avg_pack_min": avg_pack_min,
         "avg_dispatch_min": avg_disp_min,
-        "pick_hours": pick_hours,
-        "pack_hours": pack_hours,
+        "pick_hours": pick_hour_order_counts,
+        "pack_hours": pack_hour_order_counts,
         "dispatch_hours": disp_hours,
         "top_picker": top_picker,
         "top_packer": top_packer,
@@ -478,6 +493,10 @@ try:
         "low_packer": low_packer,
         "pick_hour_pickers": pick_hour_picker_counts,
         "pack_hour_packers": pack_hour_packer_counts,
+        "pick_hour_orders": pick_hour_order_counts,
+        "pack_hour_orders": pack_hour_order_counts,
+        "pick_hour_qty": pick_hour_qty,
+        "pack_hour_qty": pack_hour_qty,
     }
 
     summary_path = "data/history/daily_summary.json"
