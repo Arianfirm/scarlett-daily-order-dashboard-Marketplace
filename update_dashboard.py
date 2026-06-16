@@ -88,7 +88,37 @@ else:
         if report_id:
             print(f"      ↩ Duplicate — reusing cached b2c_order_report_id: {report_id}")
         else:
-            print(f"      ✗ Duplicate but no cached b2c_order_report_id. Exiting."); exit(1)
+            print(f"      ↩ Duplicate — no cache, falling back to GET list lookup...")
+            report_id = None
+            try:
+                lr = requests.get(
+                    f"{BASE_URL}/api/v1/report_schedules",
+                    headers=H,
+                    params={"from_date": TODAY, "end_date": TODAY},
+                    timeout=30
+                )
+                print(f"      List HTTP {lr.status_code}")
+                if lr.status_code == 200 and lr.text.strip():
+                    ld = lr.json()
+                    items = ld.get("data") or []
+                    if isinstance(items, dict):
+                        items = [items]
+                    for item in items:
+                        attrs = item.get("attributes") or {}
+                        iid = str(item.get("id") or "").strip()
+                        fd  = str(attrs.get("from_date") or attrs.get("date") or "")
+                        ed  = str(attrs.get("end_date") or "")
+                        print(f"      Candidate: id={iid} | from={fd!r} | end={ed!r} | attrs={list(attrs.keys())}")
+                        if iid and TODAY in fd and TODAY in ed:
+                            report_id = iid
+                            print(f"      ✓ Fallback selected id={report_id}")
+                            break
+                    if not report_id:
+                        print(f"      Full list: {json.dumps(ld)[:1000]}")
+            except Exception as _le:
+                print(f"      List lookup error: {_le}")
+            if not report_id:
+                print(f"      ✗ Cannot find schedule. Exiting."); exit(1)
     else:
         print(f"      ✗ Unhandled API error: {err_msg}"); exit(1)
 
@@ -349,8 +379,37 @@ try:
             if proc_id:
                 print(f"      ↩ Duplicate — reusing cached order_processing_report_id: {proc_id}")
             else:
-                print(f"      ⚠ Duplicate but no cached order_processing_report_id — skipping")
+                print(f"      ↩ Duplicate — no cache, falling back to GET list lookup...")
                 proc_id = None
+                try:
+                    plr = requests.get(
+                        f"{BASE_URL}/api/v1/report_schedules",
+                        headers=H,
+                        params={"from_date": TODAY, "end_date": TODAY},
+                        timeout=30
+                    )
+                    print(f"      List HTTP {plr.status_code}")
+                    if plr.status_code == 200 and plr.text.strip():
+                        pld = plr.json()
+                        pitems = pld.get("data") or []
+                        if isinstance(pitems, dict):
+                            pitems = [pitems]
+                        for pitem in pitems:
+                            pattrs = pitem.get("attributes") or {}
+                            piid = str(pitem.get("id") or "").strip()
+                            pfd  = str(pattrs.get("from_date") or pattrs.get("date") or "")
+                            ped  = str(pattrs.get("end_date") or "")
+                            print(f"      Candidate: id={piid} | from={pfd!r} | end={ped!r} | attrs={list(pattrs.keys())}")
+                            if piid and TODAY in pfd and TODAY in ped:
+                                proc_id = piid
+                                print(f"      ✓ Fallback selected id={proc_id}")
+                                break
+                        if not proc_id:
+                            print(f"      Full list: {json.dumps(pld)[:800]}")
+                except Exception as _ple:
+                    print(f"      List lookup error: {_ple}")
+                if not proc_id:
+                    print(f"      ⚠ Cannot find schedule, skipping Order Processing")
         else:
             print(f"      ✗ Unhandled error: {perr_msg}")
             proc_id = None
