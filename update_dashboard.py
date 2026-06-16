@@ -45,14 +45,23 @@ payload = {"report_schedule": {
     "notification_type": "email", "carrier_code": []
 }}
 cr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload, timeout=30)
-if cr.status_code != 200:
-    print(f"      ✗ HTTP {cr.status_code}: {cr.text[:500]}")
-cr.raise_for_status()
-cd = cr.json()
-if cd.get("status_code") != 1000:
-    print(f"      ✗ {json.dumps(cd, indent=2)}"); exit(1)
-report_id = cd["data"]["id"]
-print(f"      ✓ Report created (ID: {report_id})")
+cd = cr.json() if cr.text.strip() else {}
+if cr.status_code == 400:
+    # "Same Report Schedule already exists" — extract existing report number
+    err_msg = cd.get("errors","")
+    import re as _re2
+    m = _re2.search(r'Report schedule number:\s*(\d+)', err_msg)
+    if m:
+        report_id = m.group(1)
+        print(f"      ✓ Report already exists, reusing (ID: {report_id})")
+    else:
+        print(f"      ✗ HTTP 400: {cd}"); exit(1)
+else:
+    cr.raise_for_status()
+    if cd.get("status_code") != 1000:
+        print(f"      ✗ {json.dumps(cd, indent=2)}"); exit(1)
+    report_id = cd["data"]["id"]
+    print(f"      ✓ Report created (ID: {report_id})")
 
 # 3. Poll
 print("\n[3/5] Waiting for report...")
@@ -201,13 +210,21 @@ try:
         "notification_type": "email"
     }}
     inv_cr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=inv_payload, timeout=30)
-    if inv_cr.status_code != 200:
-        print(f"      ⚠ HTTP {inv_cr.status_code}: {inv_cr.text[:500]}")
-    inv_cr.raise_for_status()
-    inv_cd = inv_cr.json()
-    if inv_cd.get("status_code") != 1000:
-        print(f"      ⚠ Inventory report failed: {json.dumps(inv_cd, indent=2)}")
+    inv_cd = inv_cr.json() if inv_cr.text.strip() else {}
+    if inv_cr.status_code == 400:
+        import re as _re4
+        m = _re4.search(r'Report schedule number:\s*(\d+)', inv_cd.get("errors",""))
+        if m:
+            inv_id = m.group(1)
+            print(f"      ✓ Inventory report already exists, reusing (ID: {inv_id})")
+        else:
+            print(f"      ⚠ HTTP 400: {inv_cd}")
+            raise Exception(f"Inventory 400: {inv_cd}")
     else:
+        inv_cr.raise_for_status()
+        if inv_cd.get("status_code") != 1000:
+            print(f"      ⚠ Inventory report failed: {json.dumps(inv_cd, indent=2)}")
+            raise Exception("Inventory report creation failed")
         inv_id = inv_cd["data"]["id"]
         print(f"      ✓ Inventory report created (ID: {inv_id})")
 
@@ -293,13 +310,21 @@ try:
         "notification_type": "email"
     }}
     pcr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=proc_payload, timeout=30)
-    if pcr.status_code != 200:
-        print(f"      ⚠ HTTP {pcr.status_code}: {pcr.text[:500]}")
-    pcr.raise_for_status()
-    pcd = pcr.json()
-    if pcd.get("status_code") != 1000:
-        print(f"      ⚠ Order Processing report failed: {json.dumps(pcd, indent=2)[:500]}")
+    pcd = pcr.json() if pcr.text.strip() else {}
+    if pcr.status_code == 400:
+        err_msg = pcd.get("errors","")
+        import re as _re3
+        m = _re3.search(r'Report schedule number:\s*(\d+)', err_msg)
+        if m:
+            proc_id = m.group(1)
+            print(f"      ✓ Order Processing report already exists, reusing (ID: {proc_id})")
+        else:
+            print(f"      ⚠ HTTP 400: {pcd}"); raise Exception(f"Order Processing 400: {pcd}")
     else:
+        pcr.raise_for_status()
+        if pcd.get("status_code") != 1000:
+            print(f"      ⚠ Order Processing report failed: {json.dumps(pcd, indent=2)[:500]}")
+            raise Exception("Order Processing report creation failed")
         proc_id = pcd["data"]["id"]
         print(f"      ✓ Order Processing report created (ID: {proc_id})")
 
