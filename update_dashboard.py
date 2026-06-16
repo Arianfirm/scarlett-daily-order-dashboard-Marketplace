@@ -280,11 +280,4 @@ try:
         import re as _re4
         m = _re4.search(r'Report schedule number:\s*(\d+)', inv_cd.get("errors",""))
         if m:
-            inv_id = m.group(1)
-            print(f"      ✓ Inventory report already exists, reusing (ID: {inv_id})")
-        else:
-            print(f"      ⚠ HTTP 400: {inv_cd}")
-            raise Exception(f"Inventory 400: {inv_cd}")
-    else:
-        inv_cr.raise_for_status()
-        if inv_cd.get("status_code") != 1000:
+            inv_id =
