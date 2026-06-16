@@ -46,6 +46,37 @@ def _delete_existing(report_type_id):
     except Exception as e:
         print(f"      ⚠ Delete existing skipped: {e}")
 
+def _create_report_safe(payload_dict, label="Report"):
+    """Create report, auto-delete if duplicate exists then retry."""
+    import re as _rex
+    resp = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
+    cd = resp.json() if resp.text.strip() else {}
+
+    if resp.status_code == 400:
+        err = cd.get("errors","")
+        m = _rex.search(r'Report schedule number:\s*(\d+)', err)
+        if m:
+            dup_id = m.group(1)
+            print(f"      ⚠ Duplicate found (ID: {dup_id}), deleting...")
+            dr = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{dup_id}", headers=H, timeout=30)
+            print(f"      ✓ Deleted (status: {dr.status_code}), retrying...")
+            # Retry
+            resp = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
+            cd = resp.json() if resp.text.strip() else {}
+            if resp.status_code != 200 or cd.get("status_code") != 1000:
+                raise Exception(f"{label} retry failed: {cd}")
+        else:
+            raise Exception(f"{label} 400: {cd}")
+
+    if resp.status_code == 200:
+        resp.raise_for_status()
+        if cd.get("status_code") != 1000:
+            raise Exception(f"{label} failed: {cd}")
+
+    rid = cd["data"]["id"]
+    print(f"      ✓ {label} created (ID: {rid})")
+    return rid
+
 _delete_existing("3")
 
 payload = {"report_schedule": {
@@ -63,25 +94,7 @@ payload = {"report_schedule": {
     "from_date": TODAY, "end_date": TODAY,
     "notification_type": "email", "carrier_code": []
 }}
-cr = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload, timeout=30)
-cd = cr.json() if cr.text.strip() else {}
-report_reused = False
-if cr.status_code == 400:
-    err_msg = cd.get("errors","")
-    import re as _re2
-    m = _re2.search(r'Report schedule number:\s*(\d+)', err_msg)
-    if m:
-        report_id = m.group(1)
-        report_reused = True
-        print(f"      ✓ Report already exists, reusing (ID: {report_id})")
-    else:
-        print(f"      ✗ HTTP 400: {cd}"); exit(1)
-else:
-    cr.raise_for_status()
-    if cd.get("status_code") != 1000:
-        print(f"      ✗ {json.dumps(cd, indent=2)}"); exit(1)
-    report_id = cd["data"]["id"]
-    print(f"      ✓ Report created (ID: {report_id})")
+report_id = _create_report_safe(payload, "B2C Order Report")
 
 # 3. Poll — if reused, check immediately for existing URL
 print("\n[3/5] Waiting for report...")
