@@ -31,42 +31,58 @@ H = {"Authorization": f"Bearer {jwt}", "Content-Type": "application/json"}
 print("\n[2/5] Creating report...")
 
 # Delete any existing report of type 3 (B2C Order) to avoid "already exists" error
-def _delete_existing(report_type_id):
-    try:
-        lr = requests.get(f"{BASE_URL}/api/v1/report_schedules?per_page=50", headers=H, timeout=30)
-        if lr.status_code == 200 and lr.text.strip():
-            items = lr.json().get("data", [])
-            for item in items:
-                attrs = item.get("attributes", {})
-                if str(attrs.get("report_type_id","")) == str(report_type_id):
-                    rid = item.get("id")
-                    if rid:
-                        dr = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{rid}", headers=H, timeout=30)
-                        print(f"      ✓ Deleted old report type {report_type_id} (ID: {rid}), status: {dr.status_code}")
-    except Exception as e:
-        print(f"      ⚠ Delete existing skipped: {e}")
-
 def _create_report_safe(payload_dict, label="Report"):
-    """Create report, auto-delete if duplicate exists then retry."""
-    import re as _rex
+    """Create report. If duplicate exists, GET and display details."""
     resp = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
     cd = resp.json() if resp.text.strip() else {}
 
     if resp.status_code == 400:
         err = cd.get("errors","")
-        m = _rex.search(r'Report schedule number:\s*(\d+)', err)
-        if m:
-            dup_id = m.group(1)
-            print(f"      ⚠ Duplicate found (ID: {dup_id}), deleting...")
-            dr = requests.delete(f"{BASE_URL}/api/v1/report_schedules/{dup_id}", headers=H, timeout=30)
-            print(f"      ✓ Deleted (status: {dr.status_code}), retrying...")
-            # Retry
-            resp = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
-            cd = resp.json() if resp.text.strip() else {}
-            if resp.status_code != 200 or cd.get("status_code") != 1000:
-                raise Exception(f"{label} retry failed: {cd}")
+        if "already exists" in err.lower():
+            print(f"      ⚠ {label} duplicate detected: {err}")
+            print(f"      → Fetching existing report schedules...")
+            
+            # GET all schedules
+            try:
+                list_resp = requests.get(f"{BASE_URL}/api/v1/report_schedules?per_page=100", headers=H, timeout=30)
+                if list_resp.status_code == 200 and list_resp.text.strip():
+                    schedules = list_resp.json().get("data", [])
+                    report_type = payload_dict.get("report_schedule", {}).get("report_type_id", "?")
+                    
+                    print(f"      → Searching for report_type_id={report_type}...")
+                    found = False
+                    for sched in schedules:
+                        attrs = sched.get("attributes", {})
+                        if str(attrs.get("report_type_id","")) == str(report_type):
+                            found = True
+                            rid = sched.get("id", "N/A")
+                            created = attrs.get("created_at", "N/A")
+                            filename = attrs.get("filename", "N/A")
+                            url = attrs.get("report_url", "N/A")
+                            from_date = attrs.get("from_date", "N/A")
+                            end_date = attrs.get("end_date", "N/A")
+                            
+                            print(f"\n      === Existing {label} ===")
+                            print(f"      id            : {rid}")
+                            print(f"      created_at    : {created}")
+                            print(f"      filename      : {filename}")
+                            print(f"      report_url    : {url}")
+                            print(f"      from_date     : {from_date}")
+                            print(f"      end_date      : {end_date}")
+                            print(f"      ===============================\n")
+                            
+                            return rid
+                    
+                    if not found:
+                        print(f"      ⚠ No existing report found with type {report_type}")
+                        raise Exception(f"{label} duplicate but not found in schedule list")
+                else:
+                    raise Exception(f"{label} could not fetch schedule list")
+            except Exception as e:
+                print(f"      ⚠ Failed to fetch duplicate details: {e}")
+                raise
         else:
-            raise Exception(f"{label} 400: {cd}")
+            raise Exception(f"{label} 400: {err}")
 
     if resp.status_code == 200:
         resp.raise_for_status()
@@ -77,7 +93,6 @@ def _create_report_safe(payload_dict, label="Report"):
     print(f"      ✓ {label} created (ID: {rid})")
     return rid
 
-_delete_existing("3")
 
 payload = {"report_schedule": {
     "report_type_id": "3", "report_format": "csv",
