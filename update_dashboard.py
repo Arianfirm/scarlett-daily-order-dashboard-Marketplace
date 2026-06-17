@@ -6,6 +6,7 @@ EMAIL    = os.getenv("ACHANTO_EMAIL")
 PASSWORD = os.getenv("ACHANTO_PASSWORD")
 BASE_URL = "https://wms-api.anchanto.com"
 TODAY    = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+TODAY_ACHANTO = datetime.now(timezone.utc).strftime("%a %b %-d %Y")  # "Wed Jun 17 2026"
 NOW      = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 RUN_HOUR = datetime.now(timezone.utc).hour
 
@@ -69,35 +70,33 @@ def _create_report_safe(payload_dict, label="Report"):
     if resp.status_code == 400 and "already exists" in err.lower():
         print(f"      ⚠ {label} duplicate: {err}")
 
-        # Extract schedule NUMBER from error message, DELETE it, then re-POST
-        # Error format: "Same Report Schedule already exists (Report schedule number: 2606170025014)"
+        # Achanto returns schedule NUMBER (not internal id) in error message.
+        # Use GET /report_schedules/{number} to fetch the internal id, then poll normally.
         import re as _re_dup
         m = _re_dup.search(r'schedule number[:\s]+(\d+)', err, _re_dup.IGNORECASE)
         if not m:
-            raise Exception(f"{label} duplicate but could not extract schedule number from: {err}")
+            raise Exception(f"{label} duplicate but could not parse schedule number from: {err}")
 
         sched_number = m.group(1)
-        print(f"      → Deleting old schedule number={sched_number}...")
-        del_resp = requests.delete(
+        print(f"      → Fetching existing schedule number={sched_number}...")
+        get_resp = requests.get(
             f"{BASE_URL}/api/v1/report_schedules/{sched_number}",
             headers=H, timeout=30)
-        print(f"      DELETE status={del_resp.status_code} body={del_resp.text[:120]}")
-        if del_resp.status_code not in (200, 204, 404):
-            raise Exception(f"{label} DELETE failed {del_resp.status_code}: {del_resp.text[:200]}")
+        print(f"      GET status={get_resp.status_code} body={get_resp.text[:200]}")
 
-        print(f"      → Re-POSTing {label}...")
-        time.sleep(2)
-        resp2 = requests.post(f"{BASE_URL}/api/v1/report_schedules",
-                              headers=H, json=payload_dict, timeout=30)
-        cd2 = resp2.json() if resp2.text.strip() else {}
-        print(f"      Re-POST status={resp2.status_code}")
-        if resp2.status_code == 200:
-            if cd2.get("status_code") != 1000:
-                raise Exception(f"{label} re-POST failed: {cd2}")
-            rid2 = cd2["data"]["id"]
-            print(f"      ✓ {label} re-created (ID: {rid2})")
-            return rid2
-        raise Exception(f"{label} re-POST failed {resp2.status_code}: {cd2}")
+        if get_resp.status_code == 200 and get_resp.text.strip():
+            gd = get_resp.json()
+            internal_id = gd.get("data", {}).get("id")
+            if internal_id:
+                attrs = gd.get("data", {}).get("attributes", {})
+                print(f"      ✓ Reusing internal id={internal_id} "
+                      f"status={attrs.get('status')} file={attrs.get('filename','')}")
+                return internal_id
+
+        # GET failed or no internal id — cannot proceed
+        raise Exception(
+            f"{label} duplicate: could not resolve internal id from schedule number={sched_number}. "
+            f"GET status={get_resp.status_code} body={get_resp.text[:200]}")
 
     raise Exception(f"{label} POST failed {resp.status_code}: {err or cd}")
 
@@ -116,7 +115,7 @@ payload = {"report_schedule": {
         "1300","1301","1302","1303","1304","1305",
     ],
     "filters": {"company_id": ["2"], "campaign_code": []},
-    "from_date": TODAY, "end_date": TODAY,
+    "from_date": TODAY_ACHANTO, "end_date": TODAY_ACHANTO,
     "notification_type": "email", "carrier_code": []
 }}
 report_id = _create_report_safe(payload, "B2C Order Report")
@@ -331,7 +330,7 @@ try:
         "report_occurrence_id": "5", "mailing_list": [""],
         "field_ids": [str(i) for i in range(1, 2000)],
         "filters": {"company_id": ["2"]},
-        "from_date": TODAY, "end_date": TODAY,
+        "from_date": TODAY_ACHANTO, "end_date": TODAY_ACHANTO,
         "notification_type": "email"
     }}
     proc_id  = _create_report_safe(proc_payload, "Order Processing Report")
