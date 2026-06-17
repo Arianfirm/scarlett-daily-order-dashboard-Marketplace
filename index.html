@@ -869,9 +869,9 @@ async function loadWarehouse(){
       return;
     }
 
-    const pickPct=p(wh.picked_orders,wh.total_orders);
-    const packPct=p(wh.packed_orders,wh.total_orders);
-    const dispPct=p(wh.dispatched_orders,wh.total_orders);
+    const pickPct=p(wh.picked_orders, wh.total_orders_b2c || wh.total_orders);
+    const packPct=p(wh.packed_orders, wh.total_orders_b2c || wh.total_orders);
+    const dispPct=p(wh.dispatched_orders, wh.total_orders_b2c || wh.total_orders);
 
     kpiEl.innerHTML=`
       <div class="kpi k-blue"><div class="kpi-lbl">Picked Orders</div><div class="kpi-val">${n(wh.picked_orders||0)}</div><div class="kpi-sub">${pickPct}% dari total</div></div>
