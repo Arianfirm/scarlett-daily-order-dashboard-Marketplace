@@ -152,7 +152,7 @@ tr:hover td{background:var(--bg3)}
 <body>
 
 <div id="loading">
-  <div class="ll">Scarlett <span>Intelligence</span></div>
+  <div class="ll">Scarlett <span>Marketplace</span></div>
   <div class="lb"><div class="lf"></div></div>
   <div class="lt" id="lmsg">Memuat data order...</div>
 </div>
@@ -237,11 +237,11 @@ tr:hover td{background:var(--bg3)}
       <div id="city-bars"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Bottleneck</div><div class="cs">% pending per MP</div></div></div>
+      <div class="ch"><div><div class="ct">% pending per MP</div><div class="cs"></div></div></div>
       <div id="bneck"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">SKU Masalah</div><div class="cs">Unassigned + Problem</div></div></div>
+      <div class="ch"><div><div class="ct">Unassigned + Problem</div><div class="cs"></div></div></div>
       <div id="sku-prob"></div>
     </div>
   </div>
@@ -1067,7 +1067,7 @@ window.showPage=function(page){
   document.getElementById('page-trend').style.display=page==='trend'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  const titles={overview:'Daily Order Overview',stock:'Stock Level Daily',history:'History 30 Hari',warehouse:'Warehouse Performance',trend:'Trend Per Jam — Picking, Packing, Dispatch'};
+  const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 30 Hari',warehouse:'Warehouse Performance',trend:'Trend Per Jam — Picking, Packing, Dispatch'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
   if(page==='history'&&!HISTORY_LOADED) loadHistory();
@@ -1075,7 +1075,7 @@ window.showPage=function(page){
   if(page==='trend'){TREND_LOADED=false; loadTrendCharts();}
 };
 
-// ── Stock Level ────────────────────────────────────────────────────────────
+// ── Stock Daily ────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
 
 let STOCK_PAGE=1;
