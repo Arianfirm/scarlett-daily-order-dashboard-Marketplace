@@ -31,7 +31,16 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Stash our fresh data files
           git add data/
-          git diff --staged --quiet && exit 0
+          git diff --staged --quiet && { echo "No changes."; exit 0; }
+
+          # Fetch latest remote state, reset to it, then restore our data files
+          git fetch origin main
+          git reset --soft origin/main
+          git add data/
+          git diff --staged --quiet && { echo "No changes after sync."; exit 0; }
+
           git commit -m "chore: update data $(date -u +'%Y-%m-%d %H:%M UTC')"
-          git push
+          git push origin main
