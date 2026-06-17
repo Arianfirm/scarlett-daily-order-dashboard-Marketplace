@@ -32,7 +32,7 @@ print("\n[2/5] Creating report...")
 
 # Delete any existing report of type 3 (B2C Order) to avoid "already exists" error
 def _create_report_safe(payload_dict, label="Report"):
-    """Create report. If duplicate exists, GET and display details."""
+    """Create report. If duplicate exists, audit response structure."""
     resp = requests.post(f"{BASE_URL}/api/v1/report_schedules", headers=H, json=payload_dict, timeout=30)
     cd = resp.json() if resp.text.strip() else {}
 
@@ -40,46 +40,52 @@ def _create_report_safe(payload_dict, label="Report"):
         err = cd.get("errors","")
         if "already exists" in err.lower():
             print(f"      ⚠ {label} duplicate detected: {err}")
-            print(f"      → Fetching existing report schedules...")
+            print(f"      → Auditing GET /report_schedules response structure...")
             
-            # GET all schedules
+            # GET all schedules for audit
             try:
                 list_resp = requests.get(f"{BASE_URL}/api/v1/report_schedules?per_page=100", headers=H, timeout=30)
                 if list_resp.status_code == 200 and list_resp.text.strip():
-                    schedules = list_resp.json().get("data", [])
-                    report_type = payload_dict.get("report_schedule", {}).get("report_type_id", "?")
+                    full_json = list_resp.json()
+                    schedules = full_json.get("data", [])
                     
-                    print(f"      → Searching for report_type_id={report_type}...")
-                    found = False
+                    print(f"\n      === RAW RESPONSE: {len(schedules)} schedules found ===")
+                    print(f"      Top-level keys: {list(full_json.keys())}\n")
+                    
+                    # Print first 5 items with full structure
+                    for idx, sched in enumerate(schedules[:5]):
+                        print(f"      --- Item {idx+1} ---")
+                        print(f"      Type: {type(sched)}")
+                        print(f"      Keys: {list(sched.keys())}")
+                        print(f"      Raw JSON: {json.dumps(sched, indent=6)}")
+                        print()
+                    
+                    # Collect all unique keys across all items
+                    all_keys = set()
                     for sched in schedules:
-                        attrs = sched.get("attributes", {})
-                        if str(attrs.get("report_type_id","")) == str(report_type):
-                            found = True
-                            rid = sched.get("id", "N/A")
-                            created = attrs.get("created_at", "N/A")
-                            filename = attrs.get("filename", "N/A")
-                            url = attrs.get("report_url", "N/A")
-                            from_date = attrs.get("from_date", "N/A")
-                            end_date = attrs.get("end_date", "N/A")
-                            
-                            print(f"\n      === Existing {label} ===")
-                            print(f"      id            : {rid}")
-                            print(f"      created_at    : {created}")
-                            print(f"      filename      : {filename}")
-                            print(f"      report_url    : {url}")
-                            print(f"      from_date     : {from_date}")
-                            print(f"      end_date      : {end_date}")
-                            print(f"      ===============================\n")
-                            
-                            return rid
+                        if isinstance(sched, dict):
+                            all_keys.update(sched.keys())
+                            if "attributes" in sched:
+                                attrs = sched.get("attributes", {})
+                                if isinstance(attrs, dict):
+                                    all_keys.update([f"attributes.{k}" for k in attrs.keys()])
                     
-                    if not found:
-                        print(f"      ⚠ No existing report found with type {report_type}")
-                        raise Exception(f"{label} duplicate but not found in schedule list")
+                    print(f"      === ALL AVAILABLE KEYS ACROSS {len(schedules)} ITEMS ===")
+                    print(f"      {sorted(all_keys)}\n")
+                    
+                    # Don't raise, return first ID for now (for audit)
+                    if schedules:
+                        first_id = schedules[0].get("id", "N/A")
+                        print(f"      → Using first schedule ID: {first_id}")
+                        return first_id
+                    else:
+                        print(f"      ⚠ No schedules in response")
+                        raise Exception(f"{label} duplicate but schedules list empty")
                 else:
+                    print(f"      ⚠ GET /report_schedules failed or empty response")
                     raise Exception(f"{label} could not fetch schedule list")
             except Exception as e:
-                print(f"      ⚠ Failed to fetch duplicate details: {e}")
+                print(f"      ⚠ Audit error: {e}")
                 raise
         else:
             raise Exception(f"{label} 400: {err}")
