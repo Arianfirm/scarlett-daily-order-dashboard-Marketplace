@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scarlett — Daily Order Marketplace</title>
+<title>Scarlett — Daily Order Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -152,7 +152,7 @@ tr:hover td{background:var(--bg3)}
 <body>
 
 <div id="loading">
-  <div class="ll">Scarlett <span>Marketplace</span></div>
+  <div class="ll">Scarlett <span>Intelligence</span></div>
   <div class="lb"><div class="lf"></div></div>
   <div class="lt" id="lmsg">Memuat data order...</div>
 </div>
@@ -162,13 +162,13 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Intelligence</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
   <div class="sb-sec" style="padding-top:14px">
     <button class="navtab on" id="nav-overview" onclick="showPage('overview')">📦 Order Overview</button>
-    <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Daily</button>
+    <button class="navtab" id="nav-stock" onclick="showPage('stock')">📊 Stock Level Daily</button>
     <button class="navtab" id="nav-history" onclick="showPage('history')">🕐 History 30 Hari</button>
     <button class="navtab" id="nav-warehouse" onclick="showPage('warehouse')">🏭 Warehouse</button>
     <button class="navtab" id="nav-trend" onclick="showPage('trend')">📈 Trend Per Jam</button>
@@ -876,7 +876,12 @@ async function loadWarehouse(){
       <div class="kpi k-blue"><div class="kpi-lbl">Picked Orders</div><div class="kpi-val">${n(wh.picked_orders||0)}</div><div class="kpi-sub">${pickPct}% dari total</div></div>
       <div class="kpi k-purple"><div class="kpi-lbl">Packed Orders</div><div class="kpi-val">${n(wh.packed_orders||0)}</div><div class="kpi-sub">${packPct}% dari total</div></div>
       <div class="kpi k-green"><div class="kpi-lbl">Dispatched Orders</div><div class="kpi-val">${n(wh.dispatched_orders||0)}</div><div class="kpi-sub">${dispPct}% dari total</div></div>
-      <div class="kpi k-amber"><div class="kpi-lbl">Pending Orders</div><div class="kpi-val">${n(wh.pending_orders||0)}</div><div class="kpi-sub">belum dispatch</div><span class="kpi-tag">${n(wh.pending_orders||0)}</span></div>`;
+      <div class="kpi k-amber"><div class="kpi-lbl">Pending Orders</div><div class="kpi-val">${n(wh.pending_orders||0)}</div><div class="kpi-sub">belum dispatch</div><span class="kpi-tag">${n(wh.pending_orders||0)}</span></div>
+      <div class="kpi k-blue"><div class="kpi-lbl">👷 Active Pickers</div><div class="kpi-val">${n(wh.active_pickers||0)}</div><div class="kpi-sub">picker aktif hari ini</div></div>
+      <div class="kpi k-purple"><div class="kpi-lbl">📦 Active Packers</div><div class="kpi-val">${n(wh.active_packers||0)}</div><div class="kpi-sub">packer aktif hari ini</div></div>
+      <div class="kpi k-green"><div class="kpi-lbl">🚚 Active Dispatchers</div><div class="kpi-val">${n(wh.active_dispatchers||0)}</div><div class="kpi-sub">dispatcher aktif hari ini</div></div>
+      <div class="kpi k-amber"><div class="kpi-lbl">⚡ Avg Pick/Picker</div><div class="kpi-val">${Math.round(wh.avg_pick_per_picker||0)}</div><div class="kpi-sub">orders per picker</div></div>
+      <div class="kpi k-pink" style="--pink-bg:rgba(236,72,153,.12)"><div class="kpi-lbl">⚡ Avg Pack/Packer</div><div class="kpi-val">${Math.round(wh.avg_pack_per_packer||0)}</div><div class="kpi-sub">orders per packer</div></div>`;
 
     // Funnel — top of funnel = B2C orders created today
     const steps=[
@@ -904,29 +909,46 @@ async function loadWarehouse(){
         <div class="hb-tr"><div class="hb-f" style="width:${p(cnt,max)}%;background:${barColor}"></div></div>
       </div>`).join('');
     }
+    function renderRankTable(arr, icon, color, label){
+      if(!arr||!arr.length) return `<div style="font-size:12px;color:var(--muted);padding:8px 0">Tidak ada data</div>`;
+      const rows = arr.map(([name,cnt],i)=>`
+        <tr>
+          <td style="width:32px;text-align:center;font-weight:700;color:${i<3?color:'var(--muted)'}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>
+          <td>${icon} ${name}</td>
+          <td style="text-align:right;font-weight:700;font-family:var(--mono);color:${color}">${n(cnt)}</td>
+        </tr>`).join('');
+      return `<table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr>
+          <th style="text-align:center;padding:6px 4px;border-bottom:1px solid var(--border);color:var(--muted)">#</th>
+          <th style="padding:6px 4px;border-bottom:1px solid var(--border);color:var(--muted)">${label}</th>
+          <th style="text-align:right;padding:6px 4px;border-bottom:1px solid var(--border);color:var(--muted)">Output</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    }
     document.getElementById('wh-productivity').innerHTML=`
       <div class="g2" style="margin-bottom:0">
         <div>
-          <div class="cs" style="margin-bottom:6px;font-weight:600">🏆 Top Picker</div>
-          ${renderProdList(wh.top_picker,'📤','#e8345a')}
+          <div class="cs" style="margin-bottom:8px;font-weight:600">🏆 Top 10 Pickers Today</div>
+          ${renderRankTable(wh.top_picker,'📤','#e8345a','Picker Name')}
         </div>
         <div>
-          <div class="cs" style="margin-bottom:6px;font-weight:600">🔻 Low Picker</div>
-          ${renderProdList(wh.low_picker,'📤','#94a3b8')}
+          <div class="cs" style="margin-bottom:8px;font-weight:600">🏆 Top 10 Packers Today</div>
+          ${renderRankTable(wh.top_packer,'📦','#1d5fd4','Packer Name')}
         </div>
       </div>
       <div class="g2" style="margin-top:14px;margin-bottom:0">
         <div>
-          <div class="cs" style="margin-bottom:6px;font-weight:600">🏆 Top Packer</div>
-          ${renderProdList(wh.top_packer,'📦','#1d5fd4')}
+          <div class="cs" style="margin-bottom:8px;font-weight:600">🔻 Low Picker</div>
+          ${renderProdList(wh.low_picker,'📤','#94a3b8')}
         </div>
         <div>
-          <div class="cs" style="margin-bottom:6px;font-weight:600">🔻 Low Packer</div>
+          <div class="cs" style="margin-bottom:8px;font-weight:600">🔻 Low Packer</div>
           ${renderProdList(wh.low_packer,'📦','#94a3b8')}
         </div>
       </div>
       <div style="margin-top:14px">
-        <div class="cs" style="margin-bottom:6px;font-weight:600">🏆 Top Dispatcher</div>
+        <div class="cs" style="margin-bottom:8px;font-weight:600">🏆 Top Dispatcher</div>
         ${renderProdList(wh.top_dispatcher,'🚚','#0d9e5c')}
       </div>`;
 
@@ -1044,7 +1066,7 @@ window.showPage=function(page){
   document.getElementById('page-trend').style.display=page==='trend'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 30 Hari',warehouse:'Warehouse Performance',trend:'Trend Per Jam — Picking, Packing, Dispatch'};
+  const titles={overview:'Daily Order Overview',stock:'Stock Level Daily',history:'History 30 Hari',warehouse:'Warehouse Performance',trend:'Trend Per Jam — Picking, Packing, Dispatch'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
   if(page==='history'&&!HISTORY_LOADED) loadHistory();
@@ -1052,7 +1074,7 @@ window.showPage=function(page){
   if(page==='trend'){TREND_LOADED=false; loadTrendCharts();}
 };
 
-// ── Stock────────────────────────────────────────────────────────────
+// ── Stock Level ────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
 
 let STOCK_PAGE=1;
