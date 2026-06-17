@@ -556,7 +556,7 @@
     "fulfilled": 8020,
     "pending": 2357,
     "fulfillment_pct": 65.1,
-    "total_atp": 44196305,
+    "total_atp": 44194930,
     "peak_hour": 12,
     "peak_hour_orders": 1816,
     "peak_hour_qty": 2408,
@@ -613,7 +613,7 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-17 07:59:30 UTC",
+    "last_updated": "2026-06-17 08:21:59 UTC",
     "sku_count": 2119,
     "warehouse": {
       "total_orders": 30994,
@@ -723,6 +723,26 @@
         [
           "OPAN PICKERDUA",
           720
+        ],
+        [
+          "PAJRIANSYAH PACKERTIGADUATUJUH",
+          632
+        ],
+        [
+          "AZIS DUADUA",
+          628
+        ],
+        [
+          "RIO PACKERSERATUSDELAPANTUJUH",
+          615
+        ],
+        [
+          "IPANUDIN PACKERSERATUSEMPATLIMA",
+          612
+        ],
+        [
+          "PRAYOGA PACKERSERATUSTIGAPULUH",
+          594
         ]
       ],
       "top_packer": [
@@ -745,6 +765,26 @@
         [
           "MEILANI PACKERDUASATUENAM",
           202
+        ],
+        [
+          "PUTRI PACKERDUADUADUA",
+          195
+        ],
+        [
+          "TARI PACKERLIMATIGA",
+          193
+        ],
+        [
+          "SUPARDI PACKEREMPAT",
+          192
+        ],
+        [
+          "SALMINAH PACKERSERATUSSEBELAS",
+          188
+        ],
+        [
+          "TIKA PACKERSERATUSDELAPAN",
+          184
         ]
       ],
       "top_dispatcher": [
@@ -968,7 +1008,13 @@
         0,
         0,
         0
-      ]
+      ],
+      "active_pickers": 25,
+      "active_packers": 132,
+      "active_dispatchers": 8,
+      "total_workforce": 164,
+      "avg_pick_per_picker": 384.4,
+      "avg_pack_per_packer": 68.5
     }
   }
 ]
