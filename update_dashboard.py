@@ -93,7 +93,18 @@ def _create_report_safe(payload_dict, label="Report"):
             print(f"      Matches for type={type_needed}: {len(matches)}")
             for s in matches:
                 a = s.get("attributes", {})
-                print(f"        id={s['id']} from={a.get('from_date')} status={a.get('status')} file={a.get('filename','')}")
+                # Print ALL fields needed for audit
+                print(f"        id={s['id']}")
+                print(f"          number      = {a.get('number','N/A')}")
+                print(f"          created_at  = {a.get('created_at','N/A')}")
+                print(f"          updated_at  = {a.get('updated_at','N/A')}")
+                print(f"          from_date   = {a.get('from_date','N/A')}")
+                print(f"          end_date    = {a.get('end_date','N/A')}")
+                print(f"          status      = {a.get('status','N/A')}")
+                print(f"          report_url  = {'YES' if a.get('report_url') else 'NO'}")
+                print(f"          filename    = {a.get('filename','N/A')}")
+                # Print ALL keys available so we find 'generated_at' or 'number' field name
+                print(f"          ALL KEYS    = {sorted(a.keys())}")
 
             if matches:
                 # 1. Filter from_date == TODAY
@@ -380,6 +391,53 @@ try:
         print(f"      ✓ {len(processing_rows):,} rows · {len(processing_cols)} cols")
         with open("data/order_processing.csv", "w", encoding="utf-8", newline="") as f:
             f.write(ptxt)
+
+        # ── FRESHNESS AUDIT ───────────────────────────────────────────────────
+        print(f"      === PROCESSING FRESHNESS AUDIT ===")
+        print(f"      ROW COUNT = {len(processing_rows):,}")
+        try:
+            from datetime import datetime as _dtp
+            from collections import Counter as _Ctr
+            _pl = [c.strip().lower() for c in processing_cols]
+            def _pcol(*names):
+                for n in names:
+                    if n.lower() in _pl:
+                        return processing_cols[_pl.index(n.lower())]
+                return None
+            _cp = _pcol("picking time","order picking time")
+            _ck = _pcol("packing time","order packing time")
+            _cd = _pcol("dispatch time","dispatched time","dispatched at")
+            _fmts = ("%d/%m/%Y, %H:%M:%S","%d/%m/%Y, %H:%M",
+                     "%d/%m/%Y %H:%M:%S","%d/%m/%Y %H:%M",
+                     "%Y-%m-%d %H:%M:%S","%Y-%m-%d %H:%M")
+            def _pts(s):
+                s = (s or "").strip()
+                for f in _fmts:
+                    try: return _dtp.strptime(s, f)
+                    except: pass
+                return None
+            pick_ts, pack_ts, disp_ts = [], [], []
+            pick_h = _Ctr()
+            for _r in processing_rows:
+                p = _pts(_r.get(_cp, "") if _cp else "")
+                if p: pick_ts.append(p); pick_h[p.hour] += 1
+                k = _pts(_r.get(_ck, "") if _ck else "")
+                if k: pack_ts.append(k)
+                d = _pts(_r.get(_cd, "") if _cd else "")
+                if d: disp_ts.append(d)
+            for lbl, arr in [("PICK", pick_ts), ("PACK", pack_ts), ("DISP", disp_ts)]:
+                if arr:
+                    arr.sort()
+                    print(f"      FIRST {lbl} = {arr[0]}")
+                    print(f"      LAST  {lbl} = {arr[-1]}")
+                else:
+                    print(f"      {lbl} = no data")
+            print(f"      PICK ROWS PER HOUR:")
+            for _h in range(24):
+                if pick_h[_h]: print(f"        {_h:02d}:00 → {pick_h[_h]:,}")
+        except Exception as _fe:
+            print(f"      ⚠ Freshness audit failed: {_fe}")
+        print(f"      === END FRESHNESS AUDIT ===")
     else:
         print("      ⚠ Order Processing timeout, warehouse KPI will be empty")
 
