@@ -880,6 +880,7 @@ async function loadWarehouse(){
       <div class="kpi k-blue"><div class="kpi-lbl">👷 Active Pickers</div><div class="kpi-val">${n(wh.active_pickers||0)}</div><div class="kpi-sub">picker aktif hari ini</div></div>
       <div class="kpi k-purple"><div class="kpi-lbl">📦 Active Packers</div><div class="kpi-val">${n(wh.active_packers||0)}</div><div class="kpi-sub">packer aktif hari ini</div></div>
       <div class="kpi k-green"><div class="kpi-lbl">🚚 Active Dispatchers</div><div class="kpi-val">${n(wh.active_dispatchers||0)}</div><div class="kpi-sub">dispatcher aktif hari ini</div></div>
+      <div class="kpi k-amber"><div class="kpi-lbl">👥 Total Workforce</div><div class="kpi-val">${n(wh.total_workforce||0)}</div><div class="kpi-sub">unique staff aktif hari ini</div></div>
       <div class="kpi k-amber"><div class="kpi-lbl">⚡ Avg Pick/Picker</div><div class="kpi-val">${Math.round(wh.avg_pick_per_picker||0)}</div><div class="kpi-sub">orders per picker</div></div>
       <div class="kpi k-pink" style="--pink-bg:rgba(236,72,153,.12)"><div class="kpi-lbl">⚡ Avg Pack/Packer</div><div class="kpi-val">${Math.round(wh.avg_pack_per_packer||0)}</div><div class="kpi-sub">orders per packer</div></div>`;
 
