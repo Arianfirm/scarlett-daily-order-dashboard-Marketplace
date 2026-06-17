@@ -184,6 +184,8 @@ os.makedirs("data/history", exist_ok=True)
 
 with open("data/orders.csv", "w", encoding="utf-8", newline="") as f:
     f.write(csv_text)
+    # Save total B2C orders for warehouse KPI denominator
+total_b2c_orders = len(rows)  # Total orders from B2C Order Report (type_id=3)
 meta = {"date": TODAY, "last_updated": NOW,
         "run_at_hour": datetime.now(timezone.utc).hour,
         "total_rows": len(rows), "columns": cols}
@@ -569,6 +571,7 @@ try:
 
     warehouse_summary = {
         "total_orders": total_proc_orders,
+        "total_orders_b2c": total_b2c_orders,  # NEW: Total orders from B2C Report (created today)
         "picked_orders": picked_orders,
         "packed_orders": packed_orders,
         "dispatched_orders": dispatched_orders,
