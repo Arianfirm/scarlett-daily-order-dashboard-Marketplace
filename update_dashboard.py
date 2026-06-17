@@ -1,18 +1,30 @@
 import os, requests, json, time, csv, io
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from collections import Counter
 
 EMAIL    = os.getenv("ACHANTO_EMAIL")
 PASSWORD = os.getenv("ACHANTO_PASSWORD")
 BASE_URL = "https://wms-api.anchanto.com"
-TODAY    = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-TODAY_ACHANTO = datetime.now(timezone.utc).strftime("%a %b %-d %Y")  # "Wed Jun 17 2026"
-NOW      = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-RUN_HOUR = datetime.now(timezone.utc).hour
+
+# ── Timezone setup ────────────────────────────────────────────────────────────
+# WIB (UTC+7) for history date keys and dashboard timestamps
+# UTC for Achanto report requests (from_date / end_date)
+WIB      = timezone(timedelta(hours=7))
+_now_utc = datetime.now(timezone.utc)
+_now_wib = datetime.now(WIB)
+
+TODAY         = _now_wib.strftime("%Y-%m-%d")        # WIB — history/dashboard date key
+NOW           = _now_wib.strftime("%Y-%m-%d %H:%M:%S WIB")  # WIB — dashboard timestamp
+RUN_HOUR      = _now_wib.hour                         # WIB — freshness check
+
+TODAY_ACHANTO = _now_utc.strftime("%a %b %-d %Y")    # UTC — Achanto from_date/end_date
 
 print(f"=== Scarlett Dashboard Updater ===")
-print(f"Run time : {NOW}")
-print(f"Fetching : {TODAY} 00:00 → 23:59")
+print(f"UTC time      : {_now_utc.strftime('%Y-%m-%d %H:%M:%S UTC')}")
+print(f"WIB time      : {_now_wib.strftime('%Y-%m-%d %H:%M:%S WIB')}")
+print(f"TODAY         : {TODAY} (WIB — history/dashboard key)")
+print(f"TODAY_ACHANTO : {TODAY_ACHANTO} (UTC — Achanto report request)")
+print(f"Fetching      : {TODAY} 00:00 → 23:59")
 
 # ── 1. Login ──────────────────────────────────────────────────────────────────
 print("\n[1] Login...")
@@ -70,70 +82,68 @@ def _create_report_safe(payload_dict, label="Report"):
     if resp.status_code == 400 and "already exists" in err.lower():
         print(f"      ⚠ {label} duplicate: {err}")
 
-        # GET /report_schedules list, find by report_type_id, return most recent id
-        import re as _re_dup
+        # Step 1: GET list to find existing schedule id
         type_needed = str(payload_dict["report_schedule"]["report_type_id"])
-
         list_resp = requests.get(
-            f"{BASE_URL}/api/v1/report_schedules?per_page=100",
+            f"{BASE_URL}/api/v1/report_schedules?page[size]=100"
+            f"&include=report_occurrence,report_type,created_by,latest_report",
             headers=H, timeout=30)
-        print(f"      LIST status={list_resp.status_code}")
 
-        if list_resp.status_code == 200 and list_resp.text.strip():
-            schedules = list_resp.json().get("data", [])
-            print(f"      Total schedules in list: {len(schedules)}")
+        if list_resp.status_code != 200 or not list_resp.text.strip():
+            raise Exception(f"{label} GET list failed {list_resp.status_code}")
 
-            # Print ALL for this type
-            matches = []
-            for s in schedules:
-                rt = str(s.get("relationships",{}).get("report_type",{}).get("data",{}).get("id",""))
-                if rt == type_needed:
-                    matches.append(s)
+        schedules = list_resp.json().get("data", [])
+        matches = [s for s in schedules
+                   if str(s.get("relationships",{}).get("report_type",{})
+                            .get("data",{}).get("id","")) == type_needed]
 
-            print(f"      Matches for type={type_needed}: {len(matches)}")
-            for s in matches:
-                a = s.get("attributes", {})
-                # Print ALL fields needed for audit
-                print(f"        id={s['id']}")
-                print(f"          number      = {a.get('number','N/A')}")
-                print(f"          created_at  = {a.get('created_at','N/A')}")
-                print(f"          updated_at  = {a.get('updated_at','N/A')}")
-                print(f"          from_date   = {a.get('from_date','N/A')}")
-                print(f"          end_date    = {a.get('end_date','N/A')}")
-                print(f"          status      = {a.get('status','N/A')}")
-                print(f"          report_url  = {'YES' if a.get('report_url') else 'NO'}")
-                print(f"          filename    = {a.get('filename','N/A')}")
-                # Print ALL keys available so we find 'generated_at' or 'number' field name
-                print(f"          ALL KEYS    = {sorted(a.keys())}")
+        print(f"      Found {len(matches)} schedule(s) for type={type_needed}:")
+        for s in matches:
+            a = s.get("attributes", {})
+            print(f"        id={s['id']} from={a.get('from_date')} "
+                  f"status={a.get('status')} created={a.get('created_at','')[:19]}")
 
-            if matches:
-                # 1. Filter from_date == TODAY
-                today_matches = [s for s in matches
-                                 if (s.get("attributes",{}).get("from_date","") or "").strip() == TODAY]
-                # 2. Filter status == completed
-                completed = [s for s in today_matches
-                             if (s.get("attributes",{}).get("status","") or "").strip() == "completed"]
-                # 3. Pick by created_at descending (most recent)
-                pool = completed if completed else (today_matches if today_matches else matches)
-                def _created_key(s):
-                    v = (s.get("attributes",{}).get("created_at","") or "")
-                    try:
-                        from datetime import datetime as _dt
-                        return _dt.fromisoformat(v.replace("Z",""))
-                    except:
-                        return v
-                best = max(pool, key=_created_key)
-                print(f"      ✓ Reusing id={best['id']} "
-                      f"from={best.get('attributes',{}).get('from_date')} "
-                      f"status={best.get('attributes',{}).get('status')} "
-                      f"created={best.get('attributes',{}).get('created_at','')[:19]}")
-                return best["id"]
+        if not matches:
+            raise Exception(f"{label} duplicate but no schedule found for type={type_needed}")
 
-        # List empty or failed — dump raw response for diagnosis
-        print(f"      RAW LIST RESPONSE: {list_resp.text[:500]}")
-        raise Exception(
-            f"{label} duplicate: GET list returned 0 matches for type={type_needed}. "
-            f"status={list_resp.status_code}")
+        # Step 2: Pick best — today + completed + most recent created_at
+        today_m = [s for s in matches
+                   if (s.get("attributes",{}).get("from_date","") or "").strip() == TODAY]
+        pool = today_m if today_m else matches
+        def _ck(s):
+            v = (s.get("attributes",{}).get("created_at","") or "")
+            try:
+                from datetime import datetime as _dt2
+                return _dt2.fromisoformat(v.replace("Z",""))
+            except: return v
+        best = max(pool, key=_ck)
+        old_id = best["id"]
+        print(f"      → Retrying id={old_id} via POST /retry ...")
+
+        # Step 3: POST /retry — triggers Achanto to regenerate fresh data
+        retry_resp = requests.post(
+            f"{BASE_URL}/api/v1/report_schedules/{old_id}/retry",
+            headers=H, timeout=30)
+        print(f"      RETRY status={retry_resp.status_code}")
+
+        if retry_resp.status_code == 200 and retry_resp.text.strip():
+            rd = retry_resp.json()
+            # Response is the updated list — find our schedule
+            new_schedules = rd.get("data", [])
+            for s in new_schedules:
+                if s.get("id") == old_id:
+                    a = s.get("attributes", {})
+                    print(f"      ✓ Retry triggered: id={old_id} "
+                          f"status={a.get('status')} state={a.get('state')}")
+                    return old_id
+            # id not found in response — still return old_id, poll will wait
+            print(f"      ✓ Retry triggered (id={old_id} not in response, proceeding)")
+            return old_id
+
+        # Retry failed — fall back to reusing old report as-is
+        print(f"      ⚠ RETRY failed {retry_resp.status_code}: {retry_resp.text[:200]}")
+        print(f"      → Falling back to reuse id={old_id} (data may be stale)")
+        return old_id
 
     raise Exception(f"{label} POST failed {resp.status_code}: {err or cd}")
 
@@ -244,7 +254,17 @@ os.makedirs("data/history", exist_ok=True)
 with open("data/orders.csv", "w", encoding="utf-8", newline="") as f:
     f.write(csv_text)
 
-total_b2c_orders = len(rows)   # denominator for Warehouse KPI %
+# Unique Order Numbers from B2C Report — denominator for Warehouse KPI %
+_order_num_col = next((c for c in cols if c.strip().lower() == "order number"), None)
+if _order_num_col:
+    total_b2c_orders = len(set(
+        r.get(_order_num_col, "").strip()
+        for r in rows
+        if r.get(_order_num_col, "").strip()
+    ))
+else:
+    total_b2c_orders = len(rows)  # fallback if column not found
+print(f"      total_b2c_orders (unique orders) = {total_b2c_orders:,}  (raw rows={len(rows):,})")
 
 meta = {"date": TODAY, "last_updated": NOW,
         "run_at_hour": RUN_HOUR,
@@ -497,6 +517,9 @@ try:
     for r in processing_rows:
         on = (r.get(c_order) or "").strip() if c_order else ""
         if not on: continue
+        # FILTER: only orders created TODAY
+        if c_order_date and not _is_today(r.get(c_order_date, "")):
+            continue
         if on not in orders_proc:
             orders_proc[on] = {"picked": False, "packed": False, "dispatched": False}
         order_dt = _parse_dt(r.get(c_order_date) or "") if c_order_date else None
@@ -553,7 +576,19 @@ try:
     picked_orders      = sum(1 for o in orders_proc.values() if o["picked"])
     packed_orders      = sum(1 for o in orders_proc.values() if o["packed"])
     dispatched_orders  = sum(1 for o in orders_proc.values() if o["dispatched"])
-    pending_orders     = total_proc_orders - dispatched_orders
+    pending_orders     = max(0, total_b2c_orders - dispatched_orders)
+
+    print(f"      === WAREHOUSE KPI (orders created TODAY only) ===")
+    print(f"      total_b2c_orders   = {total_b2c_orders:,}  (denominator)")
+    print(f"      orders_proc today  = {total_proc_orders:,}  (unique orders in processing filtered to today)")
+    print(f"      picked_orders      = {picked_orders:,}  ({round(picked_orders/total_b2c_orders*100,1) if total_b2c_orders else 0}%)")
+    print(f"      packed_orders      = {packed_orders:,}  ({round(packed_orders/total_b2c_orders*100,1) if total_b2c_orders else 0}%)")
+    print(f"      dispatched_orders  = {dispatched_orders:,}  ({round(dispatched_orders/total_b2c_orders*100,1) if total_b2c_orders else 0}%)")
+    print(f"      pending_orders     = {pending_orders:,}  ({round(pending_orders/total_b2c_orders*100,1) if total_b2c_orders else 0}%)")
+    print(f"      ===================================================")
+    print(f"      TOTAL_B2C_TODAY  = {total_b2c_orders:,}")
+    print(f"      DISPATCHED_TODAY = {dispatched_orders:,}")
+    print(f"      PENDING_TODAY    = {pending_orders:,}")
 
     avg_pick_min = round(sum(pick_deltas)/len(pick_deltas), 1) if pick_deltas else None
     avg_pack_min = round(sum(pack_deltas)/len(pack_deltas), 1) if pack_deltas else None
