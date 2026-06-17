@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scarlett Daily Order Marketplace</title>
+<title>Scarlett — Daily Order Marketplace</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -162,7 +162,7 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace 2026</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
@@ -195,8 +195,7 @@ tr:hover td{background:var(--bg3)}
   <div id="page-overview">
   <div class="kpi-row" id="kpi"></div>
 
-  <!-- HIDDEN: Order Fulfillment Rate card — restore by removing style="display:none" -->
-  <div class="gf" style="display:none">
+  <div class="gf">
     <div class="card">
       <div class="ch">
         <div><div class="ct">Order Fulfillment Rate</div><div class="cs">Distribusi status seluruh order hari ini</div></div>
@@ -238,11 +237,11 @@ tr:hover td{background:var(--bg3)}
       <div id="city-bars"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">% pending per MP</div><div class="cs"></div></div></div>
+      <div class="ch"><div><div class="ct">Bottleneck</div><div class="cs">% pending per MP</div></div></div>
       <div id="bneck"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Unassigned + Problem</div><div class="cs"></div></div></div>
+      <div class="ch"><div><div class="ct">SKU Masalah</div><div class="cs">Unassigned + Problem</div></div></div>
       <div id="sku-prob"></div>
     </div>
   </div>
@@ -457,7 +456,7 @@ function parse(rows){
     const mp=(r['Marketplace']||'').trim();
     const st=(r['Order Status']||'').trim().toLowerCase().replace(/ /g,'_');
     const sku=(r['Item Name']||'').trim();
-    const qty=parseInt(r['Total Ordered Qty']||r['Ordered Quantity']||r['Ordered Qty'])||0;
+    const qty=parseInt(r['Ordered Quantity'])||0;
     const prov=(r['Shipping Provider']||'').trim();
     // Shipping City tidak tersedia di API — extract dari Shipping Address Line
     // Format: "*****, KAB. BOGOR, KECAMATAN, PROVINSI, ID, POSTCODE"
@@ -466,7 +465,7 @@ function parse(rows){
     const city=addrParts.find(p=>/^(KAB\.|KOTA |KABUPATEN )/.test(p))||addrParts[0]||'-';
     const pay=(r['Payment Method']||'').trim();
     const ts=(r['Order Date']||'');
-    const hm=ts.match(/[,\s]+(\d{2}):/);
+    const hm=ts.match(/,\s*(\d{2}):/);
     const hr=hm?parseInt(hm[1]):0;
     mpS.add(mp);stS.add(st);
     if(!orders[on])orders[on]={mp,st,prov,city,pay,hr,items:[]};
@@ -879,9 +878,9 @@ async function loadWarehouse(){
       <div class="kpi k-green"><div class="kpi-lbl">Dispatched Orders</div><div class="kpi-val">${n(wh.dispatched_orders||0)}</div><div class="kpi-sub">${dispPct}% dari total</div></div>
       <div class="kpi k-amber"><div class="kpi-lbl">Pending Orders</div><div class="kpi-val">${n(wh.pending_orders||0)}</div><div class="kpi-sub">belum dispatch</div><span class="kpi-tag">${n(wh.pending_orders||0)}</span></div>`;
 
-    // Funnel
+    // Funnel — top of funnel = B2C orders created today
     const steps=[
-      {label:'Orders Created',val:wh.total_orders||0,color:'#e8345a'},
+      {label:'Orders Created',val:wh.total_orders_b2c||wh.total_orders||0,color:'#e8345a'},
       {label:'Picked',val:wh.picked_orders||0,color:'#1d5fd4'},
       {label:'Packed',val:wh.packed_orders||0,color:'#7c3aed'},
       {label:'Dispatched',val:wh.dispatched_orders||0,color:'#0d9e5c'},
@@ -999,31 +998,27 @@ async function loadTrendCharts(){
     packingHourC =dualChart('packingHourChart', wh&&wh.pack_hour_orders, wh&&wh.pack_hour_qty,  'rgba(124,58,237,.6)', 'rgba(13,158,92,1)');
     dispatchHourC=singleChart('dispatchHourChart', wh&&wh.dispatch_hours, 'rgba(13,158,92,.6)');
 
-    // Per-hour detail tables: Jam | Worker Aktif | Unique Orders | Total Qty | Avg Orders/Worker | Avg Qty/Worker
-    function hourTable(orderArr, qtyArr, workerArr, workerLabel){
+    // Per-hour detail tables: Jam | Jumlah Picker/Packer | Output | Rata-rata
+    function hourTable(outputArr, workerArr, workerLabel){
       const rows=hLabels.map((lbl,h)=>{
-        const orders=(orderArr&&orderArr[h])||0;
-        const qty=(qtyArr&&qtyArr[h])||0;
+        const out=(outputArr&&outputArr[h])||0;
         const workers=(workerArr&&workerArr[h])||0;
-        if(orders===0&&qty===0&&workers===0) return null;
-        const avgOrd=workers>0?(orders/workers).toFixed(1):'—';
-        const avgQty=workers>0?(qty/workers).toFixed(1):'—';
+        if(out===0&&workers===0) return null;
+        const avg=workers>0?(out/workers).toFixed(1):'—';
         return `<tr>
           <td class="mono">${lbl}</td>
           <td class="mono">${n(workers)}</td>
-          <td class="mono">${n(orders)}</td>
-          <td class="mono">${n(qty)}</td>
-          <td class="mono" style="font-weight:700;color:var(--pink)">${avgOrd}</td>
-          <td class="mono" style="font-weight:700;color:var(--blue)">${avgQty}</td>
+          <td class="mono">${n(out)}</td>
+          <td class="mono" style="font-weight:700;color:var(--pink)">${avg}</td>
         </tr>`;
       }).filter(Boolean);
       if(!rows.length) return `<div style="font-size:12px;color:var(--muted);padding:8px 0">Tidak ada data</div>`;
       return `<table>
-        <thead><tr><th>Jam</th><th>${workerLabel} Aktif</th><th>Unique Orders</th><th>Total Qty</th><th>Avg Orders/${workerLabel}</th><th>Avg Qty/${workerLabel}</th></tr></thead>
+        <thead><tr><th>Jam</th><th>Jumlah ${workerLabel}</th><th>Output</th><th>Rata-rata / ${workerLabel}</th></tr></thead>
         <tbody>${rows.join('')}</tbody></table>`;
     }
-    document.getElementById('pick-hour-tbl').innerHTML=hourTable(wh&&wh.pick_hour_orders, wh&&wh.pick_hour_qty, wh&&wh.pick_hour_pickers, 'Picker');
-    document.getElementById('pack-hour-tbl').innerHTML=hourTable(wh&&wh.pack_hour_orders, wh&&wh.pack_hour_qty, wh&&wh.pack_hour_packers, 'Packer');
+    document.getElementById('pick-hour-tbl').innerHTML=hourTable(wh&&wh.pick_hour_orders, wh&&wh.pick_hour_pickers, 'Picker');
+    document.getElementById('pack-hour-tbl').innerHTML=hourTable(wh&&wh.pack_hour_orders, wh&&wh.pack_hour_packers, 'Packer');
 
     if(!wh){
       document.getElementById('page-trend').insertAdjacentHTML('afterbegin',
@@ -1057,7 +1052,7 @@ window.showPage=function(page){
   if(page==='trend'){TREND_LOADED=false; loadTrendCharts();}
 };
 
-// ── Stock Daily────────────────────────────────────────────────────────────
+// ── Stock────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
 
 let STOCK_PAGE=1;
