@@ -68,70 +68,36 @@ def _create_report_safe(payload_dict, label="Report"):
     err = cd.get("errors", "")
     if resp.status_code == 400 and "already exists" in err.lower():
         print(f"      ⚠ {label} duplicate: {err}")
-        print(f"      → searching schedules list for type={payload_dict['report_schedule']['report_type_id']} from_date={TODAY}...")
 
-        list_resp = requests.get(
-            f"{BASE_URL}/api/v1/report_schedules?per_page=100",
+        # Extract schedule NUMBER from error message, DELETE it, then re-POST
+        # Error format: "Same Report Schedule already exists (Report schedule number: 2606170025014)"
+        import re as _re_dup
+        m = _re_dup.search(r'schedule number[:\s]+(\d+)', err, _re_dup.IGNORECASE)
+        if not m:
+            raise Exception(f"{label} duplicate but could not extract schedule number from: {err}")
+
+        sched_number = m.group(1)
+        print(f"      → Deleting old schedule number={sched_number}...")
+        del_resp = requests.delete(
+            f"{BASE_URL}/api/v1/report_schedules/{sched_number}",
             headers=H, timeout=30)
-        if list_resp.status_code != 200 or not list_resp.text.strip():
-            raise Exception(f"{label} could not fetch schedule list")
+        print(f"      DELETE status={del_resp.status_code} body={del_resp.text[:120]}")
+        if del_resp.status_code not in (200, 204, 404):
+            raise Exception(f"{label} DELETE failed {del_resp.status_code}: {del_resp.text[:200]}")
 
-        schedules = list_resp.json().get("data", [])
-        type_needed = str(payload_dict["report_schedule"]["report_type_id"])
-        from_needed = payload_dict["report_schedule"].get("from_date", "")
-        end_needed  = payload_dict["report_schedule"].get("end_date", "")
-
-        # Print ALL matches for this type so we have evidence in logs
-        all_type_matches = []
-        for sched in schedules:
-            rt_id = str(sched.get("relationships", {})
-                           .get("report_type", {})
-                           .get("data", {})
-                           .get("id", ""))
-            if rt_id == type_needed:
-                all_type_matches.append(sched)
-
-        print(f"      Found {len(all_type_matches)} schedule(s) for type={type_needed}:")
-        for s in all_type_matches:
-            a = s.get("attributes", {})
-            print(f"        id={s['id']} from={a.get('from_date')} end={a.get('end_date')} "
-                  f"status={a.get('status')} created={a.get('created_at','')[:19]} "
-                  f"file={a.get('filename','')}")
-
-        # Select: must match type + from_date + end_date (TODAY)
-        matched = None
-        for sched in all_type_matches:
-            a = sched.get("attributes", {})
-            fd = (a.get("from_date") or "").strip()
-            ed = (a.get("end_date")  or "").strip()
-            # Achanto may return date as YYYY-MM-DD or DD/MM/YYYY; normalise
-            def _normalise(d):
-                for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%d-%m-%Y"):
-                    try:
-                        return datetime.strptime(d, fmt).strftime("%Y-%m-%d")
-                    except:
-                        continue
-                return d
-            if _normalise(fd) == TODAY and _normalise(ed) == TODAY:
-                matched = sched
-                break
-
-        if matched:
-            mid = matched["id"]
-            ma  = matched.get("attributes", {})
-            print(f"      ✓ Reusing schedule id={mid} (from={ma.get('from_date')} "
-                  f"status={ma.get('status')} file={ma.get('filename','')})")
-            return mid
-
-        # If from_needed is empty (e.g. Inventory, no date param) fall back to first match
-        if not from_needed and all_type_matches:
-            mid = all_type_matches[0]["id"]
-            print(f"      ✓ No date filter needed, reusing first match id={mid}")
-            return mid
-
-        raise Exception(
-            f"{label} duplicate but no schedule found for type={type_needed} "
-            f"from={TODAY} end={TODAY}. Matches: {[s['id'] for s in all_type_matches]}")
+        print(f"      → Re-POSTing {label}...")
+        time.sleep(2)
+        resp2 = requests.post(f"{BASE_URL}/api/v1/report_schedules",
+                              headers=H, json=payload_dict, timeout=30)
+        cd2 = resp2.json() if resp2.text.strip() else {}
+        print(f"      Re-POST status={resp2.status_code}")
+        if resp2.status_code == 200:
+            if cd2.get("status_code") != 1000:
+                raise Exception(f"{label} re-POST failed: {cd2}")
+            rid2 = cd2["data"]["id"]
+            print(f"      ✓ {label} re-created (ID: {rid2})")
+            return rid2
+        raise Exception(f"{label} re-POST failed {resp2.status_code}: {cd2}")
 
     raise Exception(f"{label} POST failed {resp.status_code}: {err or cd}")
 
