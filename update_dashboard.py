@@ -553,7 +553,12 @@ try:
     picked_orders      = sum(1 for o in orders_proc.values() if o["picked"])
     packed_orders      = sum(1 for o in orders_proc.values() if o["packed"])
     dispatched_orders  = sum(1 for o in orders_proc.values() if o["dispatched"])
-    pending_orders     = total_proc_orders - dispatched_orders
+    pending_orders = max(0, total_b2c_orders - dispatched_orders)
+    print(f"      TOTAL_B2C_TODAY  = {total_b2c_orders:,}")
+    print(f"      DISPATCHED_TODAY = {dispatched_orders:,}")
+    print(f"      PENDING_TODAY    = {pending_orders:,}")
+    # total_b2c_orders = 16,022 (orders created hari ini saja)
+    # Result: 16,022 - 9,113 = 6,909 ← benar
 
     avg_pick_min = round(sum(pick_deltas)/len(pick_deltas), 1) if pick_deltas else None
     avg_pack_min = round(sum(pack_deltas)/len(pack_deltas), 1) if pack_deltas else None
