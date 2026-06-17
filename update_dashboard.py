@@ -96,9 +96,26 @@ def _create_report_safe(payload_dict, label="Report"):
                 print(f"        id={s['id']} from={a.get('from_date')} status={a.get('status')} file={a.get('filename','')}")
 
             if matches:
-                # Use most recently created (last in list, or sort by id descending)
-                best = max(matches, key=lambda s: int(s["id"]) if str(s["id"]).isdigit() else 0)
-                print(f"      ✓ Reusing id={best['id']}")
+                # 1. Filter from_date == TODAY
+                today_matches = [s for s in matches
+                                 if (s.get("attributes",{}).get("from_date","") or "").strip() == TODAY]
+                # 2. Filter status == completed
+                completed = [s for s in today_matches
+                             if (s.get("attributes",{}).get("status","") or "").strip() == "completed"]
+                # 3. Pick by created_at descending (most recent)
+                pool = completed if completed else (today_matches if today_matches else matches)
+                def _created_key(s):
+                    v = (s.get("attributes",{}).get("created_at","") or "")
+                    try:
+                        from datetime import datetime as _dt
+                        return _dt.fromisoformat(v.replace("Z",""))
+                    except:
+                        return v
+                best = max(pool, key=_created_key)
+                print(f"      ✓ Reusing id={best['id']} "
+                      f"from={best.get('attributes',{}).get('from_date')} "
+                      f"status={best.get('attributes',{}).get('status')} "
+                      f"created={best.get('attributes',{}).get('created_at','')[:19]}")
                 return best["id"]
 
         # List empty or failed — dump raw response for diagnosis
@@ -171,13 +188,20 @@ try:
     if _od_col:
         for _r in rows:
             _s = (_r.get(_od_col) or "").strip()
-            for _fmt in ("%d/%m/%Y %H:%M", "%d/%m/%Y", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+            # Achanto formats: "Wed Jun 17 2026", "Wed Jun 17 2026 10:30", "17/06/2026 10:30", etc
+            for _fmt in ("%a %b %d %Y %H:%M:%S", "%a %b %d %Y %H:%M", "%a %b %d %Y",
+                         "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M", "%d/%m/%Y",
+                         "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d"):
                 try:
                     _d = datetime.strptime(_s, _fmt)
                     _order_dates.append(_d)
                     _hour_counts[_d.hour] += 1
                     break
                 except: pass
+        # Debug: show first 3 raw values if still empty
+        if not _order_dates and rows:
+            sample = [(_r.get(_od_col) or "") for _r in rows[:3]]
+            print(f"      Sample Order Date values: {sample}")
     if _order_dates:
         _order_dates.sort()
         _min_d = _order_dates[0]
