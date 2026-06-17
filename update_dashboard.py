@@ -189,7 +189,8 @@ try:
         for _r in rows:
             _s = (_r.get(_od_col) or "").strip()
             # Achanto formats: "Wed Jun 17 2026", "Wed Jun 17 2026 10:30", "17/06/2026 10:30", etc
-            for _fmt in ("%a %b %d %Y %H:%M:%S", "%a %b %d %Y %H:%M", "%a %b %d %Y",
+            for _fmt in ("%d/%m/%Y, %H:%M:%S", "%d/%m/%Y, %H:%M",
+                         "%a %b %d %Y %H:%M:%S", "%a %b %d %Y %H:%M", "%a %b %d %Y",
                          "%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M", "%d/%m/%Y",
                          "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d"):
                 try:
@@ -500,11 +501,18 @@ try:
     avg_pack_min = round(sum(pack_deltas)/len(pack_deltas), 1) if pack_deltas else None
     avg_disp_min = round(sum(disp_deltas)/len(disp_deltas), 1) if disp_deltas else None
 
-    top_picker     = sorted(picker_count.items(),     key=lambda x: -x[1])[:5]
-    top_packer     = sorted(packer_count.items(),     key=lambda x: -x[1])[:5]
+    top_picker     = sorted(picker_count.items(),     key=lambda x: -x[1])[:10]
+    top_packer     = sorted(packer_count.items(),     key=lambda x: -x[1])[:10]
     top_dispatcher = sorted(dispatcher_count.items(), key=lambda x: -x[1])[:5]
     low_picker     = sorted(picker_count.items(),     key=lambda x:  x[1])[:5]
     low_packer     = sorted(packer_count.items(),     key=lambda x:  x[1])[:5]
+
+    # Workforce productivity
+    active_pickers      = len(picker_count)
+    active_packers      = len(packer_count)
+    active_dispatchers  = len(dispatcher_count)
+    avg_pick_per_picker = round(picked_orders / active_pickers, 1) if active_pickers else 0
+    avg_pack_per_packer = round(packed_orders / active_packers, 1) if active_packers else 0
 
     ph_picker_cnt = [len(s) for s in pick_hour_pickers]
     ph_packer_cnt = [len(s) for s in pack_hour_packers]
@@ -535,6 +543,11 @@ try:
         "pack_hour_orders":  ph_ord_pack,
         "pick_hour_qty":     pick_hour_qty,
         "pack_hour_qty":     pack_hour_qty,
+        "active_pickers":       active_pickers,
+        "active_packers":       active_packers,
+        "active_dispatchers":   active_dispatchers,
+        "avg_pick_per_picker":  avg_pick_per_picker,
+        "avg_pack_per_packer":  avg_pack_per_packer,
     }
 
     spath = "data/history/daily_summary.json"
