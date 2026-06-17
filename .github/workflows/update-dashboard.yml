@@ -32,15 +32,17 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Stash our fresh data files
-          git add data/
-          git diff --staged --quiet && { echo "No changes."; exit 0; }
-
-          # Fetch latest remote state, reset to it, then restore our data files
+          # Fetch remote FIRST before anything
           git fetch origin main
+
+          # Reset local HEAD to remote (keeps working tree intact)
           git reset --soft origin/main
+
+          # Stage only data files
           git add data/
-          git diff --staged --quiet && { echo "No changes after sync."; exit 0; }
+
+          # Nothing changed? done.
+          git diff --staged --quiet && { echo "No changes."; exit 0; }
 
           git commit -m "chore: update data $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push origin main
