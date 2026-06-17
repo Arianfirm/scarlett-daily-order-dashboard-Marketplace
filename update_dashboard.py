@@ -70,33 +70,42 @@ def _create_report_safe(payload_dict, label="Report"):
     if resp.status_code == 400 and "already exists" in err.lower():
         print(f"      ⚠ {label} duplicate: {err}")
 
-        # Achanto returns schedule NUMBER (not internal id) in error message.
-        # Use GET /report_schedules/{number} to fetch the internal id, then poll normally.
+        # GET /report_schedules list, find by report_type_id, return most recent id
         import re as _re_dup
-        m = _re_dup.search(r'schedule number[:\s]+(\d+)', err, _re_dup.IGNORECASE)
-        if not m:
-            raise Exception(f"{label} duplicate but could not parse schedule number from: {err}")
+        type_needed = str(payload_dict["report_schedule"]["report_type_id"])
 
-        sched_number = m.group(1)
-        print(f"      → Fetching existing schedule number={sched_number}...")
-        get_resp = requests.get(
-            f"{BASE_URL}/api/v1/report_schedules/{sched_number}",
+        list_resp = requests.get(
+            f"{BASE_URL}/api/v1/report_schedules?per_page=100",
             headers=H, timeout=30)
-        print(f"      GET status={get_resp.status_code} body={get_resp.text[:200]}")
+        print(f"      LIST status={list_resp.status_code}")
 
-        if get_resp.status_code == 200 and get_resp.text.strip():
-            gd = get_resp.json()
-            internal_id = gd.get("data", {}).get("id")
-            if internal_id:
-                attrs = gd.get("data", {}).get("attributes", {})
-                print(f"      ✓ Reusing internal id={internal_id} "
-                      f"status={attrs.get('status')} file={attrs.get('filename','')}")
-                return internal_id
+        if list_resp.status_code == 200 and list_resp.text.strip():
+            schedules = list_resp.json().get("data", [])
+            print(f"      Total schedules in list: {len(schedules)}")
 
-        # GET failed or no internal id — cannot proceed
+            # Print ALL for this type
+            matches = []
+            for s in schedules:
+                rt = str(s.get("relationships",{}).get("report_type",{}).get("data",{}).get("id",""))
+                if rt == type_needed:
+                    matches.append(s)
+
+            print(f"      Matches for type={type_needed}: {len(matches)}")
+            for s in matches:
+                a = s.get("attributes", {})
+                print(f"        id={s['id']} from={a.get('from_date')} status={a.get('status')} file={a.get('filename','')}")
+
+            if matches:
+                # Use most recently created (last in list, or sort by id descending)
+                best = max(matches, key=lambda s: int(s["id"]) if str(s["id"]).isdigit() else 0)
+                print(f"      ✓ Reusing id={best['id']}")
+                return best["id"]
+
+        # List empty or failed — dump raw response for diagnosis
+        print(f"      RAW LIST RESPONSE: {list_resp.text[:500]}")
         raise Exception(
-            f"{label} duplicate: could not resolve internal id from schedule number={sched_number}. "
-            f"GET status={get_resp.status_code} body={get_resp.text[:200]}")
+            f"{label} duplicate: GET list returned 0 matches for type={type_needed}. "
+            f"status={list_resp.status_code}")
 
     raise Exception(f"{label} POST failed {resp.status_code}: {err or cd}")
 
