@@ -73,14 +73,27 @@ def _create_report_safe(payload_dict, label="Report"):
                     print(f"      === ALL AVAILABLE KEYS ACROSS {len(schedules)} ITEMS ===")
                     print(f"      {sorted(all_keys)}\n")
                     
-                    # Don't raise, return first ID for now (for audit)
-                    if schedules:
-                        first_id = schedules[0].get("id", "N/A")
-                        print(f"      → Using first schedule ID: {first_id}")
-                        return first_id
-                    else:
-                        print(f"      ⚠ No schedules in response")
-                        raise Exception(f"{label} duplicate but schedules list empty")
+                    # Match by report_type via relationships
+                    report_type_needed = payload_dict.get("report_schedule", {}).get("report_type_id", "?")
+                    type_mapping = {"3": "B2C Order Report", "39": "B2C Order Processing Report", "36": "Inventory Report"}
+                    
+                    print(f"      → Matching report_type_id={report_type_needed} ({type_mapping.get(report_type_needed, '?')})")
+                    
+                    matched_id = None
+                    for sched in schedules:
+                        rel = sched.get("relationships", {})
+                        rt_data = rel.get("report_type", {}).get("data", {})
+                        rt_id = rt_data.get("id", "")
+                        
+                        if str(rt_id) == str(report_type_needed):
+                            matched_id = sched.get("id", "N/A")
+                            filename = sched.get("attributes", {}).get("filename", "N/A")
+                            print(f"      ✓ Found matching schedule: id={matched_id}, filename={filename}")
+                            return matched_id
+                    
+                    if not matched_id:
+                        print(f"      ⚠ No matching schedule found for report_type={report_type_needed}")
+                        raise Exception(f"{label} duplicate but no matching schedule found")
                 else:
                     print(f"      ⚠ GET /report_schedules failed or empty response")
                     raise Exception(f"{label} could not fetch schedule list")
