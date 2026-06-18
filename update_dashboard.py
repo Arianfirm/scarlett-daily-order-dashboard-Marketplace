@@ -18,6 +18,7 @@ NOW           = _now_wib.strftime("%Y-%m-%d %H:%M:%S WIB")  # WIB — dashboard 
 RUN_HOUR      = _now_wib.hour                         # WIB — freshness check
 
 TODAY_ACHANTO = _now_utc.strftime("%a %b %-d %Y")    # UTC — Achanto from_date/end_date
+TODAY_ACHANTO_DATE = _now_utc.strftime("%Y-%m-%d")  # UTC — Achanto stored from_date for delete filter
 
 print(f"=== Scarlett Dashboard Updater ===")
 print(f"UTC time      : {_now_utc.strftime('%Y-%m-%d %H:%M:%S UTC')}")
@@ -28,8 +29,15 @@ print(f"Fetching      : {TODAY} 00:00 → 23:59")
 
 # ── 1. Login ──────────────────────────────────────────────────────────────────
 print("\n[1] Login...")
-r = requests.post(f"{BASE_URL}/api/login",
+login_url = f"{BASE_URL}/api/login"
+r = requests.post(login_url,
     json={"api_user": {"email": EMAIL, "password": PASSWORD}}, timeout=30)
+
+print("LOGIN URL:", login_url)
+print("LOGIN STATUS:", r.status_code)
+print("LOGIN RESPONSE:", r.text[:2000])
+print("LOGIN HEADERS:", dict(r.headers))
+
 r.raise_for_status()
 jwt = r.json()["jwt"]
 print("      ✓ Login success")
@@ -91,12 +99,15 @@ def _create_report_safe(payload_dict, label="Report"):
             raise Exception(f"{label} GET list failed {list_resp.status_code}")
 
         schedules = list_resp.json().get("data", [])
+
         to_delete = []
         for s in schedules:
             rt = str(s.get("relationships",{}).get("report_type",{})
                        .get("data",{}).get("id",""))
             from_date = (s.get("attributes",{}).get("from_date","") or "").strip()
-            if rt == type_id and from_date == TODAY:
+            if rt == type_id and from_date == TODAY_ACHANTO_DATE:
+                sid = s['id']
+                print(f"      DELETE MATCH: id={sid} type={rt} from_date={from_date}")
                 to_delete.append(s)
 
         print(f"      Found {len(to_delete)} schedule(s) to delete "
