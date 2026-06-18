@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scarlett — Daily Order Marketplace</title>
+<title>Scarlett — Daily Order Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -152,7 +152,7 @@ tr:hover td{background:var(--bg3)}
 <body>
 
 <div id="loading">
-  <div class="ll">Scarlett <span>Marketplace</span></div>
+  <div class="ll">Scarlett <span>Intelligence</span></div>
   <div class="lb"><div class="lf"></div></div>
   <div class="lt" id="lmsg">Memuat data order...</div>
 </div>
@@ -162,7 +162,7 @@ tr:hover td{background:var(--bg3)}
   <div class="sb-top">
     <div class="sb-logo">
       <div class="sb-icon">S</div>
-      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Marketplace</div></div>
+      <div><div class="sb-name">Scarlett</div><div class="sb-sub">Order Intelligence</div></div>
     </div>
     <div class="sb-date" id="sb-date">—</div>
   </div>
@@ -1155,40 +1155,81 @@ async function loadTrendCharts(){
       });
     }
 
-    if(pickingHourC) pickingHourC.destroy();
-    if(packingHourC) packingHourC.destroy();
-    if(dispatchHourC) dispatchHourC.destroy();
-    pickingHourC =dualChart('pickingHourChart', wh&&wh.pick_hour_orders, wh&&wh.pick_hour_qty,  'rgba(29,95,212,.6)',  'rgba(232,52,90,1)');
-    packingHourC =dualChart('packingHourChart', wh&&wh.pack_hour_orders, wh&&wh.pack_hour_qty,  'rgba(124,58,237,.6)', 'rgba(13,158,92,1)');
-    dispatchHourC=singleChart('dispatchHourChart', wh&&wh.dispatch_hours, 'rgba(13,158,92,.6)');
+    console.log('Trend render start — wh:', wh ? 'available' : 'null/undefined');
 
-    // Per-hour detail tables: Jam | Jumlah Picker/Packer | Output | Rata-rata
+    // Guard: ensure canvas elements exist before creating charts
+    function safeChart(fn, canvasId){
+      const el = document.getElementById(canvasId);
+      if(!el){ console.warn('Canvas not found:', canvasId); return null; }
+      return fn(el);
+    }
+
+    if(pickingHourC)  pickingHourC.destroy();
+    if(packingHourC)  packingHourC.destroy();
+    if(dispatchHourC) dispatchHourC.destroy();
+
+    pickingHourC  = safeChart(el => new Chart(el, {
+      data:{labels:hLabels,datasets:[
+        {type:'bar', label:'Orders', data:(wh&&wh.pick_hour_orders)||Array(24).fill(0), backgroundColor:'rgba(29,95,212,.6)', borderRadius:3, borderSkipped:false, yAxisID:'y', order:2},
+        {type:'line',label:'Qty',    data:(wh&&wh.pick_hour_qty)||Array(24).fill(0),    borderColor:'rgba(232,52,90,1)', backgroundColor:'rgba(232,52,90,.1)', borderWidth:2, pointRadius:3, tension:.3, fill:false, yAxisID:'y2', order:1}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{size:10},boxWidth:10,boxHeight:10,color:'#8c8480',usePointStyle:true}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{size:9},color:'#8c8480',maxRotation:0}},
+          y:{position:'left', grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()},title:{display:true,text:'Orders',font:{size:9},color:'#8c8480'}},
+          y2:{position:'right',grid:{display:false},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()},title:{display:true,text:'Qty',font:{size:9},color:'#8c8480'}}
+        }}
+    }), 'pickingHourChart');
+
+    packingHourC  = safeChart(el => new Chart(el, {
+      data:{labels:hLabels,datasets:[
+        {type:'bar', label:'Orders', data:(wh&&wh.pack_hour_orders)||Array(24).fill(0), backgroundColor:'rgba(124,58,237,.6)', borderRadius:3, borderSkipped:false, yAxisID:'y', order:2},
+        {type:'line',label:'Qty',    data:(wh&&wh.pack_hour_qty)||Array(24).fill(0),    borderColor:'rgba(13,158,92,1)', backgroundColor:'rgba(13,158,92,.1)', borderWidth:2, pointRadius:3, tension:.3, fill:false, yAxisID:'y2', order:1}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:true,position:'top',align:'end',labels:{font:{size:10},boxWidth:10,boxHeight:10,color:'#8c8480',usePointStyle:true}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{size:9},color:'#8c8480',maxRotation:0}},
+          y:{position:'left', grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()},title:{display:true,text:'Orders',font:{size:9},color:'#8c8480'}},
+          y2:{position:'right',grid:{display:false},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()},title:{display:true,text:'Qty',font:{size:9},color:'#8c8480'}}
+        }}
+    }), 'packingHourChart');
+
+    dispatchHourC = safeChart(el => new Chart(el, {
+      type:'bar',
+      data:{labels:hLabels,datasets:[{data:(wh&&wh.dispatch_hours)||Array(24).fill(0),backgroundColor:'rgba(13,158,92,.6)',borderRadius:3,borderSkipped:false}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{x:{grid:{display:false},ticks:{font:{size:9},color:'#8c8480',maxRotation:0}},
+                y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:9},color:'#8c8480',callback:v=>v.toLocaleString()}}}}
+    }), 'dispatchHourChart');
+
+    console.log('Charts created — picking:', !!pickingHourC, 'packing:', !!packingHourC, 'dispatch:', !!dispatchHourC);
+
+    // Per-hour detail tables
     function hourTable(outputArr, workerArr, workerLabel){
       const rows=hLabels.map((lbl,h)=>{
         const out=(outputArr&&outputArr[h])||0;
         const workers=(workerArr&&workerArr[h])||0;
         if(out===0&&workers===0) return null;
         const avg=workers>0?(out/workers).toFixed(1):'—';
-        return `<tr>
-          <td class="mono">${lbl}</td>
-          <td class="mono">${n(workers)}</td>
-          <td class="mono">${n(out)}</td>
-          <td class="mono" style="font-weight:700;color:var(--pink)">${avg}</td>
-        </tr>`;
+        return `<tr><td class="mono">${lbl}</td><td class="mono">${n(workers)}</td><td class="mono">${n(out)}</td><td class="mono" style="font-weight:700;color:var(--pink)">${avg}</td></tr>`;
       }).filter(Boolean);
       if(!rows.length) return `<div style="font-size:12px;color:var(--muted);padding:8px 0">Tidak ada data</div>`;
-      return `<table>
-        <thead><tr><th>Jam</th><th>Jumlah ${workerLabel}</th><th>Output</th><th>Rata-rata / ${workerLabel}</th></tr></thead>
-        <tbody>${rows.join('')}</tbody></table>`;
+      return `<table><thead><tr><th>Jam</th><th>Jumlah ${workerLabel}</th><th>Output</th><th>Rata-rata / ${workerLabel}</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
     }
-    document.getElementById('pick-hour-tbl').innerHTML=hourTable(wh&&wh.pick_hour_orders, wh&&wh.pick_hour_pickers, 'Picker');
-    document.getElementById('pack-hour-tbl').innerHTML=hourTable(wh&&wh.pack_hour_orders, wh&&wh.pack_hour_packers, 'Packer');
+    const pickTbl=document.getElementById('pick-hour-tbl');
+    const packTbl=document.getElementById('pack-hour-tbl');
+    if(pickTbl) pickTbl.innerHTML=hourTable(wh&&wh.pick_hour_orders, wh&&wh.pick_hour_pickers, 'Picker');
+    if(packTbl) packTbl.innerHTML=hourTable(wh&&wh.pack_hour_orders, wh&&wh.pack_hour_packers, 'Packer');
 
     if(!wh){
       document.getElementById('page-trend').insertAdjacentHTML('afterbegin',
-        `<div class="card" style="margin-bottom:14px"><div class="kpi-sub" style="font-size:12px;color:var(--muted)">Data warehouse belum tersedia di daily_summary.json — chart menampilkan 0 untuk semua jam.</div></div>`);
+        `<div class="card" style="margin-bottom:14px"><div class="kpi-sub" style="font-size:12px;color:var(--muted)">Data warehouse belum tersedia — chart menampilkan 0. Jalankan workflow GitHub Actions terlebih dahulu.</div></div>`);
     }
     TREND_LOADED=true;
+    console.log('Trend render complete');
   }catch(err){
     document.getElementById('page-trend').insertAdjacentHTML('afterbegin',
       `<div class="card" style="margin-bottom:14px"><div class="kpi-sub" style="font-size:12px;color:var(--red)">Error: ${err.message}</div></div>`);
@@ -1254,6 +1295,13 @@ window.showPage=function(page){
   if(page==='history'&&!HISTORY_LOADED) loadHistory();
   if(page==='warehouse'){WAREHOUSE_LOADED=false; loadWarehouse();}
   if(page==='trend'){TREND_LOADED=false; loadTrendCharts();}
+  if(page==='docs'){
+    console.log('Dashboard Logic render start');
+    const ts=document.getElementById('sb-upd').textContent.replace('Updated: ','');
+    const rfEl=document.getElementById('doc-last-refresh');
+    if(rfEl) rfEl.textContent=ts||'—';
+    console.log('Dashboard Logic timestamp set:', ts);
+  }
 };
 
 // ── Stock Level ────────────────────────────────────────────────────────────
