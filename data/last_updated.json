@@ -1,8 +1,8 @@
 {
   "date": "2026-06-18",
-  "last_updated": "2026-06-18 12:00:32 WIB",
+  "last_updated": "2026-06-18 12:59:12 WIB",
   "run_at_hour": 12,
-  "total_rows": 17904,
+  "total_rows": 24658,
   "columns": [
     "Marketplace",
     "Order Date",
@@ -11,19 +11,23 @@
     "Kit Name",
     "Ordered Quantity",
     "Total Ordered Qty",
-    "Paid Amount",
     "Payment Method",
     "Order Status",
     "Customer Name",
+    "Shipping Address Line",
+    "Shipping Business Name",
+    "Customer Contact Number",
+    "Shipping City",
+    "Shipping Country",
     "Shipping Provider",
-    "Shipment Type Name",
     "Tracking Number",
     "Order Picking Time",
-    "Order Packing Time",
-    "Shipping Fee",
-    "Billing Name",
-    "Billing Address Line",
-    "Delivery Date (DD/MM/YYYY)",
-    "Dispatch Scheduled Date"
+    "Dispatch Scheduled Date",
+    "Picking Time",
+    "Packing Time",
+    "AWB No",
+    "Country of Origin",
+    "Dispatch Date",
+    "Order Type"
   ]
 }
