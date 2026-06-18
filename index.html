@@ -416,141 +416,110 @@ tr:hover td{background:var(--bg3)}
 
   </div>
   <div id="page-docs" style="display:none">
-    <!-- ── Dashboard Documentation Panel ─────────────────────────────────── -->
+
     <div class="gf">
-      <div class="card" style="padding:0;overflow:hidden">
-
-        <!-- Header accordion trigger -->
-        <button onclick="toggleDoc()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:16px 18px;background:none;border:none;cursor:pointer;font-family:var(--font);text-align:left">
-          <div style="display:flex;align-items:center;gap:10px">
-            <span style="font-size:16px">📋</span>
-            <div>
-              <div style="font-size:12px;font-weight:600;color:var(--text)">Dashboard Logic & Business Rules</div>
-              <div style="font-size:10px;color:var(--muted);margin-top:1px">Data sources, KPI scope, dan business rules yang digunakan</div>
-            </div>
+      <div class="card" style="background:var(--bg3);padding:12px 18px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">🕒 Last Refresh</div>
+            <div id="doc-last-refresh" style="font-size:12px;font-weight:600;color:var(--text);font-family:var(--mono)">—</div>
           </div>
-          <div style="display:flex;align-items:center;gap:10px">
-            <span id="doc-refresh-badge" style="font-size:9px;color:var(--muted);font-family:var(--mono)">—</span>
-            <span id="doc-chevron" style="font-size:12px;color:var(--muted);transition:transform .2s">▼</span>
+          <div style="font-size:10px;color:var(--text);line-height:1.8">
+            <span style="color:var(--green)">✓</span> B2C Order Report (Type 3) &nbsp;
+            <span style="color:var(--green)">✓</span> Order Processing (Type 39) &nbsp;
+            <span style="color:var(--green)">✓</span> Inventory Report (Type 36)
           </div>
-        </button>
-
-        <div id="doc-body" style="display:block;border-top:1px solid var(--border)">
-
-          <!-- Enhancement 1: Last Refresh + Data Sources -->
-          <div style="padding:14px 18px;border-bottom:1px solid var(--border);background:var(--bg3)">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
-              <div>
-                <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">🕒 Last Refresh</div>
-                <div id="doc-last-refresh" style="font-size:12px;font-weight:600;color:var(--text);font-family:var(--mono)">—</div>
-              </div>
-              <div>
-                <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Data Sources</div>
-                <div style="display:flex;flex-direction:column;gap:3px">
-                  <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green)">✓ <span style="color:var(--text)">B2C Order Report (Type 3)</span></div>
-                  <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green)">✓ <span style="color:var(--text)">Order Processing Report (Type 39)</span></div>
-                  <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green)">✓ <span style="color:var(--text)">Inventory Report (Type 36)</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section 1: Data Flow -->
-          <div style="padding:18px;border-bottom:1px solid var(--border)">
-            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">🏗 Dashboard Data Flow</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-              <div style="background:var(--pink-bg);border:1px solid rgba(232,52,90,.15);border-radius:var(--r2);padding:12px">
-                <div style="font-size:10px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">📦 B2C Order Report</div>
-                <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Type = 3 · from_date = Today</div>
-                <div style="font-size:10px;color:var(--text);line-height:1.6">↓ <strong>Order Overview</strong><br>↓ Marketplace Analysis<br>↓ Order Status<br>↓ Trend Per Hour<br>↓ Fulfillment Metrics</div>
-              </div>
-              <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
-                <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">🏭 Order Processing</div>
-                <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Type = 39 · filter Order Date = Today</div>
-                <div style="font-size:10px;color:var(--text);line-height:1.6">↓ <strong>Warehouse KPI</strong><br>↓ Picked Orders<br>↓ Packed Orders<br>↓ Dispatched Orders<br>↓ Pending Orders</div>
-              </div>
-              <div style="background:var(--green-bg);border:1px solid rgba(13,158,92,.15);border-radius:var(--r2);padding:12px">
-                <div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">📊 Inventory Report</div>
-                <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Type = 36 · snapshot real-time</div>
-                <div style="font-size:10px;color:var(--text);line-height:1.6">↓ <strong>Stock Daily</strong><br>↓ ATP Stock<br>↓ SKU Count<br>↓ Inventory Metrics</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Enhancement 2: Live KPI Order Journey -->
-          <div style="padding:18px;border-bottom:1px solid var(--border)">
-            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">📦 Today's Order Journey</div>
-            <div id="doc-journey" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px;align-items:stretch">
-              <!-- filled by refreshDocPanel() -->
-              <div style="font-size:11px;color:var(--muted);padding:8px;grid-column:1/-1">Memuat data warehouse...</div>
-            </div>
-          </div>
-
-          <!-- Section 3: Why Numbers May Differ -->
-          <div style="padding:18px;border-bottom:1px solid var(--border)">
-            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">⚠ Why numbers may differ</div>
-            <div style="background:var(--amber-bg);border:1px solid rgba(201,122,6,.2);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px">
-              <div style="font-size:11px;color:var(--text);line-height:1.7">
-                Order Overview dan Warehouse KPI berasal dari <strong>dua report Achanto yang berbeda</strong> dan di-refresh secara independen. Perbedaan sementara bisa terjadi saat report sedang di-generate atau diperbarui.
-              </div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <div style="background:var(--pink-bg);border:1px solid rgba(232,52,90,.15);border-radius:var(--r2);padding:12px">
-                <div style="font-size:10px;font-weight:700;color:var(--pink);margin-bottom:6px">📦 Order Overview</div>
-                <div style="font-size:10px;color:var(--muted);line-height:1.7">Source: <strong style="color:var(--text)">B2C Order Report (Type 3)</strong><br>Scope: Count distinct order number<br>Filter: Order date = today</div>
-              </div>
-              <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
-                <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:6px">🏭 Warehouse KPI</div>
-                <div style="font-size:10px;color:var(--muted);line-height:1.7">Source: <strong style="color:var(--text)">Order Processing (Type 39)</strong><br>Scope: Count distinct order number<br>Filter: Order date = today</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section 4: Business Rules -->
-          <div style="padding:18px;border-bottom:1px solid var(--border)">
-            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">📌 Business Rules</div>
-            <div style="background:var(--bg3);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px;border-left:3px solid var(--pink)">
-              <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:4px">Dashboard ini menjawab pertanyaan:</div>
-              <div style="font-size:12px;color:var(--pink);font-style:italic">"Dari order yang masuk hari ini, berapa yang sudah di-pick, pack, dan dispatch?"</div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-              <div style="background:var(--green-bg);border:1px solid rgba(13,158,92,.2);border-radius:var(--r2);padding:12px">
-                <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:8px">✅ INCLUDED IN KPI</div>
-                <div style="font-size:10px;color:var(--text);line-height:1.8">Order Date = <strong>Today</strong><br>Picking Date = <strong>Today</strong></div>
-                <div style="margin-top:8px;font-size:9px;color:var(--muted)">Order masuk hari ini dan diproses hari ini</div>
-              </div>
-              <div style="background:var(--red-bg);border:1px solid rgba(204,34,34,.2);border-radius:var(--r2);padding:12px">
-                <div style="font-size:10px;font-weight:700;color:var(--red);margin-bottom:8px">❌ EXCLUDED FROM KPI</div>
-                <div style="font-size:10px;color:var(--text);line-height:1.8">Order Date = <strong>Yesterday</strong><br>Picking Date = <strong>Today</strong></div>
-                <div style="margin-top:8px;font-size:9px;color:var(--muted)">Order kemarin yang diproses hari ini tidak dihitung</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section 5: KPI Scope Checklist -->
-          <div style="padding:18px">
-            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">✅ KPI Scope</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-              ${[
-                [true,  'Order Date = Today untuk semua KPI'],
-                [true,  'COUNT DISTINCT Order Number (bukan rows)'],
-                [true,  'Dashboard refresh otomatis setiap jam'],
-                [true,  'Warehouse KPI hanya order masuk hari ini'],
-                [false, 'Order sebelum hari ini tidak dihitung'],
-                [false, 'Duplicate SKU rows tidak mempengaruhi count'],
-              ].map(([ok,text])=>`
-                <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:${ok?'var(--green-bg)':'var(--red-bg)'};border-radius:var(--r3)">
-                  <span style="font-size:11px;flex-shrink:0;margin-top:1px">${ok?'✅':'❌'}</span>
-                  <span style="font-size:10px;color:var(--text);line-height:1.5">${text}</span>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
-        </div><!-- end doc-body -->
+        </div>
       </div>
     </div>
-    <!-- ── End Documentation Panel ────────────────────────────────────────── -->
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch"><div><div class="ct">🏗 Dashboard Data Flow</div><div class="cs">Sumber data untuk setiap bagian dashboard</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div style="background:var(--pink-bg);border:1px solid rgba(232,52,90,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--pink);margin-bottom:4px">📦 B2C Order Report — Type 3</div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:8px">from_date = Today</div>
+            <div style="font-size:10px;color:var(--text);line-height:1.7">↓ Order Overview<br>↓ Marketplace Analysis<br>↓ Order Status<br>↓ Trend Per Hour<br>↓ Fulfillment Metrics</div>
+          </div>
+          <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:4px">🏭 Order Processing — Type 39</div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:8px">filter Order Date = Today</div>
+            <div style="font-size:10px;color:var(--text);line-height:1.7">↓ Warehouse KPI<br>↓ Picked Orders<br>↓ Packed Orders<br>↓ Dispatched Orders<br>↓ Pending Orders</div>
+          </div>
+          <div style="background:var(--green-bg);border:1px solid rgba(13,158,92,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:4px">📊 Inventory Report — Type 36</div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:8px">snapshot real-time</div>
+            <div style="font-size:10px;color:var(--text);line-height:1.7">↓ Stock Daily<br>↓ ATP Stock<br>↓ SKU Count<br>↓ Inventory Metrics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch"><div><div class="ct">📦 Today's Order Journey</div><div class="cs">Angka live dari data warehouse hari ini</div></div></div>
+        <div id="doc-journey" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px">
+          <div style="grid-column:1/-1;font-size:11px;color:var(--muted);padding:8px 0">Buka tab Warehouse terlebih dahulu agar data tersedia, atau tunggu auto-refresh.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch"><div><div class="ct">⚠ Why Order Overview and Warehouse KPI May Differ</div></div></div>
+        <div style="background:var(--amber-bg);border:1px solid rgba(201,122,6,.2);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px">
+          <div style="font-size:11px;color:var(--text);line-height:1.7">Order Overview dan Warehouse KPI berasal dari <strong>dua report Achanto yang berbeda</strong> dan di-refresh secara independen. Perbedaan sementara bisa terjadi saat report sedang di-generate.</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:var(--pink-bg);border:1px solid rgba(232,52,90,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--pink);margin-bottom:6px">📦 Order Overview</div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.7">Source: B2C Order Report (Type 3)<br>Logic: COUNT DISTINCT Order Number<br>Filter: Order date = today</div>
+          </div>
+          <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:6px">🏭 Warehouse KPI</div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.7">Source: Order Processing (Type 39)<br>Logic: COUNT DISTINCT Order Number<br>Filter: Order date = today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch"><div><div class="ct">📌 Business Rules</div></div></div>
+        <div style="background:var(--bg3);border-left:3px solid var(--pink);border-radius:0 var(--r2) var(--r2) 0;padding:12px 14px;margin-bottom:14px">
+          <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:4px">Dashboard ini menjawab pertanyaan:</div>
+          <div style="font-size:12px;color:var(--pink);font-style:italic">"Dari order yang masuk hari ini, berapa yang sudah di-pick, pack, dan dispatch?"</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:var(--green-bg);border:1px solid rgba(13,158,92,.2);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:8px">✅ INCLUDED IN KPI</div>
+            <div style="font-size:10px;color:var(--text);line-height:1.8">Order Date = <strong>Today</strong><br>Picking Date = <strong>Today</strong></div>
+            <div style="margin-top:6px;font-size:9px;color:var(--muted)">Order masuk hari ini dan diproses hari ini</div>
+          </div>
+          <div style="background:var(--red-bg);border:1px solid rgba(204,34,34,.2);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--red);margin-bottom:8px">❌ EXCLUDED FROM KPI</div>
+            <div style="font-size:10px;color:var(--text);line-height:1.8">Order Date = <strong>Yesterday</strong><br>Picking Date = <strong>Today</strong></div>
+            <div style="margin-top:6px;font-size:9px;color:var(--muted)">Order kemarin yang diproses hari ini tidak dihitung</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch"><div><div class="ct">✅ KPI Scope</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--green-bg);border-radius:var(--r3)"><span style="font-size:11px;flex-shrink:0">✅</span><span style="font-size:10px;color:var(--text)">Order Date = Today untuk semua KPI</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--green-bg);border-radius:var(--r3)"><span style="font-size:11px;flex-shrink:0">✅</span><span style="font-size:10px;color:var(--text)">COUNT DISTINCT Order Number (bukan rows)</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--green-bg);border-radius:var(--r3)"><span style="font-size:11px;flex-shrink:0">✅</span><span style="font-size:10px;color:var(--text)">Dashboard refresh otomatis setiap jam</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--green-bg);border-radius:var(--r3)"><span style="font-size:11px;flex-shrink:0">✅</span><span style="font-size:10px;color:var(--text)">Warehouse KPI hanya order masuk hari ini</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--red-bg);border-radius:var(--r3)"><span style="font-size:11px;flex-shrink:0">❌</span><span style="font-size:10px;color:var(--text)">Order sebelum hari ini tidak dihitung</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:var(--red-bg);border-radius:var(--r3)"><span style="font-size:11px;flex-shrink:0">❌</span><span style="font-size:10px;color:var(--text)">Duplicate SKU rows tidak mempengaruhi count</span></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </main>
 </div>
