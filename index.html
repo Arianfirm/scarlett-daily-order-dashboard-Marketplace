@@ -369,7 +369,142 @@ tr:hover td{background:var(--bg3)}
         <div id="wh-sla"></div>
       </div>
     </div>
-  </div>
+
+    <!-- ── Dashboard Documentation Panel ─────────────────────────────────── -->
+    <div class="gf">
+      <div class="card" style="padding:0;overflow:hidden">
+
+        <!-- Header accordion trigger -->
+        <button onclick="toggleDoc()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:16px 18px;background:none;border:none;cursor:pointer;font-family:var(--font);text-align:left">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:16px">📋</span>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--text)">Dashboard Logic & Business Rules</div>
+              <div style="font-size:10px;color:var(--muted);margin-top:1px">Data sources, KPI scope, dan business rules yang digunakan</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span id="doc-refresh-badge" style="font-size:9px;color:var(--muted);font-family:var(--mono)">—</span>
+            <span id="doc-chevron" style="font-size:12px;color:var(--muted);transition:transform .2s">▼</span>
+          </div>
+        </button>
+
+        <div id="doc-body" style="display:none;border-top:1px solid var(--border)">
+
+          <!-- Enhancement 1: Last Refresh + Data Sources -->
+          <div style="padding:14px 18px;border-bottom:1px solid var(--border);background:var(--bg3)">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+              <div>
+                <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">🕒 Last Refresh</div>
+                <div id="doc-last-refresh" style="font-size:12px;font-weight:600;color:var(--text);font-family:var(--mono)">—</div>
+              </div>
+              <div>
+                <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px">Data Sources</div>
+                <div style="display:flex;flex-direction:column;gap:3px">
+                  <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green)">✓ <span style="color:var(--text)">B2C Order Report (Type 3)</span></div>
+                  <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green)">✓ <span style="color:var(--text)">Order Processing Report (Type 39)</span></div>
+                  <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green)">✓ <span style="color:var(--text)">Inventory Report (Type 36)</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 1: Data Flow -->
+          <div style="padding:18px;border-bottom:1px solid var(--border)">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">🏗 Dashboard Data Flow</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+              <div style="background:var(--pink-bg);border:1px solid rgba(232,52,90,.15);border-radius:var(--r2);padding:12px">
+                <div style="font-size:10px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">📦 B2C Order Report</div>
+                <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Type = 3 · from_date = Today</div>
+                <div style="font-size:10px;color:var(--text);line-height:1.6">↓ <strong>Order Overview</strong><br>↓ Marketplace Analysis<br>↓ Order Status<br>↓ Trend Per Hour<br>↓ Fulfillment Metrics</div>
+              </div>
+              <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
+                <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">🏭 Order Processing</div>
+                <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Type = 39 · filter Order Date = Today</div>
+                <div style="font-size:10px;color:var(--text);line-height:1.6">↓ <strong>Warehouse KPI</strong><br>↓ Picked Orders<br>↓ Packed Orders<br>↓ Dispatched Orders<br>↓ Pending Orders</div>
+              </div>
+              <div style="background:var(--green-bg);border:1px solid rgba(13,158,92,.15);border-radius:var(--r2);padding:12px">
+                <div style="font-size:10px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">📊 Inventory Report</div>
+                <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Type = 36 · snapshot real-time</div>
+                <div style="font-size:10px;color:var(--text);line-height:1.6">↓ <strong>Stock Daily</strong><br>↓ ATP Stock<br>↓ SKU Count<br>↓ Inventory Metrics</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enhancement 2: Live KPI Order Journey -->
+          <div style="padding:18px;border-bottom:1px solid var(--border)">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">📦 Today's Order Journey</div>
+            <div id="doc-journey" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px;align-items:stretch">
+              <!-- filled by refreshDocPanel() -->
+              <div style="font-size:11px;color:var(--muted);padding:8px;grid-column:1/-1">Memuat data warehouse...</div>
+            </div>
+          </div>
+
+          <!-- Section 3: Why Numbers May Differ -->
+          <div style="padding:18px;border-bottom:1px solid var(--border)">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">⚠ Why numbers may differ</div>
+            <div style="background:var(--amber-bg);border:1px solid rgba(201,122,6,.2);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px">
+              <div style="font-size:11px;color:var(--text);line-height:1.7">
+                Order Overview dan Warehouse KPI berasal dari <strong>dua report Achanto yang berbeda</strong> dan di-refresh secara independen. Perbedaan sementara bisa terjadi saat report sedang di-generate atau diperbarui.
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="background:var(--pink-bg);border:1px solid rgba(232,52,90,.15);border-radius:var(--r2);padding:12px">
+                <div style="font-size:10px;font-weight:700;color:var(--pink);margin-bottom:6px">📦 Order Overview</div>
+                <div style="font-size:10px;color:var(--muted);line-height:1.7">Source: <strong style="color:var(--text)">B2C Order Report (Type 3)</strong><br>Scope: Count distinct order number<br>Filter: Order date = today</div>
+              </div>
+              <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
+                <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:6px">🏭 Warehouse KPI</div>
+                <div style="font-size:10px;color:var(--muted);line-height:1.7">Source: <strong style="color:var(--text)">Order Processing (Type 39)</strong><br>Scope: Count distinct order number<br>Filter: Order date = today</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Business Rules -->
+          <div style="padding:18px;border-bottom:1px solid var(--border)">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">📌 Business Rules</div>
+            <div style="background:var(--bg3);border-radius:var(--r2);padding:12px 14px;margin-bottom:12px;border-left:3px solid var(--pink)">
+              <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:4px">Dashboard ini menjawab pertanyaan:</div>
+              <div style="font-size:12px;color:var(--pink);font-style:italic">"Dari order yang masuk hari ini, berapa yang sudah di-pick, pack, dan dispatch?"</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="background:var(--green-bg);border:1px solid rgba(13,158,92,.2);border-radius:var(--r2);padding:12px">
+                <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:8px">✅ INCLUDED IN KPI</div>
+                <div style="font-size:10px;color:var(--text);line-height:1.8">Order Date = <strong>Today</strong><br>Picking Date = <strong>Today</strong></div>
+                <div style="margin-top:8px;font-size:9px;color:var(--muted)">Order masuk hari ini dan diproses hari ini</div>
+              </div>
+              <div style="background:var(--red-bg);border:1px solid rgba(204,34,34,.2);border-radius:var(--r2);padding:12px">
+                <div style="font-size:10px;font-weight:700;color:var(--red);margin-bottom:8px">❌ EXCLUDED FROM KPI</div>
+                <div style="font-size:10px;color:var(--text);line-height:1.8">Order Date = <strong>Yesterday</strong><br>Picking Date = <strong>Today</strong></div>
+                <div style="margin-top:8px;font-size:9px;color:var(--muted)">Order kemarin yang diproses hari ini tidak dihitung</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 5: KPI Scope Checklist -->
+          <div style="padding:18px">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">✅ KPI Scope</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+              ${[
+                [true,  'Order Date = Today untuk semua KPI'],
+                [true,  'COUNT DISTINCT Order Number (bukan rows)'],
+                [true,  'Dashboard refresh otomatis setiap jam'],
+                [true,  'Warehouse KPI hanya order masuk hari ini'],
+                [false, 'Order sebelum hari ini tidak dihitung'],
+                [false, 'Duplicate SKU rows tidak mempengaruhi count'],
+              ].map(([ok,text])=>`
+                <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:${ok?'var(--green-bg)':'var(--red-bg)'};border-radius:var(--r3)">
+                  <span style="font-size:11px;flex-shrink:0;margin-top:1px">${ok?'✅':'❌'}</span>
+                  <span style="font-size:10px;color:var(--text);line-height:1.5">${text}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+        </div><!-- end doc-body -->
+      </div>
+    </div>
+    <!-- ── End Documentation Panel ────────────────────────────────────────── -->
 
   <div id="page-trend" style="display:none">
     <div class="gf">
@@ -970,6 +1105,7 @@ async function loadWarehouse(){
       slaRow('Avg Packing → Dispatch', wh.avg_dispatch_min);
 
     WAREHOUSE_LOADED=true;
+    refreshDocPanel(wh);
   }catch(err){
     kpiEl.innerHTML=`<div class="kpi k-red" style="grid-column:1/-1"><div class="kpi-lbl">Error</div><div class="kpi-sub" style="margin-top:8px;font-size:12px">${err.message}</div></div>`;
   }
@@ -1054,6 +1190,44 @@ async function loadTrendCharts(){
   }
 }
 
+window.toggleDoc=function(){
+  const body=document.getElementById('doc-body');
+  const chev=document.getElementById('doc-chevron');
+  const open=body.style.display==='none';
+  body.style.display=open?'block':'none';
+  chev.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+};
+
+window.refreshDocPanel=function(wh){
+  // Enhancement 1: sync timestamp from sidebar
+  const ts=document.getElementById('sb-upd').textContent.replace('Updated: ','');
+  const rfEl=document.getElementById('doc-last-refresh');
+  const badgeEl=document.getElementById('doc-refresh-badge');
+  if(rfEl) rfEl.textContent=ts||'—';
+  if(badgeEl) badgeEl.textContent=ts&&ts!=='—'?('↻ '+ts):'';
+
+  // Enhancement 2: live journey with KPI values
+  if(!wh) return;
+  const denom=wh.total_orders_b2c||wh.total_orders||1;
+  const steps=[
+    {icon:'🛒',label:'Orders Created',val:denom,pct:null,color:'#e8345a',bg:'var(--pink-bg)',border:'rgba(232,52,90,.2)'},
+    {icon:'📤',label:'Picked',val:wh.picked_orders||0,pct:p(wh.picked_orders||0,denom),color:'#1d5fd4',bg:'var(--blue-bg)',border:'rgba(29,95,212,.2)'},
+    {icon:'📦',label:'Packed',val:wh.packed_orders||0,pct:p(wh.packed_orders||0,denom),color:'#7c3aed',bg:'var(--purple-bg)',border:'rgba(109,40,217,.2)'},
+    {icon:'🚚',label:'Dispatched',val:wh.dispatched_orders||0,pct:p(wh.dispatched_orders||0,denom),color:'#0d9e5c',bg:'var(--green-bg)',border:'rgba(13,158,92,.2)'},
+    {icon:'⏳',label:'Pending',val:wh.pending_orders||0,pct:p(wh.pending_orders||0,denom),color:'#c97a06',bg:'var(--amber-bg)',border:'rgba(201,122,6,.2)'},
+  ];
+  const jEl=document.getElementById('doc-journey');
+  if(!jEl) return;
+  jEl.innerHTML=steps.map(s=>`
+    <div style="background:${s.bg};border:1px solid ${s.border};border-radius:var(--r2);padding:10px 8px;text-align:center">
+      <div style="font-size:14px;margin-bottom:3px">${s.icon}</div>
+      <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:4px;line-height:1.3">${s.label}</div>
+      <div style="font-size:16px;font-weight:700;color:${s.color};font-family:var(--mono);letter-spacing:-.02em">${n(s.val)}</div>
+      ${s.pct!==null?`<div style="font-size:10px;color:${s.color};opacity:.8;margin-top:2px">${s.pct}%</div>`:''}
+    </div>
+  `).join('');
+};
+
 window.showPage=function(page){
   document.getElementById('nav-overview').classList.toggle('on',page==='overview');
   document.getElementById('nav-stock').classList.toggle('on',page==='stock');
@@ -1075,7 +1249,7 @@ window.showPage=function(page){
   if(page==='trend'){TREND_LOADED=false; loadTrendCharts();}
 };
 
-// ── Stock Daily ────────────────────────────────────────────────────────────
+// ── Stock Level ────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
 
 let STOCK_PAGE=1;
@@ -1242,17 +1416,17 @@ async function main(){
       const meta=await fetch(`data/last_updated.json?t=${Date.now()}`).then(r=>r.json());
       document.getElementById('sb-date').textContent=meta.date;
       document.getElementById('ph-meta').textContent=`Data: ${meta.date} · 00:00–23:59 · ${(meta.total_rows||0).toLocaleString()} rows`;
-      // Convert UTC→WIB
+      // Parse last_updated — handles both "2026-06-17 12:00:00 UTC" and "2026-06-17 19:00:00 WIB"
       let wibStr="—";
       try{
         const raw=(meta.last_updated||"").trim();
-let utcDate;
-if(raw.endsWith(" WIB")){
-  utcDate=new Date(raw.replace(" WIB","").replace(" ","T")+"+07:00");
-} else {
-  utcDate=new Date(raw.replace(" ","T").replace(" UTC","Z"));
-}
-wibStr=utcDate.toLocaleString("id-ID",{timeZone:"Asia/Jakarta",day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})+" WIB";
+        let utcDate;
+        if(raw.endsWith(" WIB")){
+          utcDate=new Date(raw.replace(" WIB","").replace(" ","T")+"+07:00");
+        } else {
+          utcDate=new Date(raw.replace(" ","T").replace(" UTC","Z"));
+        }
+        wibStr=utcDate.toLocaleString("id-ID",{timeZone:"Asia/Jakarta",day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})+" WIB";
       }catch(e){}
       document.getElementById("sb-upd").textContent="Updated: "+wibStr;
       document.getElementById("ph-wib").textContent="\u23F1 Last updated: "+wibStr;
