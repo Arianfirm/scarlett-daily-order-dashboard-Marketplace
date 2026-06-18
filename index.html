@@ -1245,8 +1245,14 @@ async function main(){
       // Convert UTC→WIB
       let wibStr="—";
       try{
-        const utcDate=new Date((meta.last_updated||"").replace(" ","T").replace(" UTC","Z"));
-        wibStr=utcDate.toLocaleString("id-ID",{timeZone:"Asia/Jakarta",day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})+" WIB";
+        const raw=(meta.last_updated||"").trim();
+let utcDate;
+if(raw.endsWith(" WIB")){
+  utcDate=new Date(raw.replace(" WIB","").replace(" ","T")+"+07:00");
+} else {
+  utcDate=new Date(raw.replace(" ","T").replace(" UTC","Z"));
+}
+wibStr=utcDate.toLocaleString("id-ID",{timeZone:"Asia/Jakarta",day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false})+" WIB";
       }catch(e){}
       document.getElementById("sb-upd").textContent="Updated: "+wibStr;
       document.getElementById("ph-wib").textContent="\u23F1 Last updated: "+wibStr;
