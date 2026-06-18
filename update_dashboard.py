@@ -499,11 +499,17 @@ try:
     c_qty        = _col(processing_cols, "total ordered qty", "ordered quantity", "qty")
     print(f"      Columns: order={c_order!r} pick_t={c_pick_t!r} pack_t={c_pack_t!r} disp_t={c_disp_t!r} qty={c_qty!r}")
 
-    # ── TODAY filter helpers ──────────────────────────────────────────────────
-    today_prefix = datetime.strptime(TODAY, "%Y-%m-%d").strftime("%d/%m/%Y")
+    # ── TODAY filter helpers — accepts both WIB and UTC date ────────────────────
+    today_prefix     = datetime.strptime(TODAY, "%Y-%m-%d").strftime("%d/%m/%Y")  # WIB DD/MM/YYYY
+    today_utc        = _now_utc.strftime("%Y-%m-%d")                               # UTC YYYY-MM-DD
+    today_prefix_utc = _now_utc.strftime("%d/%m/%Y")                               # UTC DD/MM/YYYY
+
     def _is_today(val):
         v = (val or "").strip()
-        return v.startswith(today_prefix) or v.startswith(TODAY)
+        return (v.startswith(today_prefix) or      # WIB DD/MM/YYYY e.g. 19/06/2026
+                v.startswith(TODAY) or             # WIB YYYY-MM-DD e.g. 2026-06-19
+                v.startswith(today_prefix_utc) or  # UTC DD/MM/YYYY e.g. 18/06/2026
+                v.startswith(today_utc))           # UTC YYYY-MM-DD e.g. 2026-06-18
 
     def _parse_dt(s):
         if not s or not s.strip(): return None
@@ -537,6 +543,22 @@ try:
     pick_hour_qty     = [0]*24
     pack_hour_qty     = [0]*24
     pick_deltas, pack_deltas, disp_deltas = [], [], []
+
+    # DEBUG: order date filter audit
+    print(f"      === ORDER DATE FILTER AUDIT ===")
+    print(f"      TODAY (WIB)      = {TODAY!r}  prefix={today_prefix!r}")
+    print(f"      UTC date         = {today_utc!r}  prefix={today_prefix_utc!r}")
+    print(f"      Rows BEFORE filter: {len(processing_rows):,}")
+    _pass = _fail = 0
+    for _rx in processing_rows:
+        _od = (_rx.get(c_order_date,"") if c_order_date else "")
+        if c_order_date and not _is_today(_od):
+            _fail += 1
+        else:
+            _pass += 1
+    print(f"      Rows AFTER  filter (pass): {_pass:,}")
+    print(f"      Rows DISCARDED    (fail):  {_fail:,}")
+    print(f"      === END AUDIT ===")
 
     for r in processing_rows:
         on = (r.get(c_order) or "").strip() if c_order else ""
