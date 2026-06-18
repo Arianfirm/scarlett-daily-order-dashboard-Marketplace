@@ -172,7 +172,7 @@ tr:hover td{background:var(--bg3)}
     <button class="navtab" id="nav-history" onclick="showPage('history')">🕐 History 30 Hari</button>
     <button class="navtab" id="nav-warehouse" onclick="showPage('warehouse')">🏭 Warehouse</button>
     <button class="navtab" id="nav-trend" onclick="showPage('trend')">📈 Trend Per Jam</button>
-    <button class="navtab" id="nav-docs" onclick="showPage('docs')">📋 Dashboard Logic</button>
+    <button class="navtab" id="nav-docs" onclick="showPage('docs')">📋Dashboard Legend</button>
   </div>
   <div class="sb-sec" id="order-filters"><div class="sb-lbl">Marketplace</div><div id="mp-fil"></div></div>
   <div class="sb-sec" id="status-filters" style="margin-top:6px"><div class="sb-lbl">Status Order</div><div id="st-fil"></div></div>
@@ -500,6 +500,174 @@ tr:hover td{background:var(--bg3)}
             <div style="font-size:10px;color:var(--text);line-height:1.8">Order Date = <strong>Yesterday</strong><br>Picking Date = <strong>Today</strong></div>
             <div style="margin-top:6px;font-size:9px;color:var(--muted)">Order kemarin yang diproses hari ini tidak dihitung</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch"><div><div class="ct">📦 Warehouse KPI Formula</div><div class="cs">Source: Order Processing Report (Type 39)</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+          <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:8px">📤 Picked Orders</div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.8">COUNT DISTINCT<br>Order Number<br>WHERE Picking Time<br>is not blank</div>
+          </div>
+          <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:8px">📦 Packed Orders</div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.8">COUNT DISTINCT<br>Order Number<br>WHERE Packing Time<br>is not blank</div>
+          </div>
+          <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:8px">🚚 Dispatched Orders</div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.8">COUNT DISTINCT<br>Order Number<br>WHERE Dispatch Time<br>is not blank</div>
+          </div>
+          <div style="background:var(--amber-bg);border:1px solid rgba(201,122,6,.2);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:8px">⏳ Pending Orders</div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.8">Total B2C Orders<br>− Dispatched Orders</div>
+          </div>
+        </div>
+        <div style="background:var(--bg3);border-radius:var(--r2);padding:10px 12px;font-size:10px;color:var(--muted)">
+          🔒 Business Filter: <strong style="color:var(--text)">Order Date = Today</strong> — Semua KPI warehouse hanya menghitung order yang dibuat hari ini.
+        </div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch"><div><div class="ct">📈 Trend Per Jam Logic</div><div class="cs">Source: Order Processing Report (Type 39)</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+          <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:8px">📤 Picking Per Jam</div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.8">GROUP BY<br>HOUR(Picking Time)<br>COUNT activity rows</div>
+          </div>
+          <div style="background:var(--purple-bg);border:1px solid rgba(109,40,217,.15);border-radius:var(--r2);padding:12px">
+            <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:8px">📦 Packing Per Jam</div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.8">GROUP BY<br>HOUR(Packing Time)<br>COUNT activity rows</div>
+          </div>
+        </div>
+        <div style="background:var(--bg3);border-radius:var(--r2);padding:10px 12px;margin-bottom:8px;font-size:10px;color:var(--muted)">
+          📌 Tujuan: Menampilkan distribusi aktivitas warehouse berdasarkan timestamp aktual proses.
+        </div>
+        <div style="font-size:10px;color:var(--muted);padding:8px 12px;background:var(--bg3);border-radius:var(--r2);font-family:var(--mono)">
+          Contoh: &nbsp;09:00 → 6,243 picking activities &nbsp;|&nbsp; 10:00 → 3,602 picking activities
+        </div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ch"><div><div class="ct">👥 Workforce Logic</div><div class="cs">Jumlah tenaga kerja aktif hari ini</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:10px 12px">
+            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:4px">📤 Picker Aktif</div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.7">COUNT DISTINCT User<br>WHERE ada aktivitas picking hari ini</div>
+          </div>
+          <div style="background:var(--purple-bg);border:1px solid rgba(109,40,217,.15);border-radius:var(--r2);padding:10px 12px">
+            <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:4px">📦 Packer Aktif</div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);line-height:1.7">COUNT DISTINCT User<br>WHERE ada aktivitas packing hari ini</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:var(--r2);padding:10px 12px;font-size:10px;color:var(--muted)">
+            💡 Satu user dihitung 1 orang meskipun melakukan banyak transaksi. Mengukur jumlah tenaga kerja yang benar-benar aktif hari ini.
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ch"><div><div class="ct">⚡ Productivity Formula</div><div class="cs">Output rata-rata per operator aktif</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="background:var(--pink-bg);border:1px solid rgba(232,52,90,.15);border-radius:var(--r2);padding:10px 12px">
+            <div style="font-size:10px;font-weight:700;color:var(--pink);margin-bottom:6px">⚡ AVG Pick / Picker</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;font-family:var(--mono)">
+              <div style="text-align:center;flex:1">
+                <div style="color:var(--text)">Picked Orders</div>
+                <div style="border-top:1px solid var(--border2);margin:4px 0"></div>
+                <div style="color:var(--text)">Jumlah Picker Aktif</div>
+              </div>
+            </div>
+          </div>
+          <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:10px 12px">
+            <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:6px">⚡ AVG Pack / Packer</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;font-family:var(--mono)">
+              <div style="text-align:center;flex:1">
+                <div style="color:var(--text)">Packed Orders</div>
+                <div style="border-top:1px solid var(--border2);margin:4px 0"></div>
+                <div style="color:var(--text)">Jumlah Packer Aktif</div>
+              </div>
+            </div>
+          </div>
+          <div style="background:var(--bg3);border-radius:var(--r2);padding:10px 12px;font-size:10px;color:var(--muted)">
+            📌 Tujuan: Mengukur rata-rata output per operator aktif hari ini.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gf">
+      <div class="card">
+        <div class="ch"><div><div class="ct">🔄 Dashboard Data Flow Architecture</div><div class="cs">Alur data dari Achanto WMS ke setiap bagian dashboard</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+
+          <div style="display:flex;flex-direction:column;gap:0;align-items:center">
+            <div style="background:var(--pink-bg);border:1px solid rgba(232,52,90,.25);border-radius:var(--r2);padding:10px 12px;width:100%;text-align:center">
+              <div style="font-size:10px;font-weight:700;color:var(--pink)">ACHANTO WMS</div>
+            </div>
+            <div style="font-size:14px;color:var(--muted2);line-height:1.2">↓</div>
+            <div style="background:var(--pink-bg);border:2px solid rgba(232,52,90,.3);border-radius:var(--r2);padding:10px 12px;width:100%">
+              <div style="font-size:10px;font-weight:700;color:var(--pink);margin-bottom:4px">📦 B2C Order Report</div>
+              <div style="font-size:9px;color:var(--muted);margin-bottom:6px">Type = 3 · from_date = Today</div>
+              <div style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-bottom:6px">COUNT DISTINCT<br>Order Number</div>
+            </div>
+            <div style="font-size:14px;color:var(--muted2);line-height:1.2">↓</div>
+            <div style="background:var(--pink-bg);border:1px solid rgba(232,52,90,.15);border-radius:var(--r2);padding:8px 12px;width:100%">
+              <div style="font-size:9px;color:var(--text);line-height:1.7">
+                <span style="color:var(--pink)">→</span> Order Overview<br>
+                <span style="color:var(--pink)">→</span> Marketplace Analysis<br>
+                <span style="color:var(--pink)">→</span> Order Status<br>
+                <span style="color:var(--pink)">→</span> Trend Order/Jam<br>
+                <span style="color:var(--pink)">→</span> Fulfillment Metrics
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:0;align-items:center">
+            <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.25);border-radius:var(--r2);padding:10px 12px;width:100%;text-align:center">
+              <div style="font-size:10px;font-weight:700;color:var(--blue)">ACHANTO WMS</div>
+            </div>
+            <div style="font-size:14px;color:var(--muted2);line-height:1.2">↓</div>
+            <div style="background:var(--blue-bg);border:2px solid rgba(29,95,212,.3);border-radius:var(--r2);padding:10px 12px;width:100%">
+              <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:4px">🏭 Order Processing</div>
+              <div style="font-size:9px;color:var(--muted);margin-bottom:6px">Type = 39 · filter Order Date = Today</div>
+            </div>
+            <div style="font-size:14px;color:var(--muted2);line-height:1.2">↓</div>
+            <div style="background:var(--blue-bg);border:1px solid rgba(29,95,212,.15);border-radius:var(--r2);padding:8px 12px;width:100%">
+              <div style="font-size:9px;color:var(--text);line-height:1.7">
+                <span style="color:var(--blue)">→</span> Picked Orders<br>
+                <span style="color:var(--blue)">→</span> Packed Orders<br>
+                <span style="color:var(--blue)">→</span> Dispatched Orders<br>
+                <span style="color:var(--blue)">→</span> Pending Orders<br>
+                <span style="color:var(--blue)">→</span> Workforce<br>
+                <span style="color:var(--blue)">→</span> Productivity
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:0;align-items:center">
+            <div style="background:var(--green-bg);border:1px solid rgba(13,158,92,.25);border-radius:var(--r2);padding:10px 12px;width:100%;text-align:center">
+              <div style="font-size:10px;font-weight:700;color:var(--green)">ACHANTO WMS</div>
+            </div>
+            <div style="font-size:14px;color:var(--muted2);line-height:1.2">↓</div>
+            <div style="background:var(--green-bg);border:2px solid rgba(13,158,92,.3);border-radius:var(--r2);padding:10px 12px;width:100%">
+              <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:4px">📊 Inventory Report</div>
+              <div style="font-size:9px;color:var(--muted);margin-bottom:6px">Type = 36 · snapshot real-time</div>
+            </div>
+            <div style="font-size:14px;color:var(--muted2);line-height:1.2">↓</div>
+            <div style="background:var(--green-bg);border:1px solid rgba(13,158,92,.15);border-radius:var(--r2);padding:8px 12px;width:100%">
+              <div style="font-size:9px;color:var(--text);line-height:1.7">
+                <span style="color:var(--green)">→</span> ATP Stock<br>
+                <span style="color:var(--green)">→</span> SKU Count<br>
+                <span style="color:var(--green)">→</span> Stock Daily
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1256,7 +1424,7 @@ window.showPage=function(page){
   document.getElementById('page-docs').style.display=page==='docs'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
-  const titles={overview:'Daily Order Overview',stock:'Stock Level Daily',history:'History 30 Hari',warehouse:'Warehouse Performance',trend:'Trend Per Jam — Picking, Packing, Dispatch',docs:'Dashboard Logic & Business Rules'};
+  const titles={overview:'Daily Order Overview',stock:'Stock Level Daily',history:'History 30 Hari',warehouse:'Warehouse Performance',trend:'Trend Per Jam — Picking, Packing, Dispatch',docs:'Dashboard logic & Legend'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
   if(page==='history'&&!HISTORY_LOADED) requestAnimationFrame(()=>loadHistory());
