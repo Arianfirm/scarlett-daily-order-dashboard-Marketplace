@@ -57,14 +57,11 @@ def _poll_report(report_id, label, retries=40, interval=15):
             print(f"      [{i+1:02d}/{retries}] poll error: {e}, retrying...")
     return None
 
+
 # ── Helper: create or recover report, validate date ───────────────────────────
 def _create_report_safe(payload_dict, label="Report"):
-    """
-    POST to create a report schedule.
-    If 400 'already exists': GET list, find match by BOTH report_type_id AND from_date/end_date.
-    Returns internal schedule id (integer-like string, e.g. '17693').
-    Never returns a schedule from a different date.
-    """
+    type_id = str(payload_dict["report_schedule"]["report_type_id"])
+
     resp = requests.post(f"{BASE_URL}/api/v1/report_schedules",
                          headers=H, json=payload_dict, timeout=30)
     cd = resp.json() if resp.text.strip() else {}
@@ -77,75 +74,76 @@ def _create_report_safe(payload_dict, label="Report"):
         print(f"      ✓ {label} created (ID: {rid})")
         return rid
 
-    # ── Duplicate path ────────────────────────────────────────────────────────
+    # ── Duplicate path: DELETE old + CREATE fresh (only for type=3 and type=39)
     err = cd.get("errors", "")
     if resp.status_code == 400 and "already exists" in err.lower():
         print(f"      ⚠ {label} duplicate: {err}")
 
-        # Step 1: GET list to find existing schedule id
-        type_needed = str(payload_dict["report_schedule"]["report_type_id"])
+        if type_id not in ("3", "39"):
+            raise Exception(f"{label} unexpected duplicate for type={type_id}: {err}")
+
+        # Step 1: GET list — find schedules for this type with from_date=TODAY
         list_resp = requests.get(
             f"{BASE_URL}/api/v1/report_schedules?page[size]=100"
             f"&include=report_occurrence,report_type,created_by,latest_report",
             headers=H, timeout=30)
-
         if list_resp.status_code != 200 or not list_resp.text.strip():
             raise Exception(f"{label} GET list failed {list_resp.status_code}")
 
         schedules = list_resp.json().get("data", [])
-        matches = [s for s in schedules
-                   if str(s.get("relationships",{}).get("report_type",{})
-                            .get("data",{}).get("id","")) == type_needed]
+        to_delete = []
+        for s in schedules:
+            rt = str(s.get("relationships",{}).get("report_type",{})
+                       .get("data",{}).get("id",""))
+            from_date = (s.get("attributes",{}).get("from_date","") or "").strip()
+            if rt == type_id and from_date == TODAY:
+                to_delete.append(s)
 
-        print(f"      Found {len(matches)} schedule(s) for type={type_needed}:")
-        for s in matches:
+        print(f"      Found {len(to_delete)} schedule(s) to delete "
+              f"(type={type_id} from_date={TODAY}):")
+        for s in to_delete:
             a = s.get("attributes", {})
-            print(f"        id={s['id']} from={a.get('from_date')} "
-                  f"status={a.get('status')} created={a.get('created_at','')[:19]}")
+            print(f"        DELETE old schedule id={s['id']} "
+                  f"from={a.get('from_date')} status={a.get('status')} "
+                  f"created={a.get('created_at','')[:19]}")
 
-        if not matches:
-            raise Exception(f"{label} duplicate but no schedule found for type={type_needed}")
+        if not to_delete:
+            raise Exception(
+                f"{label} duplicate but no schedule found for "
+                f"type={type_id} from_date={TODAY}")
 
-        # Step 2: Pick best — today + completed + most recent created_at
-        today_m = [s for s in matches
-                   if (s.get("attributes",{}).get("from_date","") or "").strip() == TODAY]
-        pool = today_m if today_m else matches
-        def _ck(s):
-            v = (s.get("attributes",{}).get("created_at","") or "")
-            try:
-                from datetime import datetime as _dt2
-                return _dt2.fromisoformat(v.replace("Z",""))
-            except: return v
-        best = max(pool, key=_ck)
-        old_id = best["id"]
-        print(f"      → Retrying id={old_id} via POST /retry ...")
+        # Step 2: BULK DELETE
+        delete_ids = [int(s["id"]) for s in to_delete]
+        del_resp = requests.delete(
+            f"{BASE_URL}/api/v1/report_schedules/bulk_delete",
+            headers=H,
+            json={"ids": delete_ids, "filter": {}},
+            timeout=30)
+        print(f"      DELETE bulk_delete status={del_resp.status_code} ids={delete_ids}")
+        if del_resp.status_code != 200:
+            raise Exception(
+                f"{label} bulk_delete failed {del_resp.status_code}: "
+                f"{del_resp.text[:200]}")
+        del_data = del_resp.json() if del_resp.text.strip() else {}
+        print(f"      ✓ {del_data.get('summary','')} ids={del_data.get('ids',[])}")
 
-        # Step 3: POST /retry — triggers Achanto to regenerate fresh data
-        retry_resp = requests.post(
-            f"{BASE_URL}/api/v1/report_schedules/{old_id}/retry",
-            headers=H, timeout=30)
-        print(f"      RETRY status={retry_resp.status_code}")
-
-        if retry_resp.status_code == 200 and retry_resp.text.strip():
-            rd = retry_resp.json()
-            # Response is the updated list — find our schedule
-            new_schedules = rd.get("data", [])
-            for s in new_schedules:
-                if s.get("id") == old_id:
-                    a = s.get("attributes", {})
-                    print(f"      ✓ Retry triggered: id={old_id} "
-                          f"status={a.get('status')} state={a.get('state')}")
-                    return old_id
-            # id not found in response — still return old_id, poll will wait
-            print(f"      ✓ Retry triggered (id={old_id} not in response, proceeding)")
-            return old_id
-
-        # Retry failed — fall back to reusing old report as-is
-        print(f"      ⚠ RETRY failed {retry_resp.status_code}: {retry_resp.text[:200]}")
-        print(f"      → Falling back to reuse id={old_id} (data may be stale)")
-        return old_id
+        # Step 3: CREATE fresh report
+        time.sleep(2)
+        print(f"      → Creating fresh {label}...")
+        resp2 = requests.post(f"{BASE_URL}/api/v1/report_schedules",
+                              headers=H, json=payload_dict, timeout=30)
+        cd2 = resp2.json() if resp2.text.strip() else {}
+        print(f"      CREATE fresh status={resp2.status_code}")
+        if resp2.status_code == 200:
+            if cd2.get("status_code") != 1000:
+                raise Exception(f"{label} fresh create failed: {cd2}")
+            rid2 = cd2["data"]["id"]
+            print(f"      ✓ {label} fresh created (ID: {rid2})")
+            return rid2
+        raise Exception(f"{label} fresh create failed {resp2.status_code}: {cd2}")
 
     raise Exception(f"{label} POST failed {resp.status_code}: {err or cd}")
+
 
 
 # ── 2. B2C Order Report (type_id=3) ──────────────────────────────────────────
