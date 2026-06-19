@@ -1487,12 +1487,12 @@
   },
   {
     "date": "2026-06-19",
-    "total_orders": 20846,
-    "total_qty": 31506,
-    "fulfilled": 16780,
-    "pending": 2446,
-    "fulfillment_pct": 80.5,
-    "total_atp": 44220208,
+    "total_orders": 21819,
+    "total_qty": 32866,
+    "fulfilled": 18785,
+    "pending": 1683,
+    "fulfillment_pct": 86.1,
+    "total_atp": 44251108,
     "peak_hour": 13,
     "peak_hour_orders": 1740,
     "peak_hour_qty": 2749,
@@ -1517,7 +1517,7 @@
       1169,
       1417,
       1387,
-      2,
+      975,
       0,
       0,
       0
@@ -1543,24 +1543,24 @@
       1698,
       1999,
       1954,
-      2,
+      1362,
       0,
       0,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-19 20:00:35 WIB",
+    "last_updated": "2026-06-19 20:38:11 WIB",
     "sku_count": 2119,
     "warehouse": {
-      "total_orders": 20846,
-      "total_orders_b2c": 20846,
-      "picked_orders": 17180,
-      "packed_orders": 15244,
-      "dispatched_orders": 14679,
-      "pending_orders": 6167,
-      "avg_pick_min": 80.1,
-      "avg_pack_min": 86.6,
-      "avg_dispatch_min": -309.1,
+      "total_orders": 21828,
+      "total_orders_b2c": 21819,
+      "picked_orders": 17248,
+      "packed_orders": 15280,
+      "dispatched_orders": 14934,
+      "pending_orders": 6885,
+      "avg_pick_min": 80.2,
+      "avg_pack_min": 86.8,
+      "avg_dispatch_min": -314.4,
       "pick_hours": [
         0,
         1272,
@@ -1581,8 +1581,8 @@
         1210,
         122,
         476,
-        1704,
-        0,
+        1703,
+        69,
         0,
         0,
         0
@@ -1608,7 +1608,7 @@
         517,
         483,
         771,
-        0,
+        36,
         0,
         0,
         0
@@ -1621,7 +1621,7 @@
         0,
         0,
         0,
-        20163,
+        20542,
         0,
         0,
         0,
@@ -1662,7 +1662,7 @@
         ],
         [
           "IRSAN PACKERDUAEMPATLIMA",
-          1347
+          1345
         ],
         [
           "PRAMADI PICKERDUABELAS",
@@ -1756,21 +1756,25 @@
         ],
         [
           "FADIL PACKERSERATUSDUALIMA",
-          198
-        ],
-        [
-          "IAN PACKERSERATUSENAMTIGA",
-          229
+          227
         ],
         [
           "DANNY PACKERSERATUSTIGASATU",
           252
+        ],
+        [
+          "IAN PACKERSERATUSENAMTIGA",
+          266
         ]
       ],
       "low_packer": [
         [
           "RAHMAWATI PACKERSATUSEMBILANDELAPAN",
           1
+        ],
+        [
+          "ZAENI PACKERDUASEMBILANDELAPAN",
+          2
         ],
         [
           "REZA PACKERDUADELAPANENAM",
@@ -1781,12 +1785,8 @@
           3
         ],
         [
-          "NOVI PACKEREMPATDUADUA",
-          6
-        ],
-        [
-          "LELI PACKERTIGADELAPANLIMA",
-          8
+          "IRWAN PACKERSERATUSTIGADELAPAN",
+          3
         ]
       ],
       "pick_hour_pickers": [
@@ -1810,7 +1810,7 @@
         3,
         12,
         13,
-        0,
+        4,
         0,
         0,
         0
@@ -1836,7 +1836,7 @@
         37,
         30,
         48,
-        0,
+        8,
         0,
         0,
         0
@@ -1861,8 +1861,8 @@
         1210,
         122,
         476,
-        1704,
-        0,
+        1703,
+        69,
         0,
         0,
         0
@@ -1888,7 +1888,7 @@
         517,
         483,
         771,
-        0,
+        36,
         0,
         0,
         0
@@ -1913,8 +1913,8 @@
         1778,
         200,
         606,
-        2454,
-        0,
+        2452,
+        68,
         0,
         0,
         0
@@ -1940,17 +1940,17 @@
         762,
         675,
         1147,
-        0,
+        49,
         0,
         0,
         0
       ],
       "active_pickers": 26,
-      "active_packers": 124,
-      "active_dispatchers": 10,
-      "total_workforce": 160,
-      "avg_pick_per_picker": 660.8,
-      "avg_pack_per_packer": 122.9
+      "active_packers": 128,
+      "active_dispatchers": 11,
+      "total_workforce": 165,
+      "avg_pick_per_picker": 663.4,
+      "avg_pack_per_packer": 119.4
     }
   }
 ]
