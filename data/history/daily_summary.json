@@ -1487,12 +1487,12 @@
   },
   {
     "date": "2026-06-19",
-    "total_orders": 24690,
-    "total_qty": 36943,
-    "fulfilled": 19695,
-    "pending": 866,
-    "fulfillment_pct": 79.8,
-    "total_atp": 44241253,
+    "total_orders": 25181,
+    "total_qty": 37635,
+    "fulfilled": 20051,
+    "pending": 1338,
+    "fulfillment_pct": 79.6,
+    "total_atp": 44239800,
     "peak_hour": 13,
     "peak_hour_orders": 1740,
     "peak_hour_qty": 2749,
@@ -1520,7 +1520,7 @@
       1438,
       1342,
       1066,
-      0
+      491
     ],
     "hourly_qty": [
       1606,
@@ -1546,21 +1546,21 @@
       1994,
       1868,
       1577,
-      0
+      692
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-19 23:00:31 WIB",
+    "last_updated": "2026-06-19 23:33:50 WIB",
     "sku_count": 2119,
     "warehouse": {
-      "total_orders": 24694,
-      "total_orders_b2c": 24690,
-      "picked_orders": 22339,
-      "packed_orders": 21073,
-      "dispatched_orders": 18037,
-      "pending_orders": 6653,
+      "total_orders": 25183,
+      "total_orders_b2c": 25181,
+      "picked_orders": 22338,
+      "packed_orders": 21978,
+      "dispatched_orders": 19312,
+      "pending_orders": 5869,
       "avg_pick_min": 78.8,
       "avg_pack_min": 88.4,
-      "avg_dispatch_min": -407.7,
+      "avg_dispatch_min": -439.0,
       "pick_hours": [
         0,
         1272,
@@ -1583,7 +1583,7 @@
         476,
         1702,
         1635,
-        2326,
+        2325,
         1289,
         5
       ],
@@ -1611,7 +1611,7 @@
         651,
         2728,
         2407,
-        43
+        948
       ],
       "dispatch_hours": [
         0,
@@ -1621,7 +1621,7 @@
         0,
         0,
         0,
-        24758,
+        26380,
         0,
         0,
         0,
@@ -1688,7 +1688,7 @@
         ],
         [
           "VIANTO PACKERDUALIMA",
-          511
+          578
         ],
         [
           "DEWI PACKERTIGAEMPATDELAPAN",
@@ -1730,19 +1730,19 @@
         ],
         [
           "Komarudin dispatch",
-          6430
+          6973
+        ],
+        [
+          "muh riki",
+          3680
         ],
         [
           "JOSHUA DISPATCH",
           3559
         ],
         [
-          "muh riki",
-          2780
-        ],
-        [
           "MUHMMAD ADITYA",
-          1541
+          1720
         ]
       ],
       "low_picker": [
@@ -1839,7 +1839,7 @@
         42,
         69,
         60,
-        17
+        40
       ],
       "pick_hour_orders": [
         0,
@@ -1863,7 +1863,7 @@
         476,
         1702,
         1635,
-        2326,
+        2325,
         1289,
         5
       ],
@@ -1891,7 +1891,7 @@
         651,
         2728,
         2407,
-        43
+        948
       ],
       "pick_hour_qty": [
         0,
@@ -1915,7 +1915,7 @@
         606,
         2451,
         2190,
-        3197,
+        3196,
         2006,
         4
       ],
@@ -1943,14 +1943,14 @@
         1011,
         4102,
         3459,
-        54
+        1225
       ],
       "active_pickers": 27,
       "active_packers": 146,
       "active_dispatchers": 12,
       "total_workforce": 184,
-      "avg_pick_per_picker": 827.4,
-      "avg_pack_per_packer": 144.3
+      "avg_pick_per_picker": 827.3,
+      "avg_pack_per_packer": 150.5
     }
   }
 ]
