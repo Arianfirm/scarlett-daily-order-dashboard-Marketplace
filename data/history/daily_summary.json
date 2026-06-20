@@ -1955,12 +1955,12 @@
   },
   {
     "date": "2026-06-20",
-    "total_orders": 23419,
-    "total_qty": 34409,
-    "fulfilled": 17659,
-    "pending": 1867,
-    "fulfillment_pct": 75.4,
-    "total_atp": 44516764,
+    "total_orders": 23420,
+    "total_qty": 34410,
+    "fulfilled": 18564,
+    "pending": 825,
+    "fulfillment_pct": 79.3,
+    "total_atp": 44516626,
     "peak_hour": 11,
     "peak_hour_orders": 1928,
     "peak_hour_qty": 3018,
@@ -1987,7 +1987,7 @@
       1404,
       1350,
       1258,
-      2,
+      3,
       0
     ],
     "hourly_qty": [
@@ -2013,21 +2013,21 @@
       1964,
       1965,
       1815,
-      2,
+      3,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-20 22:00:33 WIB",
+    "last_updated": "2026-06-20 22:05:36 WIB",
     "sku_count": 2119,
     "warehouse": {
-      "total_orders": 23420,
-      "total_orders_b2c": 23419,
-      "picked_orders": 20250,
-      "packed_orders": 19140,
+      "total_orders": 23421,
+      "total_orders_b2c": 23420,
+      "picked_orders": 20326,
+      "packed_orders": 19255,
       "dispatched_orders": 16287,
-      "pending_orders": 7132,
-      "avg_pick_min": 67.5,
-      "avg_pack_min": 77.6,
+      "pending_orders": 7133,
+      "avg_pick_min": 67.4,
+      "avg_pack_min": 77.8,
       "avg_dispatch_min": -341.2,
       "pick_hours": [
         0,
@@ -2052,7 +2052,7 @@
         1675,
         1961,
         304,
-        0,
+        76,
         0
       ],
       "pack_hours": [
@@ -2078,7 +2078,7 @@
         1174,
         1028,
         1981,
-        71,
+        186,
         0
       ],
       "dispatch_hours": [
@@ -2219,16 +2219,16 @@
           124
         ],
         [
-          "FERI PACKERSERATUSTIGATIGA",
-          126
-        ],
-        [
           "AKMAL PACKERTIGADUAENAM",
           134
         ],
         [
           "SEPTIYANA PICKERENAM",
           134
+        ],
+        [
+          "FERI PACKERSERATUSTIGATIGA",
+          149
         ],
         [
           "FERY PACKERDUASATUSEMBILAN",
@@ -2280,7 +2280,7 @@
         14,
         13,
         5,
-        0,
+        6,
         0
       ],
       "pack_hour_packers": [
@@ -2306,7 +2306,7 @@
         60,
         51,
         59,
-        26,
+        30,
         0
       ],
       "pick_hour_orders": [
@@ -2332,7 +2332,7 @@
         1675,
         1961,
         304,
-        0,
+        76,
         0
       ],
       "pack_hour_orders": [
@@ -2358,7 +2358,7 @@
         1174,
         1028,
         1981,
-        71,
+        186,
         0
       ],
       "pick_hour_qty": [
@@ -2384,7 +2384,7 @@
         2310,
         2784,
         401,
-        0,
+        99,
         0
       ],
       "pack_hour_qty": [
@@ -2410,15 +2410,15 @@
         1756,
         1442,
         2820,
-        97,
+        254,
         0
       ],
       "active_pickers": 40,
       "active_packers": 182,
       "active_dispatchers": 10,
       "total_workforce": 232,
-      "avg_pick_per_picker": 506.2,
-      "avg_pack_per_packer": 105.2
+      "avg_pick_per_picker": 508.1,
+      "avg_pack_per_packer": 105.8
     }
   }
 ]
