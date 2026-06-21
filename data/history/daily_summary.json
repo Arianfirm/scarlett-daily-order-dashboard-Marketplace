@@ -2893,10 +2893,10 @@
     "date": "2026-06-22",
     "total_orders": 27155,
     "total_qty": 39424,
-    "fulfilled": 23252,
-    "pending": 77,
-    "fulfillment_pct": 85.6,
-    "total_atp": 44492527,
+    "fulfilled": 23179,
+    "pending": 66,
+    "fulfillment_pct": 85.4,
+    "total_atp": 44491891,
     "peak_hour": 12,
     "peak_hour_orders": 1758,
     "peak_hour_qty": 2371,
@@ -2953,18 +2953,18 @@
       1237
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-22 03:00:30 WIB",
+    "last_updated": "2026-06-22 03:27:21 WIB",
     "sku_count": 2119,
     "warehouse": {
-      "total_orders": 22882,
+      "total_orders": 22847,
       "total_orders_b2c": 27155,
-      "picked_orders": 21487,
+      "picked_orders": 21452,
       "packed_orders": 21582,
-      "dispatched_orders": 20022,
-      "pending_orders": 7133,
+      "dispatched_orders": 20269,
+      "pending_orders": 6886,
       "avg_pick_min": 64.4,
       "avg_pack_min": 85.0,
-      "avg_dispatch_min": -451.8,
+      "avg_dispatch_min": -441.8,
       "pick_hours": [
         0,
         740,
@@ -2988,8 +2988,8 @@
         1597,
         1184,
         1145,
-        152,
-        1
+        117,
+        0
       ],
       "pack_hours": [
         0,
@@ -3025,7 +3025,7 @@
         0,
         0,
         0,
-        26960,
+        27251,
         0,
         0,
         0,
@@ -3138,7 +3138,7 @@
         ],
         [
           "Sapta Siswana",
-          6167
+          6266
         ],
         [
           "Komarudin dispatch",
@@ -3168,7 +3168,7 @@
         ],
         [
           "IRSAN PACKERDUAEMPATLIMA",
-          498
+          483
         ]
       ],
       "low_packer": [
@@ -3217,7 +3217,7 @@
         13,
         13,
         9,
-        1
+        0
       ],
       "pack_hour_packers": [
         0,
@@ -3268,8 +3268,8 @@
         1597,
         1184,
         1145,
-        152,
-        1
+        117,
+        0
       ],
       "pack_hour_orders": [
         0,
@@ -3320,7 +3320,7 @@
         2168,
         1653,
         1802,
-        212,
+        160,
         0
       ],
       "pack_hour_qty": [
@@ -3353,7 +3353,7 @@
       "active_packers": 134,
       "active_dispatchers": 9,
       "total_workforce": 169,
-      "avg_pick_per_picker": 826.4,
+      "avg_pick_per_picker": 825.1,
       "avg_pack_per_packer": 161.1
     }
   }
