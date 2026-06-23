@@ -3359,12 +3359,12 @@
   },
   {
     "date": "2026-06-23",
-    "total_orders": 25817,
-    "total_qty": 40998,
-    "fulfilled": 20771,
-    "pending": 564,
-    "fulfillment_pct": 80.5,
-    "total_atp": 44531349,
+    "total_orders": 25894,
+    "total_qty": 41101,
+    "fulfilled": 20924,
+    "pending": 634,
+    "fulfillment_pct": 80.8,
+    "total_atp": 44530948,
     "peak_hour": 12,
     "peak_hour_orders": 2123,
     "peak_hour_qty": 3045,
@@ -3391,7 +3391,7 @@
       1343,
       1359,
       1098,
-      1088,
+      1165,
       0
     ],
     "hourly_qty": [
@@ -3417,22 +3417,22 @@
       2024,
       2014,
       1628,
-      1587,
+      1690,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-23 22:54:50 WIB",
+    "last_updated": "2026-06-23 23:00:44 WIB",
     "sku_count": 2122,
     "warehouse": {
-      "total_orders": 25820,
-      "total_orders_b2c": 25817,
+      "total_orders": 25974,
+      "total_orders_b2c": 25894,
       "picked_orders": 23975,
-      "packed_orders": 21829,
-      "dispatched_orders": 18372,
-      "pending_orders": 7445,
+      "packed_orders": 22048,
+      "dispatched_orders": 18698,
+      "pending_orders": 7196,
       "avg_pick_min": 63.3,
-      "avg_pack_min": 89.6,
-      "avg_dispatch_min": -404.1,
+      "avg_pack_min": 89.7,
+      "avg_dispatch_min": -412.7,
       "pick_hours": [
         0,
         1449,
@@ -3482,8 +3482,8 @@
         1247,
         945,
         2120,
-        1717,
-        0
+        1836,
+        100
       ],
       "dispatch_hours": [
         0,
@@ -3493,7 +3493,7 @@
         0,
         0,
         0,
-        25269,
+        25715,
         0,
         0,
         0,
@@ -3598,7 +3598,7 @@
       "top_dispatcher": [
         [
           "PIPIN DISPATCH",
-          7448
+          7894
         ],
         [
           "AHMAD ADIL",
@@ -3710,8 +3710,8 @@
         56,
         52,
         63,
-        59,
-        0
+        60,
+        34
       ],
       "pick_hour_orders": [
         0,
@@ -3762,8 +3762,8 @@
         1247,
         945,
         2120,
-        1717,
-        0
+        1836,
+        100
       ],
       "pick_hour_qty": [
         0,
@@ -3814,15 +3814,15 @@
         1827,
         1477,
         3206,
-        2650,
-        0
+        2815,
+        145
       ],
       "active_pickers": 27,
       "active_packers": 140,
       "active_dispatchers": 8,
       "total_workforce": 174,
       "avg_pick_per_picker": 888.0,
-      "avg_pack_per_packer": 155.9
+      "avg_pack_per_packer": 157.5
     }
   }
 ]
