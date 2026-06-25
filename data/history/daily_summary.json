@@ -4765,10 +4765,10 @@
     "date": "2026-06-26",
     "total_orders": 42559,
     "total_qty": 69803,
-    "fulfilled": 27257,
-    "pending": 7688,
-    "fulfillment_pct": 64.0,
-    "total_atp": 44572607,
+    "fulfilled": 33188,
+    "pending": 1903,
+    "fulfillment_pct": 78.0,
+    "total_atp": 44569774,
     "peak_hour": 18,
     "peak_hour_orders": 4840,
     "peak_hour_qty": 6957,
@@ -4825,18 +4825,18 @@
       1830
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-26 02:00:38 WIB",
+    "last_updated": "2026-06-26 03:00:32 WIB",
     "sku_count": 2123,
     "warehouse": {
-      "total_orders": 39252,
+      "total_orders": 30890,
       "total_orders_b2c": 42559,
-      "picked_orders": 29409,
-      "packed_orders": 28565,
-      "dispatched_orders": 24514,
-      "pending_orders": 18045,
-      "avg_pick_min": 116.4,
-      "avg_pack_min": 138.0,
-      "avg_dispatch_min": -314.2,
+      "picked_orders": 26718,
+      "packed_orders": 26560,
+      "dispatched_orders": 23634,
+      "pending_orders": 18925,
+      "avg_pick_min": 106.5,
+      "avg_pack_min": 142.1,
+      "avg_dispatch_min": -337.3,
       "pick_hours": [
         0,
         2670,
@@ -4851,17 +4851,17 @@
         1882,
         962,
         0,
-        2500,
-        2539,
-        1490,
-        2256,
-        492,
+        2490,
+        2489,
+        1488,
+        2208,
+        481,
         390,
-        1391,
+        1387,
         0,
         0,
-        4183,
-        296
+        1769,
+        96
       ],
       "pack_hours": [
         0,
@@ -4881,13 +4881,13 @@
         1807,
         2080,
         1660,
-        651,
+        650,
         713,
         1016,
-        2058,
-        2006,
-        1576,
-        2821
+        2056,
+        1999,
+        1302,
+        1100
       ],
       "dispatch_hours": [
         0,
@@ -4897,7 +4897,7 @@
         0,
         0,
         0,
-        35611,
+        34573,
         0,
         0,
         0,
@@ -4918,7 +4918,7 @@
       "top_picker": [
         [
           "NASRUN PICKERDELAPAN",
-          3334
+          3331
         ],
         [
           "RIKI PACKERDUALIMANOL",
@@ -4926,7 +4926,7 @@
         ],
         [
           "NOVAL PACKEREMPATBELAS",
-          2211
+          2166
         ],
         [
           "FERY PACKERDUASATUSEMBILAN",
@@ -4934,7 +4934,7 @@
         ],
         [
           "ABIJAR PACKERTIGAEMPATSATU",
-          2143
+          2118
         ],
         [
           "HUDRI PICKERTUJUHBELAS",
@@ -4954,14 +4954,10 @@
         ],
         [
           "BUDI PACKERSERATUSDELAPANTIGA",
-          1801
+          1799
         ]
       ],
       "top_packer": [
-        [
-          "WIWIK PACKERDUASATUDUA",
-          566
-        ],
         [
           "RATNA DUADELAPAN",
           539
@@ -4972,15 +4968,11 @@
         ],
         [
           "ALIFFIAN PACKERTIGATUJUHSEMBILAN",
-          529
+          527
         ],
         [
-          "VINA PACKERSERATUSSEMBILANBELAS",
-          509
-        ],
-        [
-          "SERLI PACKERTIGADELAPANTIGA",
-          490
+          "WIWIK PACKERDUASATUDUA",
+          521
         ],
         [
           "ANAHULWATUN PACKERTUJUHENAM",
@@ -4997,6 +4989,14 @@
         [
           "ERNAWATI PACKERTIGASATUNOL",
           475
+        ],
+        [
+          "AFDIYANTI PACKERDUADUA",
+          473
+        ],
+        [
+          "VINA PACKERSERATUSSEMBILANBELAS",
+          470
         ]
       ],
       "top_dispatcher": [
@@ -5005,12 +5005,12 @@
           7969
         ],
         [
-          "muh riki",
-          6316
-        ],
-        [
           "adriansyah maulana",
           6263
+        ],
+        [
+          "muh riki",
+          5758
         ],
         [
           "ahmad Hamdani",
@@ -5024,7 +5024,7 @@
       "low_picker": [
         [
           "IRSAN PACKERDUAEMPATLIMA",
-          254
+          250
         ],
         [
           "ROBY PICKERSEMBILANBELAS",
@@ -5032,15 +5032,15 @@
         ],
         [
           "DAEROBI PACKERDUASATU",
-          713
+          452
         ],
         [
-          "ALDITRI PACKERDELAPANBELAS",
-          796
+          "IBNU PACKERSERATUSDUAENAM",
+          690
         ],
         [
           "DANNY PACKERSERATUSTIGASATU",
-          894
+          721
         ]
       ],
       "low_packer": [
@@ -5050,7 +5050,7 @@
         ],
         [
           "NOVI PACKEREMPATDUADUA",
-          9
+          3
         ],
         [
           "Abdul Rosid",
@@ -5089,7 +5089,7 @@
         0,
         0,
         12,
-        11
+        9
       ],
       "pack_hour_packers": [
         0,
@@ -5114,8 +5114,8 @@
         57,
         70,
         57,
-        54,
-        60
+        50,
+        57
       ],
       "pick_hour_orders": [
         0,
@@ -5131,17 +5131,17 @@
         1882,
         962,
         0,
-        2500,
-        2539,
-        1490,
-        2256,
-        492,
+        2490,
+        2489,
+        1488,
+        2208,
+        481,
         390,
-        1391,
+        1387,
         0,
         0,
-        4183,
-        296
+        1769,
+        96
       ],
       "pack_hour_orders": [
         0,
@@ -5161,13 +5161,13 @@
         1807,
         2080,
         1660,
-        651,
+        650,
         713,
         1016,
-        2058,
-        2006,
-        1576,
-        2821
+        2056,
+        1999,
+        1302,
+        1100
       ],
       "pick_hour_qty": [
         0,
@@ -5183,17 +5183,17 @@
         2596,
         1523,
         0,
-        4697,
-        4421,
-        2400,
-        3470,
-        848,
+        4680,
+        4337,
+        2398,
+        3400,
+        803,
         519,
-        1905,
+        1898,
         0,
         0,
-        4497,
-        406
+        1879,
+        56
       ],
       "pack_hour_qty": [
         0,
@@ -5213,20 +5213,20 @@
         2804,
         3387,
         2936,
-        1218,
+        1216,
         1153,
         2088,
-        3275,
-        3056,
-        1932,
-        3202
+        3273,
+        3007,
+        1636,
+        1242
       ],
       "active_pickers": 27,
       "active_packers": 149,
       "active_dispatchers": 10,
       "total_workforce": 186,
-      "avg_pick_per_picker": 1089.2,
-      "avg_pack_per_packer": 191.7
+      "avg_pick_per_picker": 989.6,
+      "avg_pack_per_packer": 178.3
     }
   }
 ]
