@@ -4295,12 +4295,12 @@
   },
   {
     "date": "2026-06-25",
-    "total_orders": 39477,
-    "total_qty": 64821,
-    "fulfilled": 21671,
-    "pending": 12248,
-    "fulfillment_pct": 54.9,
-    "total_atp": 44588803,
+    "total_orders": 39907,
+    "total_qty": 65536,
+    "fulfilled": 21747,
+    "pending": 12648,
+    "fulfillment_pct": 54.5,
+    "total_atp": 44587517,
     "peak_hour": 18,
     "peak_hour_orders": 4840,
     "peak_hour_qty": 6957,
@@ -4326,7 +4326,7 @@
       4840,
       2765,
       2222,
-      1591,
+      2021,
       0,
       0
     ],
@@ -4352,23 +4352,23 @@
       6957,
       4146,
       3723,
-      2546,
+      3261,
       0,
       0
     ],
     "day_type": "gajian",
-    "last_updated": "2026-06-25 21:45:40 WIB",
+    "last_updated": "2026-06-25 22:00:48 WIB",
     "sku_count": 2123,
     "warehouse": {
-      "total_orders": 39521,
-      "total_orders_b2c": 39477,
-      "picked_orders": 25224,
-      "packed_orders": 23712,
-      "dispatched_orders": 19939,
-      "pending_orders": 19538,
+      "total_orders": 39907,
+      "total_orders_b2c": 39907,
+      "picked_orders": 25222,
+      "packed_orders": 24344,
+      "dispatched_orders": 20642,
+      "pending_orders": 19265,
       "avg_pick_min": 99.9,
-      "avg_pack_min": 137.5,
-      "avg_dispatch_min": -251.9,
+      "avg_pack_min": 140.8,
+      "avg_dispatch_min": -270.6,
       "pick_hours": [
         0,
         2674,
@@ -4389,7 +4389,7 @@
         2313,
         492,
         451,
-        1404,
+        1402,
         0,
         0,
         0,
@@ -4417,8 +4417,8 @@
         713,
         1016,
         2060,
-        1531,
-        0,
+        2011,
+        152,
         0
       ],
       "dispatch_hours": [
@@ -4429,7 +4429,7 @@
         0,
         0,
         0,
-        29842,
+        30820,
         0,
         0,
         0,
@@ -4466,7 +4466,7 @@
         ],
         [
           "FERY PACKERDUASATUSEMBILAN",
-          2158
+          2157
         ],
         [
           "HUDRI PICKERTUJUHBELAS",
@@ -4486,7 +4486,7 @@
         ],
         [
           "BUDI PACKERSERATUSDELAPANTIGA",
-          1857
+          1856
         ]
       ],
       "top_packer": [
@@ -4546,11 +4546,11 @@
         ],
         [
           "SAENURSEN DISPATCH",
-          4020
+          4450
         ],
         [
           "adriansyah maulana",
-          3077
+          3413
         ]
       ],
       "low_picker": [
@@ -4646,7 +4646,7 @@
         57,
         70,
         57,
-        0,
+        24,
         0
       ],
       "pick_hour_orders": [
@@ -4669,7 +4669,7 @@
         2313,
         492,
         451,
-        1404,
+        1402,
         0,
         0,
         0,
@@ -4697,8 +4697,8 @@
         713,
         1016,
         2060,
-        1531,
-        0,
+        2011,
+        152,
         0
       ],
       "pick_hour_qty": [
@@ -4721,7 +4721,7 @@
         3548,
         848,
         590,
-        1926,
+        1924,
         0,
         0,
         0,
@@ -4749,16 +4749,16 @@
         1153,
         2088,
         3278,
-        2363,
-        0,
+        3065,
+        196,
         0
       ],
       "active_pickers": 27,
       "active_packers": 148,
-      "active_dispatchers": 9,
-      "total_workforce": 184,
-      "avg_pick_per_picker": 934.2,
-      "avg_pack_per_packer": 160.2
+      "active_dispatchers": 10,
+      "total_workforce": 185,
+      "avg_pick_per_picker": 934.1,
+      "avg_pack_per_packer": 164.5
     }
   }
 ]
