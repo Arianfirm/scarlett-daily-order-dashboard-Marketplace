@@ -4295,12 +4295,12 @@
   },
   {
     "date": "2026-06-25",
-    "total_orders": 8313,
-    "total_qty": 14302,
-    "fulfilled": 5396,
-    "pending": 835,
-    "fulfillment_pct": 64.9,
-    "total_atp": null,
+    "total_orders": 9543,
+    "total_qty": 16556,
+    "fulfilled": 6788,
+    "pending": 2027,
+    "fulfillment_pct": 71.1,
+    "total_atp": 44619191,
     "peak_hour": 0,
     "peak_hour_orders": 4270,
     "peak_hour_qty": 6806,
@@ -4312,8 +4312,8 @@
       577,
       770,
       917,
-      0,
-      0,
+      1228,
+      2,
       0,
       0,
       0,
@@ -4338,8 +4338,8 @@
       1068,
       1393,
       1644,
-      0,
-      0,
+      2251,
+      3,
       0,
       0,
       0,
@@ -4357,17 +4357,18 @@
       0
     ],
     "day_type": "gajian",
-    "last_updated": "2026-06-25 07:00:32 WIB",
+    "last_updated": "2026-06-25 08:00:29 WIB",
+    "sku_count": 2122,
     "warehouse": {
-      "total_orders": 8580,
-      "total_orders_b2c": 8313,
+      "total_orders": 9545,
+      "total_orders_b2c": 9543,
       "picked_orders": 7125,
-      "packed_orders": 6792,
-      "dispatched_orders": 5003,
-      "pending_orders": 3310,
+      "packed_orders": 6928,
+      "dispatched_orders": 6566,
+      "pending_orders": 2977,
       "avg_pick_min": 73.5,
-      "avg_pack_min": 74.0,
-      "avg_dispatch_min": 192.8,
+      "avg_pack_min": 76.7,
+      "avg_dispatch_min": 155.7,
       "pick_hours": [
         0,
         2676,
@@ -4402,7 +4403,7 @@
         1,
         1177,
         1604,
-        234,
+        370,
         0,
         0,
         0,
@@ -4428,7 +4429,7 @@
         0,
         0,
         0,
-        7710,
+        10241,
         0,
         0,
         0,
@@ -4491,7 +4492,7 @@
       "top_packer": [
         [
           "WIWIK PACKERDUASATUDUA",
-          338
+          369
         ],
         [
           "FEBRIYANI PACKERTIGAEMPATSEMBILAN",
@@ -4499,7 +4500,7 @@
         ],
         [
           "ASKAL PACKERTIGALIMAEMPAT",
-          283
+          285
         ],
         [
           "INTAN PACKERTIGASEMBILANTUJUH",
@@ -4533,15 +4534,15 @@
       "top_dispatcher": [
         [
           "muh riki",
-          4663
+          5758
         ],
         [
           "SAENURSEN DISPATCH",
-          1998
+          2538
         ],
         [
           "adriansyah maulana",
-          1049
+          1945
         ]
       ],
       "low_picker": [
@@ -4622,7 +4623,7 @@
         1,
         57,
         59,
-        27,
+        28,
         0,
         0,
         0,
@@ -4674,7 +4675,7 @@
         1,
         1177,
         1604,
-        234,
+        370,
         0,
         0,
         0,
@@ -4726,7 +4727,7 @@
         2,
         2202,
         2861,
-        409,
+        664,
         0,
         0,
         0,
@@ -4749,7 +4750,7 @@
       "active_dispatchers": 3,
       "total_workforce": 88,
       "avg_pick_per_picker": 548.1,
-      "avg_pack_per_packer": 94.3
+      "avg_pack_per_packer": 96.2
     }
   }
 ]
