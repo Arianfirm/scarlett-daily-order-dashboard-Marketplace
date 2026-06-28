@@ -5701,10 +5701,10 @@
     "date": "2026-06-28",
     "total_orders": 4700,
     "total_qty": 6826,
-    "fulfilled": 2808,
-    "pending": 582,
-    "fulfillment_pct": 59.7,
-    "total_atp": null,
+    "fulfilled": 3111,
+    "pending": 580,
+    "fulfillment_pct": 66.2,
+    "total_atp": 44561271,
     "peak_hour": 0,
     "peak_hour_orders": 1881,
     "peak_hour_qty": 2617,
@@ -5761,16 +5761,17 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-06-28 07:00:34 WIB",
+    "last_updated": "2026-06-28 07:07:22 WIB",
+    "sku_count": 2123,
     "warehouse": {
-      "total_orders": 4853,
+      "total_orders": 4953,
       "total_orders_b2c": 4700,
-      "picked_orders": 3873,
-      "packed_orders": 3062,
+      "picked_orders": 3872,
+      "packed_orders": 3122,
       "dispatched_orders": 2233,
       "pending_orders": 2467,
       "avg_pick_min": 125.0,
-      "avg_pack_min": 62.1,
+      "avg_pack_min": 62.9,
       "avg_dispatch_min": 171.3,
       "pick_hours": [
         0,
@@ -5779,7 +5780,7 @@
         440,
         0,
         1253,
-        786,
+        785,
         8,
         0,
         0,
@@ -5806,7 +5807,7 @@
         0,
         502,
         1046,
-        151,
+        211,
         0,
         0,
         0,
@@ -5857,7 +5858,7 @@
         ],
         [
           "HUDRI PICKERTUJUHBELAS",
-          526
+          525
         ],
         [
           "BUDI PACKERSERATUSDELAPANTIGA",
@@ -5899,11 +5900,11 @@
         ],
         [
           "MUNA PACKERSERATUSEMPATPULUH",
-          171
+          176
         ],
         [
           "RENI PACKERTIGASATUDUA",
-          143
+          150
         ],
         [
           "NUR PACKERTIGALIMASATU",
@@ -5922,16 +5923,16 @@
           125
         ],
         [
-          "FABIAN PACKERDUADELAPANDUA",
+          "AZIS PACKERDUAEMPATEMPAT",
+          118
+        ],
+        [
+          "SAEPUDIN PACKERTUJUHEMPAT",
           113
         ],
         [
-          "REKA PACKERTIGADELAPANSATU",
-          109
-        ],
-        [
-          "AZIS PACKERDUAEMPATEMPAT",
-          107
+          "FABIAN PACKERDUADELAPANDUA",
+          113
         ]
       ],
       "top_dispatcher": [
@@ -5984,12 +5985,12 @@
           7
         ],
         [
-          "YOGA PACKERTUJUHTIGA",
-          10
-        ],
-        [
           "BUNGAH PACKERDUANOLTUJUH",
           19
+        ],
+        [
+          "YOGA PACKERTUJUHTIGA",
+          24
         ]
       ],
       "pick_hour_pickers": [
@@ -6051,7 +6052,7 @@
         440,
         0,
         1253,
-        786,
+        785,
         8,
         0,
         0,
@@ -6078,7 +6079,7 @@
         0,
         502,
         1046,
-        151,
+        211,
         0,
         0,
         0,
@@ -6103,7 +6104,7 @@
         651,
         0,
         1862,
-        1225,
+        1224,
         12,
         0,
         0,
@@ -6130,7 +6131,7 @@
         0,
         715,
         1624,
-        225,
+        312,
         0,
         0,
         0,
@@ -6152,8 +6153,8 @@
       "active_packers": 56,
       "active_dispatchers": 3,
       "total_workforce": 72,
-      "avg_pick_per_picker": 297.9,
-      "avg_pack_per_packer": 54.7
+      "avg_pick_per_picker": 297.8,
+      "avg_pack_per_packer": 55.8
     }
   }
 ]
