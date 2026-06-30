@@ -912,7 +912,7 @@ function rBneck(){
 
 function rSkuProb(){
   const agg={};Object.values(SMAP).filter(d=>BAD.has(d.st)).forEach(d=>{agg[d.sku]=(agg[d.sku]||0)+d.qty});
-  const s=Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const s=Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,10);
   document.getElementById('sku-prob').innerHTML=s.length
     ?s.map(([sku,qty],i)=>`
       <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:${i<s.length-1?'1px solid var(--border)':'none'}">
