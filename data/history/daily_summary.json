@@ -7103,12 +7103,12 @@
   },
   {
     "date": "2026-07-01",
-    "total_orders": 6611,
-    "total_qty": 13893,
-    "fulfilled": 4684,
-    "pending": 455,
-    "fulfillment_pct": 70.9,
-    "total_atp": null,
+    "total_orders": 6897,
+    "total_qty": 14428,
+    "fulfilled": 4385,
+    "pending": 736,
+    "fulfillment_pct": 63.6,
+    "total_atp": 44619014,
     "peak_hour": 0,
     "peak_hour_orders": 2928,
     "peak_hour_qty": 6467,
@@ -7120,7 +7120,7 @@
       323,
       659,
       989,
-      3,
+      289,
       0,
       0,
       0,
@@ -7146,7 +7146,7 @@
       669,
       1268,
       1614,
-      3,
+      538,
       0,
       0,
       0,
@@ -7165,17 +7165,18 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-01 07:00:38 WIB",
+    "last_updated": "2026-07-01 07:13:00 WIB",
+    "sku_count": 2123,
     "warehouse": {
-      "total_orders": 6847,
-      "total_orders_b2c": 6611,
-      "picked_orders": 5798,
-      "packed_orders": 3803,
-      "dispatched_orders": 2391,
-      "pending_orders": 4220,
-      "avg_pick_min": 92.7,
-      "avg_pack_min": 149.5,
-      "avg_dispatch_min": 138.0,
+      "total_orders": 7017,
+      "total_orders_b2c": 6897,
+      "picked_orders": 5859,
+      "packed_orders": 3961,
+      "dispatched_orders": 2861,
+      "pending_orders": 4036,
+      "avg_pick_min": 92.4,
+      "avg_pack_min": 151.6,
+      "avg_dispatch_min": 120.9,
       "pick_hours": [
         0,
         1288,
@@ -7184,7 +7185,7 @@
         0,
         780,
         1007,
-        389,
+        477,
         0,
         0,
         0,
@@ -7210,7 +7211,7 @@
         12,
         1070,
         1308,
-        348,
+        506,
         0,
         0,
         0,
@@ -7236,7 +7237,7 @@
         0,
         0,
         0,
-        4761,
+        5680,
         0,
         0,
         0,
@@ -7257,7 +7258,7 @@
       "top_picker": [
         [
           "OPAN PICKERDUA",
-          2038
+          2079
         ],
         [
           "SUNANDAR PACKERSERATUSTIGATUJUH",
@@ -7265,7 +7266,7 @@
         ],
         [
           "PRAYOGA PACKERSERATUSTIGAPULUH",
-          1178
+          1251
         ],
         [
           "HAPIDIN PACKERDUATIGASEMBILAN",
@@ -7306,36 +7307,36 @@
           238
         ],
         [
+          "DWINA PACKERTIGASEMBILANSEMBILAN",
+          237
+        ],
+        [
+          "ROHMAH PACKERTIGALIMADUA",
+          234
+        ],
+        [
           "ASKAL PACKERTIGALIMAEMPAT",
           229
+        ],
+        [
+          "VINA PACKERSERATUSSEMBILANBELAS",
+          227
         ],
         [
           "SHANDIKA PACKERLIMABELAS",
           226
         ],
         [
-          "ROHMAH PACKERTIGALIMADUA",
-          226
-        ],
-        [
-          "VINA PACKERSERATUSSEMBILANBELAS",
-          219
-        ],
-        [
-          "DWINA PACKERTIGASEMBILANSEMBILAN",
-          216
-        ],
-        [
           "IKA PACKERDUASEMBILANENAM",
-          214
-        ],
-        [
-          "SITI PACKERDUADUANOL",
-          206
+          220
         ],
         [
           "MULYATI PACKERSEPULUH",
-          206
+          216
+        ],
+        [
+          "ZAENI PACKERDUASEMBILANDELAPAN",
+          212
         ]
       ],
       "top_dispatcher": [
@@ -7345,15 +7346,15 @@
         ],
         [
           "adriansyah maulana",
-          1615
+          1975
+        ],
+        [
+          "AREL DISPATCH",
+          1038
         ],
         [
           "MUHMMAD ADITYA",
           534
-        ],
-        [
-          "AREL DISPATCH",
-          479
         ],
         [
           "SAENURSEN DISPATCH",
@@ -7385,23 +7386,23 @@
       "low_packer": [
         [
           "NELA PACKERDUANOLTIGA",
-          7
-        ],
-        [
-          "KURNIA PACKERSERATUSDUADELAPAN",
-          8
-        ],
-        [
-          "ANDINI PACKERDUASEMBILAN",
           10
         ],
         [
-          "SUTA PACKERDUASATUDELAPAN",
-          14
+          "KURNIA PACKERSERATUSDUADELAPAN",
+          10
+        ],
+        [
+          "ANDINI PACKERDUASEMBILAN",
+          12
         ],
         [
           "INDAH PACKERDELAPAN",
           16
+        ],
+        [
+          "NURUL PACKERSERATUSEMPATSATU",
+          18
         ]
       ],
       "pick_hour_pickers": [
@@ -7438,7 +7439,7 @@
         2,
         49,
         50,
-        38,
+        40,
         0,
         0,
         0,
@@ -7464,7 +7465,7 @@
         0,
         780,
         1007,
-        389,
+        477,
         0,
         0,
         0,
@@ -7490,7 +7491,7 @@
         12,
         1070,
         1308,
-        348,
+        506,
         0,
         0,
         0,
@@ -7516,7 +7517,7 @@
         0,
         2592,
         1668,
-        607,
+        709,
         0,
         0,
         0,
@@ -7542,7 +7543,7 @@
         28,
         2741,
         3086,
-        604,
+        932,
         0,
         0,
         0,
@@ -7564,8 +7565,8 @@
       "active_packers": 58,
       "active_dispatchers": 5,
       "total_workforce": 75,
-      "avg_pick_per_picker": 483.2,
-      "avg_pack_per_packer": 65.6
+      "avg_pick_per_picker": 488.2,
+      "avg_pack_per_packer": 68.3
     }
   }
 ]
