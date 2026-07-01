@@ -7573,10 +7573,10 @@
     "date": "2026-07-02",
     "total_orders": 38516,
     "total_qty": 66625,
-    "fulfilled": 31374,
-    "pending": 1430,
-    "fulfillment_pct": 81.5,
-    "total_atp": 44544377,
+    "fulfilled": 31822,
+    "pending": 1002,
+    "fulfillment_pct": 82.6,
+    "total_atp": 44542663,
     "peak_hour": 0,
     "peak_hour_orders": 2928,
     "peak_hour_qty": 6467,
@@ -7633,18 +7633,18 @@
       2149
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-02 03:00:37 WIB",
+    "last_updated": "2026-07-02 03:49:48 WIB",
     "sku_count": 2123,
     "warehouse": {
-      "total_orders": 27177,
+      "total_orders": 25617,
       "total_orders_b2c": 38516,
-      "picked_orders": 22628,
+      "picked_orders": 22155,
       "packed_orders": 21526,
-      "dispatched_orders": 20610,
-      "pending_orders": 17906,
-      "avg_pick_min": 107.1,
+      "dispatched_orders": 20688,
+      "pending_orders": 17828,
+      "avg_pick_min": 104.3,
       "avg_pack_min": 194.9,
-      "avg_dispatch_min": -379.9,
+      "avg_dispatch_min": -377.8,
       "pick_hours": [
         0,
         1286,
@@ -7668,8 +7668,8 @@
         33,
         0,
         0,
-        713,
-        1203
+        636,
+        807
       ],
       "pack_hours": [
         0,
@@ -7705,7 +7705,7 @@
         0,
         0,
         0,
-        33453,
+        33541,
         0,
         0,
         0,
@@ -7725,12 +7725,12 @@
       ],
       "top_picker": [
         [
-          "OPAN PICKERDUA",
-          2542
-        ],
-        [
           "RIKI PACKERDUALIMANOL",
           2509
+        ],
+        [
+          "OPAN PICKERDUA",
+          2437
         ],
         [
           "TEGAR EMPATBELAS",
@@ -7757,12 +7757,12 @@
           1564
         ],
         [
-          "SUNANDAR PACKERSERATUSTIGATUJUH",
-          1554
-        ],
-        [
           "PRAMADI PICKERDUABELAS",
           1535
+        ],
+        [
+          "BUDI PACKERSERATUSDELAPANTIGA",
+          1528
         ]
       ],
       "top_packer": [
@@ -7818,11 +7818,11 @@
         ],
         [
           "adriansyah maulana",
-          5756
+          5838
         ],
         [
           "Komarudin dispatch",
-          4942
+          4948
         ],
         [
           "ahmad Hamdani",
@@ -7832,23 +7832,23 @@
       "low_picker": [
         [
           "YAHYA PACKERTIGADUAEMPAT",
-          237
+          180
         ],
         [
           "DANNY PACKERSERATUSTIGASATU",
-          409
-        ],
-        [
-          "PAJRIANSYAH PACKERTIGADUATUJUH",
-          713
+          396
         ],
         [
           "ALDITRI PACKERDELAPANBELAS",
-          725
+          662
+        ],
+        [
+          "PAJRIANSYAH PACKERTIGADUATUJUH",
+          680
         ],
         [
           "FADIL PACKERSERATUSDUALIMA",
-          834
+          776
         ]
       ],
       "low_packer": [
@@ -7948,8 +7948,8 @@
         33,
         0,
         0,
-        713,
-        1203
+        636,
+        807
       ],
       "pack_hour_orders": [
         0,
@@ -8000,8 +8000,8 @@
         3,
         0,
         0,
-        819,
-        1719
+        724,
+        1190
       ],
       "pack_hour_qty": [
         0,
@@ -8033,7 +8033,7 @@
       "active_packers": 129,
       "active_dispatchers": 11,
       "total_workforce": 165,
-      "avg_pick_per_picker": 870.3,
+      "avg_pick_per_picker": 852.1,
       "avg_pack_per_packer": 166.9
     }
   }
