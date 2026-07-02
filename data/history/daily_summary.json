@@ -7571,12 +7571,12 @@
   },
   {
     "date": "2026-07-02",
-    "total_orders": 5186,
-    "total_qty": 9238,
-    "fulfilled": 3148,
-    "pending": 1257,
-    "fulfillment_pct": 60.7,
-    "total_atp": 44606472,
+    "total_orders": 5464,
+    "total_qty": 9715,
+    "fulfilled": 3294,
+    "pending": 1431,
+    "fulfillment_pct": 60.3,
+    "total_atp": 44605368,
     "peak_hour": 0,
     "peak_hour_orders": 1913,
     "peak_hour_qty": 3564,
@@ -7588,7 +7588,7 @@
       353,
       566,
       951,
-      1,
+      279,
       0,
       0,
       0,
@@ -7614,7 +7614,7 @@
       541,
       885,
       1487,
-      1,
+      478,
       0,
       0,
       0,
@@ -7633,18 +7633,18 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-02 07:00:37 WIB",
+    "last_updated": "2026-07-02 07:14:02 WIB",
     "sku_count": 2123,
     "warehouse": {
-      "total_orders": 5187,
-      "total_orders_b2c": 5186,
-      "picked_orders": 3594,
-      "packed_orders": 873,
-      "dispatched_orders": 386,
-      "pending_orders": 4800,
-      "avg_pick_min": 183.6,
-      "avg_pack_min": 113.0,
-      "avg_dispatch_min": 150.8,
+      "total_orders": 5582,
+      "total_orders_b2c": 5464,
+      "picked_orders": 3674,
+      "packed_orders": 1060,
+      "dispatched_orders": 587,
+      "pending_orders": 4877,
+      "avg_pick_min": 184.2,
+      "avg_pack_min": 110.5,
+      "avg_dispatch_min": 117.4,
       "pick_hours": [
         0,
         348,
@@ -7652,8 +7652,8 @@
         0,
         0,
         1770,
-        1120,
-        23,
+        1119,
+        113,
         0,
         0,
         0,
@@ -7679,7 +7679,7 @@
         0,
         163,
         465,
-        22,
+        209,
         0,
         0,
         0,
@@ -7705,7 +7705,7 @@
         0,
         0,
         0,
-        812,
+        1188,
         0,
         0,
         0,
@@ -7726,11 +7726,11 @@
       "top_picker": [
         [
           "PRAYOGA PACKERSERATUSTIGAPULUH",
-          933
+          1015
         ],
         [
           "OPAN PICKERDUA",
-          897
+          896
         ],
         [
           "SUNANDAR PACKERSERATUSTIGATUJUH",
@@ -7749,12 +7749,12 @@
           522
         ],
         [
-          "DANNY PACKERSERATUSTIGASATU",
-          438
+          "IAN PACKERSERATUSENAMTIGA",
+          477
         ],
         [
-          "IAN PACKERSERATUSENAMTIGA",
-          401
+          "DANNY PACKERSERATUSTIGASATU",
+          438
         ],
         [
           "DAEROBI PACKERDUASATU",
@@ -7768,7 +7768,7 @@
       "top_packer": [
         [
           "RUNI ENAMDELAPAN",
-          231
+          252
         ],
         [
           "SITI PACKERDUADUANOL",
@@ -7783,38 +7783,38 @@
           132
         ],
         [
+          "DIAN PACKERDUAEMPATTUJUH",
+          118
+        ],
+        [
           "SINDY PACKERTIGASATUEMPAT",
-          107
+          109
         ],
         [
           "SADIAH ENAMSEMBILAN",
-          99
+          101
+        ],
+        [
+          "NURUL PACKERSERATUSEMPATSATU",
+          87
         ],
         [
           "LELI PACKERTIGADELAPANLIMA",
           83
         ],
         [
-          "DIAN PACKERDUAEMPATTUJUH",
-          80
-        ],
-        [
-          "NURUL PACKERSERATUSEMPATSATU",
-          68
-        ],
-        [
-          "ANDRYANA PACKEREMPATEMPATEMPAT",
-          63
+          "RIDWAN PACKERDUAEMPATTIGA",
+          78
         ]
       ],
       "top_dispatcher": [
         [
           "GUGUN DISPATCH",
-          338
+          499
         ],
         [
           "adriansyah maulana",
-          245
+          460
         ],
         [
           "Komarudin dispatch",
@@ -7843,30 +7843,30 @@
           391
         ],
         [
-          "IAN PACKERSERATUSENAMTIGA",
-          401
+          "DANNY PACKERSERATUSTIGASATU",
+          438
         ]
       ],
       "low_packer": [
         [
-          "JUHENAH PACKEREMPATDUALIMA",
-          1
-        ],
-        [
-          "NORMA PACKERTIGALIMADELAPAN",
-          1
-        ],
-        [
           "RENI PACKERDUASEMBILANEMPAT",
           2
+        ],
+        [
+          "JUHENAH PACKEREMPATDUALIMA",
+          4
         ],
         [
           "ASILAH PACKEREMPATEMPATNOL",
           5
         ],
         [
+          "NORMA PACKERTIGALIMADELAPAN",
+          18
+        ],
+        [
           "SHANDIKA PACKERLIMABELAS",
-          9
+          20
         ]
       ],
       "pick_hour_pickers": [
@@ -7877,7 +7877,7 @@
         0,
         12,
         10,
-        1,
+        2,
         0,
         0,
         0,
@@ -7903,7 +7903,7 @@
         0,
         9,
         25,
-        11,
+        20,
         0,
         0,
         0,
@@ -7928,8 +7928,8 @@
         0,
         0,
         1770,
-        1120,
-        23,
+        1119,
+        113,
         0,
         0,
         0,
@@ -7955,7 +7955,7 @@
         0,
         163,
         465,
-        22,
+        209,
         0,
         0,
         0,
@@ -7980,8 +7980,8 @@
         0,
         0,
         2999,
-        1722,
-        27,
+        1721,
+        252,
         0,
         0,
         0,
@@ -8007,7 +8007,7 @@
         0,
         363,
         888,
-        44,
+        339,
         0,
         0,
         0,
@@ -8029,8 +8029,8 @@
       "active_packers": 27,
       "active_dispatchers": 4,
       "total_workforce": 43,
-      "avg_pick_per_picker": 299.5,
-      "avg_pack_per_packer": 32.3
+      "avg_pick_per_picker": 306.2,
+      "avg_pack_per_packer": 39.3
     }
   }
 ]
