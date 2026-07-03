@@ -98,6 +98,8 @@ main{padding:24px 28px;overflow:hidden}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
 .g3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
 @media(max-width:900px){.g3col{grid-template-columns:1fr}}
+.g2r{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:900px){.g2r{grid-template-columns:1fr}}
 .gf{margin-bottom:14px}
 
 /* Fulfillment bar */
@@ -233,7 +235,7 @@ tr:hover td{background:var(--bg3)}
     </div>
   </div>
 
-  <div class="g4">
+  <div class="g4" style="grid-template-columns:repeat(3,1fr)">
     <div class="card">
       <div class="ch"><div><div class="ct">Payment Method</div><div class="cs">Top 6</div></div></div>
       <div id="pay-bars"></div>
@@ -246,9 +248,16 @@ tr:hover td{background:var(--bg3)}
       <div class="ch"><div><div class="ct">% pending per MP</div><div class="cs">%</div></div></div>
       <div id="bneck"></div>
     </div>
+  </div>
+
+  <div class="g2r">
     <div class="card">
-      <div class="ch"><div><div class="ct">Unassigned + Problem</div><div class="cs"></div></div></div>
-      <div id="sku-prob"></div>
+      <div class="ch"><div><div class="ct">Top 10 Unassigned SKU</div><div class="cs">by qty</div></div></div>
+      <div id="sku-unassigned"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Top 10 Problem SKU</div><div class="cs">by qty</div></div></div>
+      <div id="sku-problem"></div>
     </div>
   </div>
 
@@ -917,16 +926,20 @@ function rBneck(){
     </div>`;}).join('');
 }
 
-function rSkuProb(){
-  const agg={};Object.values(SMAP).filter(d=>BAD.has(d.st)).forEach(d=>{agg[d.sku]=(agg[d.sku]||0)+d.qty});
+function rSkuStatusList(elId,status){
+  const agg={};Object.values(SMAP).filter(d=>d.st===status).forEach(d=>{agg[d.sku]=(agg[d.sku]||0)+d.qty});
   const s=Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  document.getElementById('sku-prob').innerHTML=s.length
+  document.getElementById(elId).innerHTML=s.length
     ?s.map(([sku,qty],i)=>`
       <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:${i<s.length-1?'1px solid var(--border)':'none'}">
         <div style="font-size:11px;font-weight:500;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${cs(sku)}</div>
         <span class="bdg br">${n(qty)} qty</span>
       </div>`).join('')
     :'<div style="font-size:11px;color:var(--muted)">Tidak ada masalah 🎉</div>';
+}
+function rSkuProb(){
+  rSkuStatusList('sku-unassigned','unassigned');
+  rSkuStatusList('sku-problem','problem');
 }
 
 function rSkuChart(){
