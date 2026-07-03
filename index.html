@@ -65,6 +65,7 @@ main{padding:24px 28px;overflow:hidden}
 
 /* KPI */
 .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+#kpi{grid-template-columns:repeat(6,1fr)}
 .kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh);position:relative;overflow:hidden}
 .kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
 .k-pink::after{background:linear-gradient(90deg,#e8345a,#ff6b8a)}
@@ -763,7 +764,8 @@ function rKpi(){
   const ords=fOrd(),tot=ords.length;
   let qty=0;ords.forEach(o=>o.items.forEach(i=>qty+=i.qty));
   const good=ords.filter(o=>GOOD.has(o.st)).length;
-  const bad=ords.filter(o=>BAD.has(o.st)).length;
+  const unassigned=ords.filter(o=>o.st==='unassigned').length;
+  const problem=ords.filter(o=>o.st==='problem').length;
   const canc=ords.filter(o=>o.st==='cancelled').length;
   // avg dispatch
   let dispH=0,dc=0;
@@ -773,7 +775,8 @@ function rKpi(){
     <div class="kpi k-pink"><div class="kpi-lbl">Unique Orders</div><div class="kpi-val">${n(tot)}</div><div class="kpi-sub">order masuk hari ini</div></div>
     <div class="kpi k-green"><div class="kpi-lbl">Total Qty</div><div class="kpi-val">${n(qty)}</div><div class="kpi-sub">unit terjual</div></div>
     <div class="kpi k-amber"><div class="kpi-lbl">Fulfilled</div><div class="kpi-val">${n(good)}</div><div class="kpi-sub">${p(good,tot)}% dari total</div><span class="kpi-tag">${p(good,tot)}%</span></div>
-    <div class="kpi k-red"><div class="kpi-lbl">Pending+Problem</div><div class="kpi-val">${n(bad)}</div><div class="kpi-sub">${n(canc)} cancelled</div><span class="kpi-tag">${p(bad,tot)}%</span></div>
+    <div class="kpi k-purple"><div class="kpi-lbl">Unassigned</div><div class="kpi-val">${n(unassigned)}</div><div class="kpi-sub">belum ditugaskan</div><span class="kpi-tag">${p(unassigned,tot)}%</span></div>
+    <div class="kpi k-red"><div class="kpi-lbl">Problem</div><div class="kpi-val">${n(problem)}</div><div class="kpi-sub">${n(canc)} cancelled</div><span class="kpi-tag">${p(problem,tot)}%</span></div>
     <div class="kpi k-blue"><div class="kpi-lbl">Avg Dispatch</div><div class="kpi-val">10.3<span style="font-size:14px;font-weight:400">h</span></div><div class="kpi-sub">dari order → dispatch</div></div>`;
 }
 
