@@ -1685,7 +1685,8 @@ async function main(){
   try{
     sm('Memuat metadata...');
     try{
-      const meta=await fetch(`data/last_updated.json?t=${Date.now()}`).then(r=>r.json());
+      const meta=await fetch(`data/last_updated.json?t=${Date.now()}`,{cache:'no-store'}).then(r=>r.json());
+      console.log("HEADER LAST UPDATED =", meta.last_updated);
       document.getElementById('sb-date').textContent=meta.date;
       document.getElementById('ph-meta').textContent=`Data: ${meta.date} · 00:00–23:59 · ${(meta.total_rows||0).toLocaleString()} rows`;
       // Parse last_updated — handles both "2026-06-17 12:00:00 UTC" and "2026-06-17 19:00:00 WIB"
