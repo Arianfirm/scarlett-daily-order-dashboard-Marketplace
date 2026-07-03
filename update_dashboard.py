@@ -709,5 +709,91 @@ try:
 except Exception as e:
     print(f"      ⚠ Warehouse KPI skipped (non-critical): {e}")
 
+# ── 9. Stock Daily snapshot (00:00–23:59 final result only, no raw data) ─────
+print("\n[9] Building Stock Daily snapshot...")
+try:
+    if not os.path.exists("data/inventory.xlsx"):
+        raise Exception("data/inventory.xlsx not found — inventory step must run first")
+
+    import openpyxl
+    wb = openpyxl.load_workbook("data/inventory.xlsx", read_only=True, data_only=True)
+    ws = wb.active
+
+    # Same source columns as the live dashboard (loadStock() in index.html):
+    # column 2 = Product Name English (identifier), column 8 = ATP
+    stock_map, snap_total_atp, snap_total_sku = {}, 0, 0
+    for idx, row in enumerate(ws.iter_rows(values_only=True)):
+        if idx == 0: continue
+        name = (str(row[2]).strip() if row[2] is not None else "")
+        if not name: continue
+        try: atp = int(row[8]) if row[8] not in (None, "") else 0
+        except Exception: atp = 0
+        stock_map[name] = atp
+        snap_total_atp += atp
+        snap_total_sku += 1
+
+    # Demand today per SKU — same identifier ("Item Name") as the live dashboard's SMAP
+    demand = {}
+    for r in rows:
+        sku_name = (r.get("Item Name") or "").strip()
+        if not sku_name: continue
+        try: qty = int(float(r.get("Ordered Quantity") or 0))
+        except Exception: qty = 0
+        demand[sku_name] = demand.get(sku_name, 0) + qty
+
+    items = []
+    for sku_name, qty in demand.items():
+        atp = stock_map.get(sku_name)
+        deficit = (atp - qty) if atp is not None else None
+        if atp is None:
+            status = "Tidak ada di inventory"
+        elif deficit < 0:
+            status = "Stock Minus"
+        elif atp > 0 and deficit / atp < 0.2:
+            status = "Menipis"
+        else:
+            status = "Aman"
+        items.append({
+            "sku": sku_name,
+            "product_name": sku_name,
+            "atp": atp,
+            "sold": qty,
+            "deficit": deficit,
+            "status": status,
+        })
+    # Same default order as the live "Stock vs Demand" table: deficit ascending, nulls last
+    items.sort(key=lambda i: (i["deficit"] is None, i["deficit"] if i["deficit"] is not None else 0))
+
+    risk_sku   = sum(1 for i in items if i["atp"] is not None and i["deficit"] < 0)
+    zero_stock = sum(1 for i in items if i["atp"] == 0 and i["sold"] > 0)
+
+    snapshot_entry = {
+        "date": TODAY,
+        "summary": {
+            "total_sku":  snap_total_sku,
+            "total_atp":  snap_total_atp,
+            "sku_sold":   len(items),
+            "risk_sku":   risk_sku,
+            "zero_stock": zero_stock,
+        },
+        "items": items,
+    }
+
+    hpath = "data/history/stock_daily_history.json"
+    hl = []
+    if os.path.exists(hpath):
+        try:
+            with open(hpath) as f: hl = json.load(f)
+        except Exception: pass
+    hl = [h for h in hl if h.get("date") != TODAY]   # replace same-date snapshot, no duplicates
+    hl.append(snapshot_entry)
+    hl = sorted(hl, key=lambda h: h["date"])[-30:]    # keep max 30 days
+    with open(hpath, "w") as f: json.dump(hl, f, indent=2)
+    print(f"      ✓ stock_daily_history.json updated ({len(hl)} days) — "
+          f"sku_sold={len(items)} risk_sku={risk_sku} zero_stock={zero_stock}")
+
+except Exception as e:
+    print(f"      ⚠ Stock Daily snapshot skipped (non-critical): {e}")
+
 
 print(f"\n=== DONE — {len(rows):,} B2C rows · {TODAY} · UTC {RUN_HOUR:02d}:xx ===")

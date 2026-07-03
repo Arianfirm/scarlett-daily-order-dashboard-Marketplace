@@ -190,6 +190,10 @@ tr:hover td{background:var(--bg3)}
       <div class="ph-meta" id="ph-meta">Memuat...</div>
       <div class="ph-meta" id="ph-wib" style="margin-top:2px;color:var(--green)">—</div>
     </div>
+    <div id="stock-date-picker" style="display:none;align-items:center;position:relative">
+      <button class="btn-ref" onclick="toggleStockDateMenu()">📅 <span id="stock-date-label">Hari Ini</span> ▼</button>
+      <div id="stock-date-menu" style="display:none;position:absolute;top:calc(100% + 4px);right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r3);min-width:170px;max-height:320px;overflow-y:auto;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.35)"></div>
+    </div>
     <button class="btn-ref" onclick="location.reload()">↻ Refresh</button>
   </div>
 
@@ -995,6 +999,8 @@ window.sst=function(v){
 
 // ── Page switching ──────────────────────────────────────────────────────────
 let STOCK_LOADED=false, STOCK_MAP={}, STOCK_FULL_DATA=[];
+let STOCK_LIVE_TOTAL_ATP=0, STOCK_LIVE_SKU_COUNT=0;
+let STOCK_VIEW_DATE=null, STOCK_HISTORY_LOADED=false, STOCK_HISTORY_LIST=[];
 
 // ── History 30 Hari (summary only) ───────────────────────────────────────────────────────
 let HISTORY_LOADED=false, HISTORY_SUMMARY=[];
@@ -1424,9 +1430,12 @@ window.showPage=function(page){
   document.getElementById('page-docs').style.display=page==='docs'?'':'none';
   document.getElementById('order-filters').style.display=page==='overview'?'':'none';
   document.getElementById('status-filters').style.display=page==='overview'?'':'none';
+  document.getElementById('stock-date-picker').style.display=page==='stock'?'flex':'none';
+  if(page!=='stock') document.getElementById('stock-date-menu').style.display='none';
   const titles={overview:'Daily Order Overview',stock:'Stock Daily',history:'History 30 Hari',warehouse:'Warehouse Performance',trend:'Trend Per Jam — Picking, Packing, Dispatch',docs:'Dashboard logic & Legend'};
   document.getElementById('ph-title').textContent=titles[page];
   if(page==='stock'&&!STOCK_LOADED) loadStock();
+  if(page==='stock') loadStockDatePickerMenu();
   if(page==='history'&&!HISTORY_LOADED) requestAnimationFrame(()=>loadHistory());
   if(page==='warehouse'){WAREHOUSE_LOADED=false; requestAnimationFrame(()=>loadWarehouse());}
   if(page==='trend'){TREND_LOADED=false; requestAnimationFrame(()=>loadTrendCharts());}
@@ -1527,6 +1536,8 @@ async function loadStock(){
       totalATP+=atp; skuCount++;
     }
     STOCK_LOADED=true;
+    STOCK_LIVE_TOTAL_ATP=totalATP;
+    STOCK_LIVE_SKU_COUNT=skuCount;
     renderStockPage(totalATP,skuCount);
   }catch(err){
     wrap('stock-risk-tbl').innerHTML=`<div style="font-size:12px;color:var(--red);padding:8px 0">Error: ${err.message}</div>`;
@@ -1547,11 +1558,27 @@ function renderStockPage(totalATP,skuCount){
     return {sku,qty,atp,remain};
   });
 
+  paintStockPanels(combined,totalATP,skuCount);
+}
+
+// Renders a previously-saved Stock Daily snapshot (from data/history/stock_daily_history.json)
+// using the exact same paint routine as the live view, so tables/cards stay pixel-identical.
+function renderStockFromSnapshot(entry){
+  const summary=entry.summary||{};
+  const combined=(entry.items||[]).map(i=>({
+    sku:i.sku, qty:i.sold,
+    atp:(i.atp===undefined||i.atp===null)?null:i.atp,
+    remain:(i.deficit===undefined||i.deficit===null)?null:i.deficit
+  }));
+  paintStockPanels(combined, summary.total_atp||0, summary.total_sku||0);
+}
+
+function paintStockPanels(combined,totalATP,skuCount){
   // KPI
   const totalDemand=combined.reduce((a,c)=>a+c.qty,0);
   const riskList=combined.filter(c=>c.atp!==null&&c.atp<c.qty).sort((a,b)=>(a.remain)-(b.remain));
-  const zeroStock=Object.entries(STOCK_MAP).filter(([sku,atp])=>atp===0&&demand[sku]>0)
-    .map(([sku])=>({sku,qty:demand[sku]||0}))
+  const zeroStock=combined.filter(c=>c.atp===0&&c.qty>0)
+    .map(c=>({sku:c.sku,qty:c.qty}))
     .sort((a,b)=>b.qty-a.qty);
 
   document.getElementById('stock-kpi').innerHTML=`
@@ -1597,6 +1624,61 @@ function renderStockPage(totalATP,skuCount){
     `).join('')}</tbody></table>`
     : `<div style="font-size:12px;color:var(--green);padding:8px 0">✓ Tidak ada SKU dengan stock kosong yang masih dipesan</div>`;
 }
+
+// ── Stock Daily date picker (snapshot history) ───────────────────────────────
+function fmtStockDate(d){
+  const dt=new Date(d+'T00:00:00');
+  const months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  return `${String(dt.getDate()).padStart(2,'0')} ${months[dt.getMonth()]} ${dt.getFullYear()}`;
+}
+
+async function loadStockDatePickerMenu(){
+  if(STOCK_HISTORY_LOADED) return;
+  try{
+    const hist=await fetch(`data/history/stock_daily_history.json?t=${Date.now()}`).then(r=>r.ok?r.json():[]);
+    STOCK_HISTORY_LIST=(Array.isArray(hist)?hist:[]).slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,30);
+  }catch(e){
+    STOCK_HISTORY_LIST=[];
+  }
+  STOCK_HISTORY_LOADED=true;
+  renderStockDateMenu();
+}
+
+function renderStockDateMenu(){
+  const menu=document.getElementById('stock-date-menu');
+  if(!menu) return;
+  const opt=(active,label,onclick)=>`<div onclick="${onclick}" style="padding:8px 14px;cursor:pointer;font-size:12px;font-weight:${active?'700':'400'};color:${active?'var(--text)':'var(--muted)'}">${label}</div>`;
+  menu.innerHTML=[opt(STOCK_VIEW_DATE===null,'Hari Ini','selectStockDate(null)')]
+    .concat(STOCK_HISTORY_LIST.map(h=>opt(STOCK_VIEW_DATE===h.date,fmtStockDate(h.date),`selectStockDate('${h.date}')`)))
+    .join('');
+}
+
+window.toggleStockDateMenu=function(){
+  const menu=document.getElementById('stock-date-menu');
+  menu.style.display=menu.style.display==='block'?'none':'block';
+};
+
+window.selectStockDate=function(dateStr){
+  STOCK_VIEW_DATE=dateStr;
+  document.getElementById('stock-date-menu').style.display='none';
+  document.getElementById('stock-date-label').textContent=dateStr?fmtStockDate(dateStr):'Hari Ini';
+  if(!dateStr){
+    if(STOCK_LOADED) renderStockPage(STOCK_LIVE_TOTAL_ATP,STOCK_LIVE_SKU_COUNT);
+    else loadStock();
+  }else{
+    const entry=STOCK_HISTORY_LIST.find(h=>h.date===dateStr);
+    if(entry) renderStockFromSnapshot(entry);
+  }
+  renderStockDateMenu();
+};
+
+document.addEventListener('click',(e)=>{
+  const wrap=document.getElementById('stock-date-picker');
+  const menu=document.getElementById('stock-date-menu');
+  if(wrap && menu && menu.style.display==='block' && !wrap.contains(e.target)){
+    menu.style.display='none';
+  }
+});
 
 async function main(){
   const sm=t=>document.getElementById('lmsg').textContent=t;
