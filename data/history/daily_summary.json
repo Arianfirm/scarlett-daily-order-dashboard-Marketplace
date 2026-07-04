@@ -8507,12 +8507,12 @@
   },
   {
     "date": "2026-07-04",
-    "total_orders": 29496,
-    "total_qty": 42878,
-    "fulfilled": 24300,
-    "pending": 901,
-    "fulfillment_pct": 82.4,
-    "total_atp": 44817353,
+    "total_orders": 29638,
+    "total_qty": 43080,
+    "fulfilled": 24862,
+    "pending": 977,
+    "fulfillment_pct": 83.9,
+    "total_atp": 44816762,
     "peak_hour": 7,
     "peak_hour_orders": 2280,
     "peak_hour_qty": 3034,
@@ -8539,7 +8539,7 @@
       1546,
       1513,
       1232,
-      2,
+      144,
       0
     ],
     "hourly_qty": [
@@ -8565,22 +8565,22 @@
       2251,
       2011,
       1781,
-      2,
+      204,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-04 22:00:42 WIB",
+    "last_updated": "2026-07-04 22:10:46 WIB",
     "sku_count": 2124,
     "warehouse": {
-      "total_orders": 29496,
-      "total_orders_b2c": 29496,
-      "picked_orders": 26259,
-      "packed_orders": 21101,
-      "dispatched_orders": 18371,
-      "pending_orders": 11125,
-      "avg_pick_min": 139.9,
-      "avg_pack_min": 205.2,
-      "avg_dispatch_min": -492.7,
+      "total_orders": 29726,
+      "total_orders_b2c": 29638,
+      "picked_orders": 26684,
+      "packed_orders": 21398,
+      "dispatched_orders": 19190,
+      "pending_orders": 10448,
+      "avg_pick_min": 138.4,
+      "avg_pack_min": 204.5,
+      "avg_dispatch_min": -507.5,
       "pick_hours": [
         0,
         1197,
@@ -8602,9 +8602,9 @@
         546,
         830,
         2108,
-        2215,
+        2214,
         2497,
-        139,
+        565,
         0
       ],
       "pack_hours": [
@@ -8630,7 +8630,7 @@
         2894,
         2645,
         1739,
-        82,
+        379,
         0
       ],
       "dispatch_hours": [
@@ -8641,7 +8641,7 @@
         0,
         0,
         0,
-        24133,
+        25171,
         0,
         0,
         0,
@@ -8746,7 +8746,7 @@
       "top_dispatcher": [
         [
           "MUHMMAD ADITYA",
-          7287
+          7827
         ],
         [
           "SAENURSEN DISPATCH",
@@ -8758,7 +8758,7 @@
         ],
         [
           "NANA SUPRIATNA",
-          2433
+          2780
         ],
         [
           "muh riki",
@@ -8832,7 +8832,7 @@
         13,
         12,
         12,
-        6,
+        8,
         0
       ],
       "pack_hour_packers": [
@@ -8858,7 +8858,7 @@
         85,
         73,
         58,
-        33,
+        47,
         0
       ],
       "pick_hour_orders": [
@@ -8882,9 +8882,9 @@
         546,
         830,
         2108,
-        2215,
+        2214,
         2497,
-        139,
+        565,
         0
       ],
       "pack_hour_orders": [
@@ -8910,7 +8910,7 @@
         2894,
         2645,
         1739,
-        82,
+        379,
         0
       ],
       "pick_hour_qty": [
@@ -8934,9 +8934,9 @@
         721,
         1734,
         2956,
-        3013,
+        3012,
         3410,
-        147,
+        741,
         0
       ],
       "pack_hour_qty": [
@@ -8962,15 +8962,15 @@
         4183,
         3844,
         2495,
-        115,
+        537,
         0
       ],
       "active_pickers": 39,
       "active_packers": 160,
       "active_dispatchers": 11,
       "total_workforce": 210,
-      "avg_pick_per_picker": 673.3,
-      "avg_pack_per_packer": 131.9
+      "avg_pick_per_picker": 684.2,
+      "avg_pack_per_packer": 133.7
     }
   }
 ]
