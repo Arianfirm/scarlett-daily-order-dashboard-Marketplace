@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(python3 -m py_compile update_dashboard.py)",
+      "Bash(python3 -c ' *)",
+      "Bash(command -v node)"
     ]
   }
 }

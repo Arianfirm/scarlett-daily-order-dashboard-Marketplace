@@ -721,7 +721,11 @@ try:
 
     # Same source columns as the live dashboard (loadStock() in index.html):
     # column 2 = Product Name English (identifier), column 8 = ATP
+    # Free Gift SKU = product name starts with "Free " (case-insensitive) — same convention as the data itself
+    is_fg = lambda name: name.strip().lower().startswith("free ")
     stock_map, snap_total_atp, snap_total_sku = {}, 0, 0
+    snap_total_atp_product, snap_total_sku_product = 0, 0
+    snap_total_atp_fg, snap_total_sku_fg = 0, 0
     for idx, row in enumerate(ws.iter_rows(values_only=True)):
         if idx == 0: continue
         name = (str(row[2]).strip() if row[2] is not None else "")
@@ -731,6 +735,12 @@ try:
         stock_map[name] = atp
         snap_total_atp += atp
         snap_total_sku += 1
+        if is_fg(name):
+            snap_total_atp_fg += atp
+            snap_total_sku_fg += 1
+        else:
+            snap_total_atp_product += atp
+            snap_total_sku_product += 1
 
     # Demand today per SKU — same identifier ("Item Name") as the live dashboard's SMAP
     demand = {}
@@ -772,6 +782,10 @@ try:
         "summary": {
             "total_sku":  snap_total_sku,
             "total_atp":  snap_total_atp,
+            "total_sku_product": snap_total_sku_product,
+            "total_sku_fg":      snap_total_sku_fg,
+            "atp_product":       snap_total_atp_product,
+            "atp_fg":            snap_total_atp_fg,
             "sku_sold":   len(items),
             "risk_sku":   risk_sku,
             "zero_stock": zero_stock,

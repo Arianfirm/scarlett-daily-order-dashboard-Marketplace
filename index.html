@@ -66,6 +66,7 @@ main{padding:24px 28px;overflow:hidden}
 /* KPI */
 .kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
 #kpi{grid-template-columns:repeat(6,1fr)}
+#stock-kpi{grid-template-columns:repeat(7,1fr)}
 .kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh);position:relative;overflow:hidden}
 .kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
 .k-pink::after{background:linear-gradient(90deg,#e8345a,#ff6b8a)}
@@ -1016,6 +1017,7 @@ window.sst=function(v){
 // ── Page switching ──────────────────────────────────────────────────────────
 let STOCK_LOADED=false, STOCK_MAP={}, STOCK_FULL_DATA=[];
 let STOCK_LIVE_TOTAL_ATP=0, STOCK_LIVE_SKU_COUNT=0;
+let STOCK_LIVE_SKU_PRODUCT=0, STOCK_LIVE_SKU_FG=0, STOCK_LIVE_ATP_PRODUCT=0, STOCK_LIVE_ATP_FG=0;
 let STOCK_VIEW_DATE=null, STOCK_HISTORY_LOADED=false, STOCK_HISTORY_LIST=[];
 
 // ── History 30 Hari (summary only) ───────────────────────────────────────────────────────
@@ -1466,6 +1468,7 @@ window.showPage=function(page){
 
 // ── Stock Level ────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
+function isFreeGiftSku(name){return /^free\s/i.test((name||'').trim())}
 
 let STOCK_PAGE=1;
 const STOCK_PER_PAGE=50;
@@ -1542,7 +1545,7 @@ async function loadStock(){
 
     // Header row contains: [_, Product Name English, Product Name Local, SKU(numeric id), ATP]
     STOCK_MAP={};
-    let totalATP=0, skuCount=0;
+    let totalATP=0, skuCount=0, skuProduct=0, skuFG=0, atpProduct=0, atpFG=0;
     for(let i=1;i<rows.length;i++){
       const r=rows[i];
       const name=cleanFullSku(r[2]);
@@ -1550,17 +1553,20 @@ async function loadStock(){
       if(!name) continue;
       STOCK_MAP[name]=atp;
       totalATP+=atp; skuCount++;
+      if(isFreeGiftSku(name)){skuFG++;atpFG+=atp;}else{skuProduct++;atpProduct+=atp;}
     }
     STOCK_LOADED=true;
     STOCK_LIVE_TOTAL_ATP=totalATP;
     STOCK_LIVE_SKU_COUNT=skuCount;
-    renderStockPage(totalATP,skuCount);
+    STOCK_LIVE_SKU_PRODUCT=skuProduct;STOCK_LIVE_SKU_FG=skuFG;
+    STOCK_LIVE_ATP_PRODUCT=atpProduct;STOCK_LIVE_ATP_FG=atpFG;
+    renderStockPage(totalATP,skuCount,skuProduct,skuFG,atpProduct,atpFG);
   }catch(err){
     wrap('stock-risk-tbl').innerHTML=`<div style="font-size:12px;color:var(--red);padding:8px 0">Error: ${err.message}</div>`;
   }
 }
 
-function renderStockPage(totalATP,skuCount){
+function renderStockPage(totalATP,skuCount,skuProduct,skuFG,atpProduct,atpFG){
   // Aggregate today's demand per SKU (across all orders, regardless of filter)
   const demand={};
   Object.values(SMAP).forEach(d=>{
@@ -1574,11 +1580,12 @@ function renderStockPage(totalATP,skuCount){
     return {sku,qty,atp,remain};
   });
 
-  paintStockPanels(combined,totalATP,skuCount);
+  paintStockPanels(combined,totalATP,skuCount,skuProduct,skuFG,atpProduct,atpFG);
 }
 
 // Renders a previously-saved Stock Daily snapshot (from data/history/stock_daily_history.json)
 // using the exact same paint routine as the live view, so tables/cards stay pixel-identical.
+// Reads ONLY the stored snapshot fields — no recalculation from raw data.
 function renderStockFromSnapshot(entry){
   const summary=entry.summary||{};
   const combined=(entry.items||[]).map(i=>({
@@ -1586,10 +1593,12 @@ function renderStockFromSnapshot(entry){
     atp:(i.atp===undefined||i.atp===null)?null:i.atp,
     remain:(i.deficit===undefined||i.deficit===null)?null:i.deficit
   }));
-  paintStockPanels(combined, summary.total_atp||0, summary.total_sku||0);
+  paintStockPanels(combined, summary.total_atp||0, summary.total_sku||0,
+    summary.total_sku_product||0, summary.total_sku_fg||0,
+    summary.atp_product||0, summary.atp_fg||0);
 }
 
-function paintStockPanels(combined,totalATP,skuCount){
+function paintStockPanels(combined,totalATP,skuCount,skuProduct,skuFG,atpProduct,atpFG){
   // KPI
   const totalDemand=combined.reduce((a,c)=>a+c.qty,0);
   const riskList=combined.filter(c=>c.atp!==null&&c.atp<c.qty).sort((a,b)=>(a.remain)-(b.remain));
@@ -1598,8 +1607,10 @@ function paintStockPanels(combined,totalATP,skuCount){
     .sort((a,b)=>b.qty-a.qty);
 
   document.getElementById('stock-kpi').innerHTML=`
-    <div class="kpi k-pink"><div class="kpi-lbl">Total SKU di Sistem</div><div class="kpi-val">${n(skuCount)}</div><div class="kpi-sub">dari inventory report</div></div>
-    <div class="kpi k-green"><div class="kpi-lbl">Total Stock (ATP)</div><div class="kpi-val">${n(totalATP)}</div><div class="kpi-sub">unit tersedia digudang</div></div>
+    <div class="kpi k-pink"><div class="kpi-lbl">Total SKU Produk</div><div class="kpi-val">${n(skuProduct)}</div><div class="kpi-sub">dari inventory report</div></div>
+    <div class="kpi k-purple"><div class="kpi-lbl">Total SKU Free Gift</div><div class="kpi-val">${n(skuFG)}</div><div class="kpi-sub">dari inventory report</div></div>
+    <div class="kpi k-green"><div class="kpi-lbl">ATP Produk</div><div class="kpi-val">${n(atpProduct)}</div><div class="kpi-sub">unit tersedia digudang</div></div>
+    <div class="kpi k-purple"><div class="kpi-lbl">ATP Free Gift</div><div class="kpi-val">${n(atpFG)}</div><div class="kpi-sub">unit tersedia digudang</div></div>
     <div class="kpi k-amber"><div class="kpi-lbl">SKU Terjual Hari Ini</div><div class="kpi-val">${n(combined.length)}</div><div class="kpi-sub">${n(totalDemand)} qty total demand</div></div>
     <div class="kpi k-red"><div class="kpi-lbl">SKU Berisiko Habis</div><div class="kpi-val">${n(riskList.length)}</div><div class="kpi-sub">stock &lt; demand hari ini</div><span class="kpi-tag">${n(riskList.length)}</span></div>
     <div class="kpi k-blue"><div class="kpi-lbl">SKU Stock = 0</div><div class="kpi-val">${n(zeroStock.length)}</div><div class="kpi-sub">tapi masih ada order</div></div>`;
@@ -1679,7 +1690,7 @@ window.selectStockDate=function(dateStr){
   document.getElementById('stock-date-menu').style.display='none';
   document.getElementById('stock-date-label').textContent=dateStr?fmtStockDate(dateStr):'Hari Ini';
   if(!dateStr){
-    if(STOCK_LOADED) renderStockPage(STOCK_LIVE_TOTAL_ATP,STOCK_LIVE_SKU_COUNT);
+    if(STOCK_LOADED) renderStockPage(STOCK_LIVE_TOTAL_ATP,STOCK_LIVE_SKU_COUNT,STOCK_LIVE_SKU_PRODUCT,STOCK_LIVE_SKU_FG,STOCK_LIVE_ATP_PRODUCT,STOCK_LIVE_ATP_FG);
     else loadStock();
   }else{
     const entry=STOCK_HISTORY_LIST.find(h=>h.date===dateStr);
