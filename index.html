@@ -151,41 +151,6 @@ tr:hover td{background:var(--bg3)}
 
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-
-/* ============ Responsive (Desktop >=1440 · Tablet 768-1439 · Mobile <=767) ============ */
-.sb-toggle{display:none;margin-right:10px;flex-shrink:0}
-#sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(20,15,14,.45);z-index:150}
-
-@media(max-width:1439px){
-  .shell{grid-template-columns:1fr}
-  aside{position:fixed;top:0;left:0;bottom:0;width:252px;z-index:200;transform:translateX(-100%);transition:transform .25s ease;box-shadow:0 0 0 rgba(0,0,0,0)}
-  .shell.sidebar-open aside{transform:translateX(0);box-shadow:6px 0 24px rgba(0,0,0,.18)}
-  .shell.sidebar-open #sidebar-backdrop{display:block}
-  .sb-toggle{display:flex}
-  main{padding:20px}
-
-  /* KPI rows: 3 per baris di tablet */
-  .kpi-row,#kpi,#stock-kpi{grid-template-columns:repeat(3,1fr)}
-
-  /* Grid konten lain (termasuk grid inline di halaman Dashboard Legend): maks 2 kolom biar tidak sesak */
-  main [style*="grid-template-columns"]{grid-template-columns:repeat(2,1fr)!important}
-
-  /* Tabel: beri lebar minimum supaya scroll horizontal, bukan kolom yang menyempit */
-  table{min-width:520px}
-  .card{overflow-x:auto}
-}
-
-@media(max-width:767px){
-  main{padding:14px}
-  .ph{flex-wrap:wrap;row-gap:10px}
-  .ph-title{font-size:17px}
-  .kpi-row,#kpi,#stock-kpi{grid-template-columns:1fr}
-  .g2{grid-template-columns:1fr}
-  main [style*="grid-template-columns"]{grid-template-columns:1fr!important}
-  .kpi{padding:14px}
-  .kpi-val{font-size:22px}
-  .btn-ref{padding:9px 14px}
-}
 </style>
 </head>
 <body>
@@ -197,7 +162,6 @@ tr:hover td{background:var(--bg3)}
 </div>
 
 <div class="shell" id="app" style="display:none">
-<div id="sidebar-backdrop" onclick="toggleSidebar()"></div>
 <aside>
   <div class="sb-top">
     <div class="sb-logo">
@@ -225,13 +189,10 @@ tr:hover td{background:var(--bg3)}
 
 <main>
   <div class="ph">
-    <div style="display:flex;align-items:center">
-      <button class="btn-ref sb-toggle" id="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">☰</button>
-      <div>
-        <div class="ph-title" id="ph-title">Daily Order Overview</div>
-        <div class="ph-meta" id="ph-meta">Memuat...</div>
-        <div class="ph-meta" id="ph-wib" style="margin-top:2px;color:var(--green)">—</div>
-      </div>
+    <div>
+      <div class="ph-title" id="ph-title">Daily Order Overview</div>
+      <div class="ph-meta" id="ph-meta">Memuat...</div>
+      <div class="ph-meta" id="ph-wib" style="margin-top:2px;color:var(--green)">—</div>
     </div>
     <div id="stock-date-picker" style="display:none;align-items:center;position:relative">
       <button class="btn-ref" onclick="toggleStockDateMenu()">📅 <span id="stock-date-label">Hari Ini</span> ▼</button>
@@ -312,7 +273,7 @@ tr:hover td{background:var(--bg3)}
   <div class="gf">
     <div class="card">
       <div class="ch"><div><div class="ct">SKU Detail</div><div class="cs">Top 20 · qty & status</div></div></div>
-      <div id="sku-tbl" style="overflow-x:auto"></div>
+      <div id="sku-tbl" style="overflow:hidden"></div>
     </div>
   </div>
   </div>
@@ -326,7 +287,7 @@ tr:hover td{background:var(--bg3)}
           <div><div class="ct">⚠ SKU Berisiko Habis Stock</div><div class="cs">ATP &lt; Qty terjual hari ini — perlu restock segera</div></div>
           <span class="bdg br" id="stock-risk-count">—</span>
         </div>
-        <div id="stock-risk-tbl" style="overflow-x:auto"></div>
+        <div id="stock-risk-tbl" style="overflow:hidden"></div>
       </div>
     </div>
 
@@ -336,7 +297,7 @@ tr:hover td{background:var(--bg3)}
           <div><div class="ct">📋 Stock vs Demand — Semua SKU Terjual Hari Ini</div><div class="cs">Diurutkan berdasarkan rasio stock tersisa</div></div>
           <input type="text" id="stock-search" placeholder="Cari SKU..." style="font-size:12px;padding:6px 12px;border:1px solid var(--border2);border-radius:var(--r3);background:var(--bg2);color:var(--text);width:200px;outline:none" oninput="filterStockTable()">
         </div>
-        <div id="stock-full-tbl" style="overflow-x:auto"></div>
+        <div id="stock-full-tbl" style="overflow:hidden"></div>
       </div>
     </div>
 
@@ -346,7 +307,7 @@ tr:hover td{background:var(--bg3)}
           <div><div class="ct">📦 Stock Kosong (ATP = 0)</div><div class="cs">SKU dengan stock habis di gudang</div></div>
           <span class="bdg bx" id="stock-zero-count">—</span>
         </div>
-        <div id="stock-zero-tbl" style="overflow-x:auto"></div>
+        <div id="stock-zero-tbl" style="overflow:hidden"></div>
       </div>
     </div>
   </div>
@@ -457,13 +418,13 @@ tr:hover td{background:var(--bg3)}
         <div class="ch">
           <div><div class="ct">📤 Picking — Detail Per Jam</div><div class="cs">Jumlah picker aktif, output, dan rata-rata per picker</div></div>
         </div>
-        <div id="pick-hour-tbl" style="overflow-x:auto"></div>
+        <div id="pick-hour-tbl" style="overflow:hidden"></div>
       </div>
       <div class="card">
         <div class="ch">
           <div><div class="ct">📦 Packing — Detail Per Jam</div><div class="cs">Jumlah packer aktif, output, dan rata-rata per packer</div></div>
         </div>
-        <div id="pack-hour-tbl" style="overflow-x:auto"></div>
+        <div id="pack-hour-tbl" style="overflow:hidden"></div>
       </div>
     </div>
   </div>
@@ -1744,16 +1705,6 @@ document.addEventListener('click',(e)=>{
   if(wrap && menu && menu.style.display==='block' && !wrap.contains(e.target)){
     menu.style.display='none';
   }
-});
-
-// ── Mobile/tablet sidebar toggle (layout-only, no business logic) ──────────
-window.toggleSidebar=function(){
-  document.getElementById('app').classList.toggle('sidebar-open');
-};
-document.querySelectorAll('.navtab').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    if(window.innerWidth<1440) document.getElementById('app').classList.remove('sidebar-open');
-  });
 });
 
 async function main(){
