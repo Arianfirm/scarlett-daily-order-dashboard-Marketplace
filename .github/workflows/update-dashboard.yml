@@ -35,8 +35,16 @@ jobs:
           # Fetch remote FIRST before anything
           git fetch origin main
 
-          # Reset local HEAD to remote (keeps working tree intact)
-          git reset --soft origin/main
+          # Set aside the freshly-generated data/ changes, then hard-sync the working
+          # tree to the true tip of origin/main — this picks up any developer commit
+          # that landed on non-data files (index.html, etc.) while this job was running —
+          # before re-applying only the data/ changes on top. This is what prevents
+          # non-data files from ever being committed with stale content.
+          git stash push --include-untracked -- data/
+          git reset --hard origin/main
+          if [ -n "$(git stash list)" ]; then
+            git stash pop
+          fi
 
           # Stage only data files
           git add data/
