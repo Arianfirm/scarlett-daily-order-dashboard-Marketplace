@@ -1058,6 +1058,7 @@ let STOCK_LOADED=false, STOCK_MAP={}, STOCK_FULL_DATA=[];
 let STOCK_LIVE_TOTAL_ATP=0, STOCK_LIVE_SKU_COUNT=0;
 let STOCK_LIVE_SKU_PRODUCT=0, STOCK_LIVE_SKU_FG=0, STOCK_LIVE_ATP_PRODUCT=0, STOCK_LIVE_ATP_FG=0;
 let STOCK_VIEW_DATE=null, STOCK_HISTORY_LOADED=false, STOCK_HISTORY_LIST=[];
+let FREE_GIFT_SET=null;
 
 // ── History 30 Hari (summary only) ───────────────────────────────────────────────────────
 let HISTORY_LOADED=false, HISTORY_SUMMARY=[];
@@ -1507,7 +1508,28 @@ window.showPage=function(page){
 
 // ── Stock Level ────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
-function isFreeGiftSku(name){return /^free\s/i.test((name||'').trim())}
+
+// Free Gift classification = exact Item Name match against data/master_free_gift.csv
+// (case-insensitive, trimmed) — replaces the old "Free " prefix rule.
+async function loadFreeGiftSet(){
+  if(FREE_GIFT_SET) return FREE_GIFT_SET;
+  FREE_GIFT_SET=new Set();
+  try{
+    const resp=await fetch(`data/master_free_gift.csv?t=${Date.now()}`);
+    if(resp.ok){
+      const text=await resp.text();
+      const {data}=Papa.parse(text,{header:true,skipEmptyLines:true});
+      data.forEach(r=>{
+        const nm=(r['Item Name']||'').trim().toLowerCase();
+        if(nm) FREE_GIFT_SET.add(nm);
+      });
+    }
+  }catch(err){
+    console.error('master_free_gift.csv could not be loaded:',err);
+  }
+  return FREE_GIFT_SET;
+}
+function isFreeGiftSku(name){return FREE_GIFT_SET?FREE_GIFT_SET.has((name||'').trim().toLowerCase()):false}
 
 let STOCK_PAGE=1;
 const STOCK_PER_PAGE=50;
@@ -1574,6 +1596,7 @@ async function loadStock(){
   wrap('stock-full-tbl').innerHTML='';
   wrap('stock-zero-tbl').innerHTML='';
   try{
+    await loadFreeGiftSet();
     const resp=await fetch(`data/inventory.xlsx?t=${Date.now()}`);
     if(!resp.ok) throw new Error('inventory.xlsx tidak ditemukan — mungkin belum sempat tergenerate');
     const buf=await resp.arrayBuffer();

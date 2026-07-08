@@ -721,8 +721,18 @@ try:
 
     # Same source columns as the live dashboard (loadStock() in index.html):
     # column 2 = Product Name English (identifier), column 8 = ATP
-    # Free Gift SKU = product name starts with "Free " (case-insensitive) — same convention as the data itself
-    is_fg = lambda name: name.strip().lower().startswith("free ")
+    # Free Gift SKU = exact Item Name match against data/master_free_gift.csv
+    # (case-insensitive, trimmed) — replaces the old "Free " prefix rule.
+    free_gift_names = set()
+    try:
+        with open("data/master_free_gift.csv", newline="", encoding="utf-8") as fg_f:
+            for fg_row in csv.DictReader(fg_f):
+                fg_name = (fg_row.get("Item Name") or "").strip().lower()
+                if fg_name:
+                    free_gift_names.add(fg_name)
+    except Exception as e:
+        print(f"      ⚠ master_free_gift.csv could not be loaded: {e}")
+    is_fg = lambda name: name.strip().lower() in free_gift_names
     stock_map, snap_total_atp, snap_total_sku = {}, 0, 0
     snap_total_atp_product, snap_total_sku_product = 0, 0
     snap_total_atp_fg, snap_total_sku_fg = 0, 0
