@@ -10379,12 +10379,12 @@
   },
   {
     "date": "2026-07-08",
-    "total_orders": 4980,
-    "total_qty": 9915,
-    "fulfilled": 639,
-    "pending": 3876,
-    "fulfillment_pct": 12.8,
-    "total_atp": null,
+    "total_orders": 6076,
+    "total_qty": 11714,
+    "fulfilled": 751,
+    "pending": 4921,
+    "fulfillment_pct": 12.4,
+    "total_atp": 44723454,
     "peak_hour": 0,
     "peak_hour_orders": 1602,
     "peak_hour_qty": 3176,
@@ -10396,8 +10396,8 @@
       330,
       613,
       948,
-      2,
-      0,
+      1095,
+      3,
       0,
       0,
       0,
@@ -10422,8 +10422,8 @@
       683,
       1084,
       1627,
-      10,
-      0,
+      1806,
+      3,
       0,
       0,
       0,
@@ -10441,17 +10441,18 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-08 07:00:52 WIB",
+    "last_updated": "2026-07-08 08:00:48 WIB",
+    "sku_count": 2124,
     "warehouse": {
-      "total_orders": 5121,
-      "total_orders_b2c": 4980,
+      "total_orders": 6076,
+      "total_orders_b2c": 6076,
       "picked_orders": 821,
-      "packed_orders": 332,
-      "dispatched_orders": 150,
-      "pending_orders": 4830,
+      "packed_orders": 372,
+      "dispatched_orders": 300,
+      "pending_orders": 5776,
       "avg_pick_min": 228.5,
-      "avg_pack_min": 90.0,
-      "avg_dispatch_min": 109.6,
+      "avg_pack_min": 96.0,
+      "avg_dispatch_min": 73.4,
       "pick_hours": [
         0,
         0,
@@ -10486,7 +10487,7 @@
         0,
         56,
         191,
-        36,
+        76,
         0,
         0,
         0,
@@ -10512,7 +10513,7 @@
         0,
         0,
         0,
-        267,
+        439,
         0,
         0,
         0,
@@ -10575,7 +10576,7 @@
       "top_packer": [
         [
           "LELI PACKERTIGADELAPANLIMA",
-          66
+          85
         ],
         [
           "ANDRYANA PACKEREMPATEMPATEMPAT",
@@ -10594,42 +10595,42 @@
           34
         ],
         [
+          "ASILAH PACKEREMPATEMPATNOL",
+          33
+        ],
+        [
           "SITI PACKERDUAEMPATDELAPAN",
           31
         ],
         [
-          "ASILAH PACKEREMPATEMPATNOL",
-          23
-        ],
-        [
           "ZASKIA PACKEREMPATTIGASATU",
-          22
+          27
         ],
         [
           "DIAN PACKERDUAEMPATTUJUH",
           21
         ],
         [
-          "NELA PACKERDUANOLTIGA",
+          "MAHESAH PACKEREMPATDUASEMBILAN",
           19
         ]
       ],
       "top_dispatcher": [
         [
           "MUHMMAD ADITYA",
-          156
+          224
         ],
         [
           "SAENURSEN DISPATCH",
-          41
+          89
+        ],
+        [
+          "muh riki",
+          70
         ],
         [
           "adriansyah maulana",
           40
-        ],
-        [
-          "muh riki",
-          14
         ],
         [
           "JOSHUA DISPATCH",
@@ -10668,16 +10669,16 @@
           2
         ],
         [
-          "VIANTO PACKERDUALIMA",
-          2
-        ],
-        [
           "RIDWAN PACKERDUAEMPATTIGA",
           3
         ],
         [
           "SHANDIKA PACKERLIMABELAS",
           3
+        ],
+        [
+          "SITI PACKERTIGAEMPATTUJUH",
+          4
         ]
       ],
       "pick_hour_pickers": [
@@ -10714,7 +10715,7 @@
         0,
         11,
         25,
-        8,
+        12,
         0,
         0,
         0,
@@ -10766,7 +10767,7 @@
         0,
         56,
         191,
-        36,
+        76,
         0,
         0,
         0,
@@ -10818,7 +10819,7 @@
         0,
         101,
         283,
-        64,
+        129,
         0,
         0,
         0,
@@ -10837,11 +10838,11 @@
         0
       ],
       "active_pickers": 14,
-      "active_packers": 31,
+      "active_packers": 32,
       "active_dispatchers": 6,
-      "total_workforce": 51,
+      "total_workforce": 52,
       "avg_pick_per_picker": 58.6,
-      "avg_pack_per_packer": 10.7
+      "avg_pack_per_packer": 11.6
     }
   }
 ]
