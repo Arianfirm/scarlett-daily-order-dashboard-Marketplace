@@ -721,21 +721,24 @@ try:
 
     # Same source columns as the live dashboard (loadStock() in index.html):
     # column 2 = Product Name English (identifier), column 8 = ATP
-    # Free Gift SKU = exact Item Name match against data/master_free_gift.csv
-    # (case-insensitive, trimmed) — replaces the old "Free " prefix rule.
-    free_gift_names = set()
-    try:
-        with open("data/master_free_gift.csv", newline="", encoding="utf-8") as fg_f:
-            for fg_row in csv.DictReader(fg_f):
-                fg_name = (fg_row.get("Item Name") or "").strip().lower()
-                if fg_name:
-                    free_gift_names.add(fg_name)
-    except Exception as e:
-        print(f"      ⚠ master_free_gift.csv could not be loaded: {e}")
-    is_fg = lambda name: name.strip().lower() in free_gift_names
-    stock_map, snap_total_atp, snap_total_sku = {}, 0, 0
-    snap_total_atp_product, snap_total_sku_product = 0, 0
-    snap_total_atp_fg, snap_total_sku_fg = 0, 0
+    #
+    # Free Gift classification: master_free_gift.csv is the ONLY source of
+    # truth (exact Item Name match, case-insensitive, trimmed). No prefix,
+    # keyword, or regex rule. If the master list can't be read, abort this
+    # section instead of silently treating every item as PRODUCT.
+    with open("data/master_free_gift.csv", newline="", encoding="utf-8") as fg_f:
+        free_gift_names = {
+            (fg_row.get("Item Name") or "").strip().lower()
+            for fg_row in csv.DictReader(fg_f)
+            if (fg_row.get("Item Name") or "").strip()
+        }
+    if not free_gift_names:
+        raise Exception("data/master_free_gift.csv is empty — refusing to classify")
+
+    # Step 1: read inventory + lookup classification only (no KPI math yet).
+    stock_map = {}
+    snap_total_sku, snap_total_atp = 0, 0
+    snap_total_sku_fg, snap_total_atp_fg = 0, 0
     for idx, row in enumerate(ws.iter_rows(values_only=True)):
         if idx == 0: continue
         name = (str(row[2]).strip() if row[2] is not None else "")
@@ -743,14 +746,24 @@ try:
         try: atp = int(row[8]) if row[8] not in (None, "") else 0
         except Exception: atp = 0
         stock_map[name] = atp
-        snap_total_atp += atp
         snap_total_sku += 1
-        if is_fg(name):
-            snap_total_atp_fg += atp
+        snap_total_atp += atp
+        if name.strip().lower() in free_gift_names:
             snap_total_sku_fg += 1
-        else:
-            snap_total_atp_product += atp
-            snap_total_sku_product += 1
+            snap_total_atp_fg += atp
+
+    # Step 2: Product = Total Inventory - Free Gift (derived, never counted directly).
+    snap_total_sku_product = snap_total_sku - snap_total_sku_fg
+    snap_total_atp_product = snap_total_atp - snap_total_atp_fg
+
+    assert snap_total_sku_product + snap_total_sku_fg == snap_total_sku
+    assert snap_total_atp_product + snap_total_atp_fg == snap_total_atp
+    print(f"      • Total SKU Inventory : {snap_total_sku}")
+    print(f"      • Total SKU Product   : {snap_total_sku_product}")
+    print(f"      • Total SKU Free Gift : {snap_total_sku_fg}")
+    print(f"      • ATP Inventory       : {snap_total_atp}")
+    print(f"      • ATP Product         : {snap_total_atp_product}")
+    print(f"      • ATP Free Gift       : {snap_total_atp_fg}")
 
     # Demand today per SKU — same identifier ("Item Name") as the live dashboard's SMAP
     demand = {}

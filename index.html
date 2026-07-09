@@ -1509,27 +1509,26 @@ window.showPage=function(page){
 // ── Stock Level ────────────────────────────────────────────────────────────
 function cleanFullSku(s){return (s||'').trim()}
 
-// Free Gift classification = exact Item Name match against data/master_free_gift.csv
-// (case-insensitive, trimmed) — replaces the old "Free " prefix rule.
+// Free Gift classification: master_free_gift.csv is the ONLY source of truth
+// (exact Item Name match, case-insensitive, trimmed). No prefix/keyword/regex
+// rule. If the master list can't be loaded, throw — the caller's error state
+// must show, never silently fall back to "everything is PRODUCT".
 async function loadFreeGiftSet(){
   if(FREE_GIFT_SET) return FREE_GIFT_SET;
-  FREE_GIFT_SET=new Set();
-  try{
-    const resp=await fetch(`data/master_free_gift.csv?t=${Date.now()}`);
-    if(resp.ok){
-      const text=await resp.text();
-      const {data}=Papa.parse(text,{header:true,skipEmptyLines:true});
-      data.forEach(r=>{
-        const nm=(r['Item Name']||'').trim().toLowerCase();
-        if(nm) FREE_GIFT_SET.add(nm);
-      });
-    }
-  }catch(err){
-    console.error('master_free_gift.csv could not be loaded:',err);
-  }
+  const resp=await fetch(`data/master_free_gift.csv?t=${Date.now()}`);
+  if(!resp.ok) throw new Error('master_free_gift.csv tidak ditemukan');
+  const text=await resp.text();
+  const {data}=Papa.parse(text,{header:true,skipEmptyLines:true});
+  const set=new Set();
+  data.forEach(r=>{
+    const nm=(r['Item Name']||'').trim().toLowerCase();
+    if(nm) set.add(nm);
+  });
+  if(set.size===0) throw new Error('master_free_gift.csv kosong — refusing to classify');
+  FREE_GIFT_SET=set;
   return FREE_GIFT_SET;
 }
-function isFreeGiftSku(name){return FREE_GIFT_SET?FREE_GIFT_SET.has((name||'').trim().toLowerCase()):false}
+function isFreeGiftSku(name){return FREE_GIFT_SET.has((name||'').trim().toLowerCase())}
 
 let STOCK_PAGE=1;
 const STOCK_PER_PAGE=50;
@@ -1606,8 +1605,9 @@ async function loadStock(){
     window.__rawRows=rows.slice(0,5);
 
     // Header row contains: [_, Product Name English, Product Name Local, SKU(numeric id), ATP]
+    // Step 1: read + lookup classification only (no Product math yet).
     STOCK_MAP={};
-    let totalATP=0, skuCount=0, skuProduct=0, skuFG=0, atpProduct=0, atpFG=0;
+    let totalATP=0, skuCount=0, skuFG=0, atpFG=0;
     for(let i=1;i<rows.length;i++){
       const r=rows[i];
       const name=cleanFullSku(r[2]);
@@ -1615,8 +1615,11 @@ async function loadStock(){
       if(!name) continue;
       STOCK_MAP[name]=atp;
       totalATP+=atp; skuCount++;
-      if(isFreeGiftSku(name)){skuFG++;atpFG+=atp;}else{skuProduct++;atpProduct+=atp;}
+      if(isFreeGiftSku(name)){skuFG++;atpFG+=atp;}
     }
+    // Step 2: Product = Total Inventory - Free Gift (derived, never counted directly).
+    const skuProduct=skuCount-skuFG;
+    const atpProduct=totalATP-atpFG;
     STOCK_LOADED=true;
     STOCK_LIVE_TOTAL_ATP=totalATP;
     STOCK_LIVE_SKU_COUNT=skuCount;
