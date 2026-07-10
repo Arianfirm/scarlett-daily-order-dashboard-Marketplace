@@ -10914,12 +10914,12 @@
   },
   {
     "date": "2026-07-10",
-    "total_orders": 5148,
-    "total_qty": 7520,
-    "fulfilled": 3651,
-    "pending": 647,
-    "fulfillment_pct": 70.9,
-    "total_atp": null,
+    "total_orders": 6115,
+    "total_qty": 8921,
+    "fulfilled": 4127,
+    "pending": 1557,
+    "fulfillment_pct": 67.5,
+    "total_atp": 45338246,
     "peak_hour": 0,
     "peak_hour_orders": 1688,
     "peak_hour_qty": 2478,
@@ -10931,8 +10931,8 @@
       376,
       622,
       878,
-      2,
-      0,
+      968,
+      1,
       0,
       0,
       0,
@@ -10957,8 +10957,8 @@
       532,
       906,
       1285,
-      2,
-      0,
+      1402,
+      1,
       0,
       0,
       0,
@@ -10976,25 +10976,26 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-10 07:00:43 WIB",
+    "last_updated": "2026-07-10 08:00:35 WIB",
+    "sku_count": 2127,
     "warehouse": {
-      "total_orders": 5346,
-      "total_orders_b2c": 5148,
-      "picked_orders": 4200,
-      "packed_orders": 1307,
-      "dispatched_orders": 710,
-      "pending_orders": 4438,
+      "total_orders": 6115,
+      "total_orders_b2c": 6115,
+      "picked_orders": 4198,
+      "packed_orders": 1402,
+      "dispatched_orders": 1313,
+      "pending_orders": 4802,
       "avg_pick_min": 79.6,
-      "avg_pack_min": 133.6,
-      "avg_dispatch_min": 152.5,
+      "avg_pack_min": 136.2,
+      "avg_dispatch_min": 91.4,
       "pick_hours": [
         0,
         1580,
         768,
         0,
         0,
-        1219,
-        660,
+        1218,
+        659,
         0,
         0,
         0,
@@ -11021,7 +11022,7 @@
         1,
         198,
         539,
-        160,
+        255,
         0,
         0,
         0,
@@ -11047,7 +11048,7 @@
         0,
         0,
         0,
-        921,
+        1682,
         0,
         0,
         0,
@@ -11088,7 +11089,7 @@
         ],
         [
           "SEPTIYANA PICKERENAM",
-          392
+          391
         ],
         [
           "HUDRI PICKERTUJUHBELAS",
@@ -11100,7 +11101,7 @@
         ],
         [
           "ABIJAR PACKERTIGAEMPATSATU",
-          357
+          355
         ],
         [
           "SANDI PACKERTIGATUJUHDELAPAN",
@@ -11110,15 +11111,15 @@
       "top_packer": [
         [
           "FITRI PACKERSERATUSENAMBELAS",
-          119
+          130
+        ],
+        [
+          "SAEPUDIN PACKERTUJUHEMPAT",
+          126
         ],
         [
           "ALIFFIAN PACKERTIGATUJUHSEMBILAN",
           115
-        ],
-        [
-          "SAEPUDIN PACKERTUJUHEMPAT",
-          114
         ],
         [
           "ADE PACKERSERATUSSEMBILANPULUH",
@@ -11129,46 +11130,46 @@
           100
         ],
         [
+          "LANI PACKERSERATUSEMPATDUA",
+          95
+        ],
+        [
+          "SITI PACKERTIGASATUTIGA",
+          94
+        ],
+        [
           "REKA PACKERTIGADELAPANSATU",
           85
         ],
         [
-          "SITI PACKERTIGASATUTIGA",
-          84
-        ],
-        [
-          "LANI PACKERSERATUSEMPATDUA",
-          83
-        ],
-        [
-          "RIKI PACKEREMPATSATUEMPAT",
-          80
-        ],
-        [
           "FABIAN PACKERDUADELAPANDUA",
-          78
+          85
+        ],
+        [
+          "RIKA PACKERTIGADELAPANSEMBILAN",
+          83
         ]
       ],
       "top_dispatcher": [
         [
-          "ahmad wandi",
-          378
+          "JOSHUA DISPATCH",
+          639
         ],
         [
-          "JOSHUA DISPATCH",
-          320
+          "ahmad wandi",
+          583
         ],
         [
           "ADI HUMAEDI",
-          170
+          176
         ],
         [
-          "BUDIMAN DISPATCH",
-          34
+          "Komarudin dispatch",
+          132
         ],
         [
-          "ahmad Hamdani",
-          19
+          "Sapta Siswana",
+          99
         ]
       ],
       "low_picker": [
@@ -11200,18 +11201,18 @@
         ],
         [
           "AZIS PACKERDUAEMPATEMPAT",
-          6
+          8
         ],
         [
           "ERNAWATI PACKERTIGASATUNOL",
           9
         ],
         [
-          "RATNA DUADELAPAN",
-          9
+          "YOGA PACKERTUJUHTIGA",
+          10
         ],
         [
-          "YOGA PACKERTUJUHTIGA",
+          "RATNA DUADELAPAN",
           10
         ]
       ],
@@ -11249,7 +11250,7 @@
         0,
         16,
         26,
-        14,
+        18,
         0,
         0,
         0,
@@ -11273,8 +11274,8 @@
         768,
         0,
         0,
-        1219,
-        660,
+        1218,
+        659,
         0,
         0,
         0,
@@ -11301,7 +11302,7 @@
         1,
         198,
         539,
-        160,
+        255,
         0,
         0,
         0,
@@ -11325,8 +11326,8 @@
         1211,
         0,
         0,
-        1851,
-        933,
+        1849,
+        932,
         0,
         0,
         0,
@@ -11353,7 +11354,7 @@
         1,
         291,
         821,
-        203,
+        347,
         0,
         0,
         0,
@@ -11373,10 +11374,10 @@
       ],
       "active_pickers": 15,
       "active_packers": 29,
-      "active_dispatchers": 5,
-      "total_workforce": 49,
-      "avg_pick_per_picker": 280.0,
-      "avg_pack_per_packer": 45.1
+      "active_dispatchers": 7,
+      "total_workforce": 51,
+      "avg_pick_per_picker": 279.9,
+      "avg_pack_per_packer": 48.3
     }
   }
 ]
