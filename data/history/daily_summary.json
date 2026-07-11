@@ -11382,12 +11382,12 @@
   },
   {
     "date": "2026-07-11",
-    "total_orders": 4297,
-    "total_qty": 6026,
-    "fulfilled": 2185,
-    "pending": 992,
-    "fulfillment_pct": 50.8,
-    "total_atp": 45431547,
+    "total_orders": 5299,
+    "total_qty": 7419,
+    "fulfilled": 2959,
+    "pending": 1946,
+    "fulfillment_pct": 55.8,
+    "total_atp": 45429842,
     "peak_hour": 0,
     "peak_hour_orders": 1501,
     "peak_hour_qty": 1955,
@@ -11399,7 +11399,7 @@
       299,
       552,
       814,
-      2,
+      1004,
       0,
       0,
       0,
@@ -11425,7 +11425,7 @@
       466,
       843,
       1126,
-      2,
+      1395,
       0,
       0,
       0,
@@ -11444,26 +11444,26 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-11 07:00:38 WIB",
+    "last_updated": "2026-07-11 08:00:35 WIB",
     "sku_count": 2127,
     "warehouse": {
-      "total_orders": 4409,
-      "total_orders_b2c": 4297,
-      "picked_orders": 3089,
-      "packed_orders": 2358,
-      "dispatched_orders": 1630,
-      "pending_orders": 2667,
-      "avg_pick_min": 80.8,
-      "avg_pack_min": 134.0,
-      "avg_dispatch_min": 120.1,
+      "total_orders": 5303,
+      "total_orders_b2c": 5299,
+      "picked_orders": 3086,
+      "packed_orders": 2680,
+      "dispatched_orders": 2548,
+      "pending_orders": 2751,
+      "avg_pick_min": 80.9,
+      "avg_pack_min": 141.3,
+      "avg_dispatch_min": 83.1,
       "pick_hours": [
         0,
         952,
         1019,
         0,
         0,
-        973,
-        169,
+        971,
+        168,
         0,
         0,
         0,
@@ -11490,7 +11490,7 @@
         24,
         581,
         1037,
-        92,
+        414,
         0,
         0,
         0,
@@ -11516,7 +11516,7 @@
         0,
         0,
         0,
-        2030,
+        3172,
         0,
         0,
         0,
@@ -11549,7 +11549,7 @@
         ],
         [
           "YUSUP PACKERSERATUSSEMBILAN",
-          375
+          374
         ],
         [
           "DIAN PACKERSERATUSLIMASATU",
@@ -11557,11 +11557,11 @@
         ],
         [
           "AZIS DUADUA",
-          341
+          340
         ],
         [
           "ZAENAL PACKERDUASEMBILANPULUH",
-          318
+          317
         ],
         [
           "ABDUL PACKERTIGATIGASATU",
@@ -11579,15 +11579,23 @@
       "top_packer": [
         [
           "SITI PACKERSERATUSLIMADUA",
-          164
+          195
         ],
         [
           "IRA PACKERDUALIMASEMBILAN",
-          146
+          169
+        ],
+        [
+          "MURNI PACKERLIMALIMA",
+          154
         ],
         [
           "TARI PACKERLIMATIGA",
           135
+        ],
+        [
+          "MEILANI PACKERDUASATUENAM",
+          128
         ],
         [
           "Packer Tigasatu",
@@ -11602,34 +11610,26 @@
           118
         ],
         [
-          "MURNI PACKERLIMALIMA",
-          117
-        ],
-        [
           "PUTRI PACKEREMPATPULUHTIGA",
           117
         ],
         [
           "NUR PACKERDUASATULIMA",
           116
-        ],
-        [
-          "ROSITA PACKERDUALIMADELAPAN",
-          115
         ]
       ],
       "top_dispatcher": [
         [
           "AHMAD ADIL",
-          1581
+          2248
         ],
         [
           "hardian hamzah",
-          308
+          594
         ],
         [
           "ahmad wandi",
-          141
+          330
         ]
       ],
       "low_picker": [
@@ -11651,16 +11651,16 @@
         ],
         [
           "ZAENAL PACKERDUASEMBILANPULUH",
-          318
+          317
         ]
       ],
       "low_packer": [
         [
-          "ANGELIANA PACKERDUASATUTIGA",
-          1
+          "ZULAIKAH PACKERTIGATUJUHEMPAT",
+          2
         ],
         [
-          "ZULAIKAH PACKERTIGATUJUHEMPAT",
+          "PUTRI PACKERDUADUADUA",
           2
         ],
         [
@@ -11668,11 +11668,11 @@
           6
         ],
         [
-          "UDIN PACKERDUASEMBILANSATU",
-          7
+          "ANGELIANA PACKERDUASATUTIGA",
+          9
         ],
         [
-          "SUJANA PACKERTIGATUJUHDUA",
+          "NUKE PACKEREMPATDUASATU",
           11
         ]
       ],
@@ -11710,7 +11710,7 @@
         1,
         30,
         34,
-        22,
+        30,
         0,
         0,
         0,
@@ -11734,8 +11734,8 @@
         1019,
         0,
         0,
-        973,
-        169,
+        971,
+        168,
         0,
         0,
         0,
@@ -11762,7 +11762,7 @@
         24,
         581,
         1037,
-        92,
+        414,
         0,
         0,
         0,
@@ -11786,8 +11786,8 @@
         1500,
         0,
         0,
-        1342,
-        215,
+        1339,
+        214,
         0,
         0,
         0,
@@ -11814,7 +11814,7 @@
         28,
         862,
         1415,
-        119,
+        552,
         0,
         0,
         0,
@@ -11833,11 +11833,11 @@
         0
       ],
       "active_pickers": 11,
-      "active_packers": 42,
+      "active_packers": 45,
       "active_dispatchers": 3,
-      "total_workforce": 56,
-      "avg_pick_per_picker": 280.8,
-      "avg_pack_per_packer": 56.1
+      "total_workforce": 59,
+      "avg_pick_per_picker": 280.5,
+      "avg_pack_per_packer": 59.6
     }
   }
 ]
