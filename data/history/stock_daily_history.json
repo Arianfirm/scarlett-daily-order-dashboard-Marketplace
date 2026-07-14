@@ -10943,24 +10943,16 @@
     "date": "2026-07-14",
     "summary": {
       "total_sku": 2127,
-      "total_atp": 46698747,
+      "total_atp": 46696440,
       "total_sku_product": 2084,
       "total_sku_fg": 43,
-      "atp_product": 45915456,
-      "atp_fg": 783291,
+      "atp_product": 45913392,
+      "atp_fg": 783048,
       "sku_sold": 122,
-      "risk_sku": 2,
-      "zero_stock": 2
+      "risk_sku": 1,
+      "zero_stock": 1
     },
     "items": [
-      {
-        "sku": "SCARLETT-BRIGHTLY-TONER-48X100ML",
-        "product_name": "SCARLETT-BRIGHTLY-TONER-48X100ML",
-        "atp": 0,
-        "sold": 5,
-        "deficit": -5,
-        "status": "Stock Minus"
-      },
       {
         "sku": "SCARLETT-LOVING-BODY LOTION-48X180ML",
         "product_name": "SCARLETT-LOVING-BODY LOTION-48X180ML",
@@ -10980,25 +10972,25 @@
       {
         "sku": "SCARLETT-COTTON HUG-EDP-24X30ML",
         "product_name": "SCARLETT-COTTON HUG-EDP-24X30ML",
-        "atp": 58,
-        "sold": 40,
-        "deficit": 18,
-        "status": "Aman"
-      },
-      {
-        "sku": "SCARLETT-BRIGHTLY-FACE SERUM-48X15ML",
-        "product_name": "SCARLETT-BRIGHTLY-FACE SERUM-48X15ML",
-        "atp": 36,
-        "sold": 1,
-        "deficit": 35,
+        "atp": 57,
+        "sold": 42,
+        "deficit": 15,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-TINTED LIPBALM-PEACHY GLAZE- 48X3.8GR",
         "product_name": "SCARLETT-TINTED LIPBALM-PEACHY GLAZE- 48X3.8GR",
-        "atp": 67,
-        "sold": 6,
-        "deficit": 61,
+        "atp": 66,
+        "sold": 7,
+        "deficit": 59,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-POMEGRANTE-SHOWER GEL-48X300ML",
+        "product_name": "SCARLETT-POMEGRANTE-SHOWER GEL-48X300ML",
+        "atp": 284,
+        "sold": 36,
+        "deficit": 248,
         "status": "Aman"
       },
       {
@@ -11010,19 +11002,19 @@
         "status": "Aman"
       },
       {
-        "sku": "SCARLETT-POMEGRANTE-SHOWER GEL-48X300ML",
-        "product_name": "SCARLETT-POMEGRANTE-SHOWER GEL-48X300ML",
-        "atp": 287,
-        "sold": 33,
-        "deficit": 254,
+        "sku": "SCARLETT-BRIGHTLY-TONER-48X100ML",
+        "product_name": "SCARLETT-BRIGHTLY-TONER-48X100ML",
+        "atp": 296,
+        "sold": 8,
+        "deficit": 288,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-ACNE-TONER-48X100ML",
         "product_name": "SCARLETT-ACNE-TONER-48X100ML",
-        "atp": 348,
-        "sold": 45,
-        "deficit": 303,
+        "atp": 346,
+        "sold": 48,
+        "deficit": 298,
         "status": "Aman"
       },
       {
@@ -11037,40 +11029,40 @@
         "sku": "SCARLETT-SHOWER GEL-CHERRYLICIOUS-48x300ML",
         "product_name": "SCARLETT-SHOWER GEL-CHERRYLICIOUS-48x300ML",
         "atp": 413,
-        "sold": 34,
-        "deficit": 379,
+        "sold": 35,
+        "deficit": 378,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-BODY WASH-ACNE CARE-24x400ML",
         "product_name": "SCARLETT-BODY WASH-ACNE CARE-24x400ML",
-        "atp": 472,
-        "sold": 39,
-        "deficit": 433,
+        "atp": 469,
+        "sold": 43,
+        "deficit": 426,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-LOVING-SHOWER GEL-48X300ML",
         "product_name": "SCARLETT-LOVING-SHOWER GEL-48X300ML",
-        "atp": 503,
-        "sold": 30,
-        "deficit": 473,
+        "atp": 498,
+        "sold": 36,
+        "deficit": 462,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-ACNE-DAY CREAM-48X20GR",
         "product_name": "SCARLETT-ACNE-DAY CREAM-48X20GR",
-        "atp": 615,
-        "sold": 39,
-        "deficit": 576,
+        "atp": 611,
+        "sold": 42,
+        "deficit": 569,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-CHARMING-BODY SCRUB-48X250ML",
         "product_name": "SCARLETT-CHARMING-BODY SCRUB-48X250ML",
-        "atp": 644,
-        "sold": 62,
-        "deficit": 582,
+        "atp": 642,
+        "sold": 66,
+        "deficit": 576,
         "status": "Aman"
       },
       {
@@ -11084,57 +11076,65 @@
       {
         "sku": "SCARLETT-GLOW BRIGHT-LOW PH FW-48X70ML",
         "product_name": "SCARLETT-GLOW BRIGHT-LOW PH FW-48X70ML",
-        "atp": 633,
-        "sold": 39,
-        "deficit": 594,
+        "atp": 632,
+        "sold": 40,
+        "deficit": 592,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-BRIGHTLY-FACE SERUM-48X15ML",
+        "product_name": "SCARLETT-BRIGHTLY-FACE SERUM-48X15ML",
+        "atp": 593,
+        "sold": 1,
+        "deficit": 592,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-GLOWTENING-FACE SERUM-48X15ML",
         "product_name": "SCARLETT-GLOWTENING-FACE SERUM-48X15ML",
-        "atp": 716,
-        "sold": 62,
-        "deficit": 654,
+        "atp": 714,
+        "sold": 65,
+        "deficit": 649,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-ACNE-NIGHT CREAM-48X20GR",
         "product_name": "SCARLETT-ACNE-NIGHT CREAM-48X20GR",
-        "atp": 770,
-        "sold": 40,
-        "deficit": 730,
+        "atp": 763,
+        "sold": 47,
+        "deficit": 716,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-CHARMING-SHOWER GEL-48X300ML",
         "product_name": "SCARLETT-CHARMING-SHOWER GEL-48X300ML",
-        "atp": 844,
-        "sold": 78,
-        "deficit": 766,
+        "atp": 838,
+        "sold": 84,
+        "deficit": 754,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-REVIVE GLOW-ELIXIR RED EXFO - 48X15ML",
         "product_name": "SCARLETT-REVIVE GLOW-ELIXIR RED EXFO - 48X15ML",
-        "atp": 882,
-        "sold": 72,
-        "deficit": 810,
-        "status": "Aman"
-      },
-      {
-        "sku": "SCARLETT-CHARMING-BODY SERUM-48X250ML",
-        "product_name": "SCARLETT-CHARMING-BODY SERUM-48X250ML",
-        "atp": 846,
-        "sold": 19,
-        "deficit": 827,
+        "atp": 878,
+        "sold": 77,
+        "deficit": 801,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-ACNE-CLEANSER-48X100ML",
         "product_name": "SCARLETT-ACNE-CLEANSER-48X100ML",
-        "atp": 914,
-        "sold": 81,
-        "deficit": 833,
+        "atp": 909,
+        "sold": 86,
+        "deficit": 823,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-CHARMING-BODY SERUM-48X250ML",
+        "product_name": "SCARLETT-CHARMING-BODY SERUM-48X250ML",
+        "atp": 844,
+        "sold": 20,
+        "deficit": 824,
         "status": "Aman"
       },
       {
@@ -11148,33 +11148,33 @@
       {
         "sku": "SCARLETT-RL BRIGHTLY ADVANCE SERUM- 48X15ML",
         "product_name": "SCARLETT-RL BRIGHTLY ADVANCE SERUM- 48X15ML",
-        "atp": 979,
-        "sold": 84,
-        "deficit": 895,
-        "status": "Aman"
-      },
-      {
-        "sku": "SCARLETT-TINTED LIPBALM-PINK PUNCH- 48X3.8GR",
-        "product_name": "SCARLETT-TINTED LIPBALM-PINK PUNCH- 48X3.8GR",
-        "atp": 933,
-        "sold": 18,
-        "deficit": 915,
+        "atp": 980,
+        "sold": 86,
+        "deficit": 894,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-LOVING-BODY SCRUB-48X250ML",
         "product_name": "SCARLETT-LOVING-BODY SCRUB-48X250ML",
-        "atp": 958,
-        "sold": 36,
-        "deficit": 922,
+        "atp": 955,
+        "sold": 39,
+        "deficit": 916,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-TINTED LIPBALM-PINK PUNCH- 48X3.8GR",
+        "product_name": "SCARLETT-TINTED LIPBALM-PINK PUNCH- 48X3.8GR",
+        "atp": 934,
+        "sold": 18,
+        "deficit": 916,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-HAPPY-BODY LOTION-MB-48X300ML",
         "product_name": "SCARLETT-HAPPY-BODY LOTION-MB-48X300ML",
-        "atp": 1034,
-        "sold": 66,
-        "deficit": 968,
+        "atp": 1033,
+        "sold": 67,
+        "deficit": 966,
         "status": "Aman"
       },
       {
@@ -11188,9 +11188,9 @@
       {
         "sku": "SCARLETT-SEA SALT-CONDITIONER-48X250ML",
         "product_name": "SCARLETT-SEA SALT-CONDITIONER-48X250ML",
-        "atp": 1177,
-        "sold": 2,
-        "deficit": 1175,
+        "atp": 1175,
+        "sold": 4,
+        "deficit": 1171,
         "status": "Aman"
       },
       {
@@ -11204,25 +11204,25 @@
       {
         "sku": "SCARLETT-CERAMIDE-FACE MOIST-48X20GR",
         "product_name": "SCARLETT-CERAMIDE-FACE MOIST-48X20GR",
-        "atp": 1421,
-        "sold": 130,
-        "deficit": 1291,
+        "atp": 1411,
+        "sold": 142,
+        "deficit": 1269,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-FRESHY-BODY LOTION-MB-48X300ML",
         "product_name": "SCARLETT-FRESHY-BODY LOTION-MB-48X300ML",
-        "atp": 1439,
-        "sold": 101,
-        "deficit": 1338,
+        "atp": 1435,
+        "sold": 105,
+        "deficit": 1330,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-AHA-BODY SERUM-48X250ML",
         "product_name": "SCARLETT-AHA-BODY SERUM-48X250ML",
-        "atp": 1480,
-        "sold": 128,
-        "deficit": 1352,
+        "atp": 1476,
+        "sold": 132,
+        "deficit": 1344,
         "status": "Aman"
       },
       {
@@ -11236,217 +11236,217 @@
       {
         "sku": "SCARLETT-WONDERLAND-EDP-48X30ML",
         "product_name": "SCARLETT-WONDERLAND-EDP-48X30ML",
-        "atp": 1616,
-        "sold": 158,
-        "deficit": 1458,
-        "status": "Aman"
-      },
-      {
-        "sku": "SCARLETT-JOLLY-BODY CREAM-48X300ML",
-        "product_name": "SCARLETT-JOLLY-BODY CREAM-48X300ML",
-        "atp": 1515,
-        "sold": 26,
-        "deficit": 1489,
+        "atp": 1599,
+        "sold": 177,
+        "deficit": 1422,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-GLOW BRIGHT-LOW PH FW-48X100ML",
         "product_name": "SCARLETT-GLOW BRIGHT-LOW PH FW-48X100ML",
-        "atp": 1578,
-        "sold": 85,
-        "deficit": 1493,
+        "atp": 1571,
+        "sold": 92,
+        "deficit": 1479,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-CHARMING-BODY SERUM-48X170ML",
         "product_name": "SCARLETT-CHARMING-BODY SERUM-48X170ML",
-        "atp": 1645,
-        "sold": 135,
-        "deficit": 1510,
+        "atp": 1635,
+        "sold": 147,
+        "deficit": 1488,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-JOLLY-BODY CREAM-48X300ML",
+        "product_name": "SCARLETT-JOLLY-BODY CREAM-48X300ML",
+        "atp": 1516,
+        "sold": 26,
+        "deficit": 1490,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-JOLLY-SHOWER GEL-48X300ML",
         "product_name": "SCARLETT-JOLLY-SHOWER GEL-48X300ML",
-        "atp": 1695,
-        "sold": 160,
-        "deficit": 1535,
+        "atp": 1687,
+        "sold": 170,
+        "deficit": 1517,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-AHA BODY BOOSTER-48X65ML",
         "product_name": "SCARLETT-AHA BODY BOOSTER-48X65ML",
-        "atp": 1700,
-        "sold": 154,
-        "deficit": 1546,
+        "atp": 1693,
+        "sold": 162,
+        "deficit": 1531,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-BRIGHTLY-NIGHT CREAM-48X20GR",
         "product_name": "SCARLETT-BRIGHTLY-NIGHT CREAM-48X20GR",
-        "atp": 1731,
-        "sold": 167,
-        "deficit": 1564,
+        "atp": 1724,
+        "sold": 175,
+        "deficit": 1549,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-BRIGHTLY-DAY CREAM-48X20GR",
         "product_name": "SCARLETT-BRIGHTLY-DAY CREAM-48X20GR",
-        "atp": 1769,
-        "sold": 175,
-        "deficit": 1594,
+        "atp": 1759,
+        "sold": 185,
+        "deficit": 1574,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-JOLLY-BODY LOTION-MB-48X180ML",
         "product_name": "SCARLETT-JOLLY-BODY LOTION-MB-48X180ML",
-        "atp": 1834,
-        "sold": 135,
-        "deficit": 1699,
+        "atp": 1822,
+        "sold": 148,
+        "deficit": 1674,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-ACNE PEACE-DAILY SUNSCREEN-96X45ML",
         "product_name": "SCARLETT-ACNE PEACE-DAILY SUNSCREEN-96X45ML",
-        "atp": 1804,
-        "sold": 97,
-        "deficit": 1707,
+        "atp": 1800,
+        "sold": 101,
+        "deficit": 1699,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-JOLLY-BODY SCRUB-MB-48X250ML",
         "product_name": "SCARLETT-JOLLY-BODY SCRUB-MB-48X250ML",
-        "atp": 1959,
-        "sold": 120,
-        "deficit": 1839,
+        "atp": 1952,
+        "sold": 127,
+        "deficit": 1825,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-LOVING-BODY SERUM-48X250ML",
         "product_name": "SCARLETT-LOVING-BODY SERUM-48X250ML",
-        "atp": 1847,
-        "sold": 6,
-        "deficit": 1841,
-        "status": "Aman"
-      },
-      {
-        "sku": "SCARLETT-HAPPY-BODY LOTION-MB-48X180ML",
-        "product_name": "SCARLETT-HAPPY-BODY LOTION-MB-48X180ML",
-        "atp": 2163,
-        "sold": 31,
-        "deficit": 2132,
-        "status": "Aman"
-      },
-      {
-        "sku": "SCARLETT-PASSIONATE-EDP-48X30ML",
-        "product_name": "SCARLETT-PASSIONATE-EDP-48X30ML",
-        "atp": 2309,
-        "sold": 164,
-        "deficit": 2145,
+        "atp": 1845,
+        "sold": 8,
+        "deficit": 1837,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-BRIGHTLY-CLEANSER-48X100ML",
         "product_name": "SCARLETT-BRIGHTLY-CLEANSER-48X100ML",
-        "atp": 2400,
-        "sold": 249,
-        "deficit": 2151,
+        "atp": 2378,
+        "sold": 272,
+        "deficit": 2106,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-PASSIONATE-EDP-48X30ML",
+        "product_name": "SCARLETT-PASSIONATE-EDP-48X30ML",
+        "atp": 2299,
+        "sold": 175,
+        "deficit": 2124,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-HAPPY-BODY LOTION-MB-48X180ML",
+        "product_name": "SCARLETT-HAPPY-BODY LOTION-MB-48X180ML",
+        "atp": 2160,
+        "sold": 34,
+        "deficit": 2126,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-PERFUME SHOWER SERUM-SHINE BRIGHT-24X400ML",
         "product_name": "SCARLETT-PERFUME SHOWER SERUM-SHINE BRIGHT-24X400ML",
-        "atp": 2396,
-        "sold": 161,
-        "deficit": 2235,
+        "atp": 2381,
+        "sold": 177,
+        "deficit": 2204,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-CHARMING-BODY LOTION-MB-48X180ML",
         "product_name": "SCARLETT-CHARMING-BODY LOTION-MB-48X180ML",
-        "atp": 2329,
-        "sold": 72,
-        "deficit": 2257,
+        "atp": 2323,
+        "sold": 78,
+        "deficit": 2245,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-ROMANSA-BODY LOTION-MB-48X300ML",
         "product_name": "SCARLETT-ROMANSA-BODY LOTION-MB-48X300ML",
-        "atp": 2555,
-        "sold": 161,
-        "deficit": 2394,
+        "atp": 2544,
+        "sold": 172,
+        "deficit": 2372,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-FRESHY-BODY LOTION-48X180ML",
         "product_name": "SCARLETT-FRESHY-BODY LOTION-48X180ML",
-        "atp": 2452,
-        "sold": 17,
-        "deficit": 2435,
+        "atp": 2450,
+        "sold": 19,
+        "deficit": 2431,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-PERFUME SHOWER SERUM-HYDRA BURST-24X400ML",
         "product_name": "SCARLETT-PERFUME SHOWER SERUM-HYDRA BURST-24X400ML",
-        "atp": 2705,
-        "sold": 34,
-        "deficit": 2671,
+        "atp": 2699,
+        "sold": 40,
+        "deficit": 2659,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-JOLLY-EDP-48X30ML",
         "product_name": "SCARLETT-JOLLY-EDP-48X30ML",
-        "atp": 2958,
-        "sold": 170,
-        "deficit": 2788,
-        "status": "Aman"
-      },
-      {
-        "sku": "SCARLETT-SHOWER GEL-CLASSY-48x300ML",
-        "product_name": "SCARLETT-SHOWER GEL-CLASSY-48x300ML",
-        "atp": 3119,
-        "sold": 13,
-        "deficit": 3106,
+        "atp": 2935,
+        "sold": 193,
+        "deficit": 2742,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-CHARMING-BODY LOTION-MB-48X300ML",
         "product_name": "SCARLETT-CHARMING-BODY LOTION-MB-48X300ML",
-        "atp": 3651,
-        "sold": 510,
-        "deficit": 3141,
+        "atp": 3617,
+        "sold": 545,
+        "deficit": 3072,
         "status": "Aman"
       },
       {
-        "sku": "SCARLETT-RL ACNE SERUM- 48X15ML",
-        "product_name": "SCARLETT-RL ACNE SERUM- 48X15ML",
-        "atp": 3565,
-        "sold": 166,
-        "deficit": 3399,
+        "sku": "SCARLETT-SHOWER GEL-CLASSY-48x300ML",
+        "product_name": "SCARLETT-SHOWER GEL-CLASSY-48x300ML",
+        "atp": 3117,
+        "sold": 15,
+        "deficit": 3102,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-LA FORET-EDP-48X30ML",
         "product_name": "SCARLETT-LA FORET-EDP-48X30ML",
-        "atp": 3644,
-        "sold": 230,
-        "deficit": 3414,
+        "atp": 3622,
+        "sold": 253,
+        "deficit": 3369,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-RL ACNE SERUM- 48X15ML",
+        "product_name": "SCARLETT-RL ACNE SERUM- 48X15ML",
+        "atp": 3556,
+        "sold": 176,
+        "deficit": 3380,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-BRIGHTLY EVER AFTER SERUM: RELAUNCH-48X15ML",
         "product_name": "SCARLETT-BRIGHTLY EVER AFTER SERUM: RELAUNCH-48X15ML",
-        "atp": 3807,
-        "sold": 196,
-        "deficit": 3611,
+        "atp": 3797,
+        "sold": 206,
+        "deficit": 3591,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-ACNE PEACE-LOW PH FW-48X100ML",
         "product_name": "SCARLETT-ACNE PEACE-LOW PH FW-48X100ML",
-        "atp": 3855,
-        "sold": 21,
-        "deficit": 3834,
+        "atp": 3852,
+        "sold": 24,
+        "deficit": 3828,
         "status": "Aman"
       },
       {
@@ -11468,49 +11468,57 @@
       {
         "sku": "SCARLETT-JOLLY-BODY SERUM-48X170ML",
         "product_name": "SCARLETT-JOLLY-BODY SERUM-48X170ML",
-        "atp": 4257,
-        "sold": 136,
-        "deficit": 4121,
+        "atp": 4247,
+        "sold": 146,
+        "deficit": 4101,
         "status": "Aman"
       },
       {
         "sku": "Scarlett Low pH Gel Cleanser Glow Bright (Sachet)",
         "product_name": "Scarlett Low pH Gel Cleanser Glow Bright (Sachet)",
-        "atp": 4389,
-        "sold": 34,
-        "deficit": 4355,
+        "atp": 4386,
+        "sold": 36,
+        "deficit": 4350,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-PURPLE-EDP-48X30ML",
         "product_name": "SCARLETT-PURPLE-EDP-48X30ML",
-        "atp": 4952,
-        "sold": 443,
-        "deficit": 4509,
+        "atp": 4914,
+        "sold": 477,
+        "deficit": 4437,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-CARAMEL-EDP-24X30ML",
         "product_name": "SCARLETT-CARAMEL-EDP-24X30ML",
-        "atp": 4910,
-        "sold": 306,
-        "deficit": 4604,
+        "atp": 4895,
+        "sold": 322,
+        "deficit": 4573,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-MUGWORT-FACE MASK-48X100ML",
         "product_name": "SCARLETT-MUGWORT-FACE MASK-48X100ML",
-        "atp": 4987,
-        "sold": 32,
-        "deficit": 4955,
+        "atp": 4982,
+        "sold": 38,
+        "deficit": 4944,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-TEA AMOR-EDP-24X30ML",
+        "product_name": "SCARLETT-TEA AMOR-EDP-24X30ML",
+        "atp": 5434,
+        "sold": 455,
+        "deficit": 4979,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-JOLLY-BODY SCRUB-48X250ML",
         "product_name": "SCARLETT-JOLLY-BODY SCRUB-48X250ML",
-        "atp": 5025,
-        "sold": 31,
-        "deficit": 4994,
+        "atp": 5019,
+        "sold": 36,
+        "deficit": 4983,
         "status": "Aman"
       },
       {
@@ -11530,19 +11538,19 @@
         "status": "Aman"
       },
       {
-        "sku": "SCARLETT-TEA AMOR-EDP-24X30ML",
-        "product_name": "SCARLETT-TEA AMOR-EDP-24X30ML",
-        "atp": 5464,
-        "sold": 425,
-        "deficit": 5039,
+        "sku": "SCARLETT-BANANA-EDP-24X30ML",
+        "product_name": "SCARLETT-BANANA-EDP-24X30ML",
+        "atp": 6045,
+        "sold": 868,
+        "deficit": 5177,
         "status": "Aman"
       },
       {
-        "sku": "SCARLETT-BANANA-EDP-24X30ML",
-        "product_name": "SCARLETT-BANANA-EDP-24X30ML",
-        "atp": 6078,
-        "sold": 835,
-        "deficit": 5243,
+        "sku": "SCARLETT-BIRU SAM-EDP-48X30ML",
+        "product_name": "SCARLETT-BIRU SAM-EDP-48X30ML",
+        "atp": 8654,
+        "sold": 3435,
+        "deficit": 5219,
         "status": "Aman"
       },
       {
@@ -11562,51 +11570,43 @@
         "status": "Aman"
       },
       {
-        "sku": "SCARLETT-BIRU SAM-EDP-48X30ML",
-        "product_name": "SCARLETT-BIRU SAM-EDP-48X30ML",
-        "atp": 8930,
-        "sold": 3146,
-        "deficit": 5784,
-        "status": "Aman"
-      },
-      {
         "sku": "SCARLETT-LOVING-BODY LOTION-MB-48X300ML",
         "product_name": "SCARLETT-LOVING-BODY LOTION-MB-48X300ML",
-        "atp": 6050,
-        "sold": 78,
-        "deficit": 5972,
+        "atp": 6043,
+        "sold": 85,
+        "deficit": 5958,
         "status": "Aman"
       },
       {
         "sku": "Free Atomizer",
         "product_name": "Free Atomizer",
-        "atp": 6204,
-        "sold": 108,
-        "deficit": 6096,
+        "atp": 6193,
+        "sold": 119,
+        "deficit": 6074,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-GOLDEN-EDP-48X30ML",
         "product_name": "SCARLETT-GOLDEN-EDP-48X30ML",
-        "atp": 6684,
-        "sold": 450,
-        "deficit": 6234,
+        "atp": 6648,
+        "sold": 486,
+        "deficit": 6162,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-EUPHORIA-EDP-48X30ML",
         "product_name": "SCARLETT-EUPHORIA-EDP-48X30ML",
-        "atp": 7058,
-        "sold": 541,
-        "deficit": 6517,
+        "atp": 7009,
+        "sold": 593,
+        "deficit": 6416,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-ACNE-CLOUD-48X105ML",
         "product_name": "SCARLETT-ACNE-CLOUD-48X105ML",
-        "atp": 6580,
-        "sold": 35,
-        "deficit": 6545,
+        "atp": 6579,
+        "sold": 36,
+        "deficit": 6543,
         "status": "Aman"
       },
       {
@@ -11620,9 +11620,9 @@
       {
         "sku": "SCARLETT-JOLLY-BODY LOTION-MB-48X300ML",
         "product_name": "SCARLETT-JOLLY-BODY LOTION-MB-48X300ML",
-        "atp": 8058,
-        "sold": 654,
-        "deficit": 7404,
+        "atp": 8015,
+        "sold": 698,
+        "deficit": 7317,
         "status": "Aman"
       },
       {
@@ -11636,113 +11636,121 @@
       {
         "sku": "SCARLETT-ULDS 50SPF-SUN SCREEN-72X30ML",
         "product_name": "SCARLETT-ULDS 50SPF-SUN SCREEN-72X30ML",
-        "atp": 8117,
-        "sold": 58,
-        "deficit": 8059,
+        "atp": 8115,
+        "sold": 60,
+        "deficit": 8055,
         "status": "Aman"
       },
       {
         "sku": "Flash Sale Item",
         "product_name": "Flash Sale Item",
-        "atp": 8523,
-        "sold": 54,
-        "deficit": 8469,
-        "status": "Aman"
-      },
-      {
-        "sku": "SCARLETT SAFA ATHER 2ML",
-        "product_name": "SCARLETT SAFA ATHER 2ML",
-        "atp": 8555,
-        "sold": 46,
-        "deficit": 8509,
+        "atp": 8522,
+        "sold": 55,
+        "deficit": 8467,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-DREAMY-BODY SERUM-48X170ML",
         "product_name": "SCARLETT-DREAMY-BODY SERUM-48X170ML",
-        "atp": 8889,
-        "sold": 359,
-        "deficit": 8530,
+        "atp": 8867,
+        "sold": 382,
+        "deficit": 8485,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT SAFA ATHER 2ML",
+        "product_name": "SCARLETT SAFA ATHER 2ML",
+        "atp": 8544,
+        "sold": 58,
+        "deficit": 8486,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-AHA BODY TONER-48x100ML",
         "product_name": "SCARLETT-AHA BODY TONER-48x100ML",
-        "atp": 9524,
-        "sold": 30,
-        "deficit": 9494,
+        "atp": 9525,
+        "sold": 32,
+        "deficit": 9493,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-BRIGHTLY-FOAM TONER-48X105ML",
         "product_name": "SCARLETT-BRIGHTLY-FOAM TONER-48X105ML",
-        "atp": 9586,
-        "sold": 24,
-        "deficit": 9562,
+        "atp": 9584,
+        "sold": 26,
+        "deficit": 9558,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-VELVET ROUGE-BODY SERUM-48X170ML",
         "product_name": "SCARLETT-VELVET ROUGE-BODY SERUM-48X170ML",
-        "atp": 11484,
-        "sold": 1583,
-        "deficit": 9901,
+        "atp": 11374,
+        "sold": 1696,
+        "deficit": 9678,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-DESERT LUMINA-EDP-24X30ML",
         "product_name": "SCARLETT-DESERT LUMINA-EDP-24X30ML",
-        "atp": 10371,
-        "sold": 373,
-        "deficit": 9998,
+        "atp": 10349,
+        "sold": 396,
+        "deficit": 9953,
         "status": "Aman"
       },
       {
         "sku": "Sunscreen Ultra Light (Sachet)",
         "product_name": "Sunscreen Ultra Light (Sachet)",
-        "atp": 10426,
-        "sold": 87,
-        "deficit": 10339,
+        "atp": 10427,
+        "sold": 91,
+        "deficit": 10336,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-SWEETIE LOVE-EDP-24X30ML",
         "product_name": "SCARLETT-SWEETIE LOVE-EDP-24X30ML",
-        "atp": 11531,
-        "sold": 903,
-        "deficit": 10628,
+        "atp": 11438,
+        "sold": 1000,
+        "deficit": 10438,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-PURPLE KISS-BODY SERUM-48X170ML",
         "product_name": "SCARLETT-PURPLE KISS-BODY SERUM-48X170ML",
-        "atp": 12818,
-        "sold": 572,
-        "deficit": 12246,
+        "atp": 12781,
+        "sold": 612,
+        "deficit": 12169,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-VELVET ROUGE-BODY SERUM-48X250ML",
         "product_name": "SCARLETT-VELVET ROUGE-BODY SERUM-48X250ML",
-        "atp": 12490,
-        "sold": 89,
-        "deficit": 12401,
+        "atp": 12480,
+        "sold": 100,
+        "deficit": 12380,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-PURPLE KISS-BODY SERUM-48X250ML",
         "product_name": "SCARLETT-PURPLE KISS-BODY SERUM-48X250ML",
-        "atp": 13021,
-        "sold": 35,
-        "deficit": 12986,
+        "atp": 13019,
+        "sold": 39,
+        "deficit": 12980,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-SWEET MEMOR-EDP-48X30ML",
         "product_name": "SCARLETT-SWEET MEMOR-EDP-48X30ML",
-        "atp": 14125,
-        "sold": 954,
-        "deficit": 13171,
+        "atp": 14051,
+        "sold": 1031,
+        "deficit": 13020,
+        "status": "Aman"
+      },
+      {
+        "sku": "SCARLETT-DREAMY-EDP-48X30ML",
+        "product_name": "SCARLETT-DREAMY-EDP-48X30ML",
+        "atp": 14201,
+        "sold": 998,
+        "deficit": 13203,
         "status": "Aman"
       },
       {
@@ -11751,14 +11759,6 @@
         "atp": 13312,
         "sold": 22,
         "deficit": 13290,
-        "status": "Aman"
-      },
-      {
-        "sku": "SCARLETT-DREAMY-EDP-48X30ML",
-        "product_name": "SCARLETT-DREAMY-EDP-48X30ML",
-        "atp": 14279,
-        "sold": 919,
-        "deficit": 13360,
         "status": "Aman"
       },
       {
@@ -11780,33 +11780,33 @@
       {
         "sku": "Free Headband",
         "product_name": "Free Headband",
-        "atp": 15074,
-        "sold": 9,
-        "deficit": 15065,
+        "atp": 15072,
+        "sold": 12,
+        "deficit": 15060,
         "status": "Aman"
       },
       {
         "sku": "Sachet - Body Serum Dreamy 7ml",
         "product_name": "Sachet - Body Serum Dreamy 7ml",
-        "atp": 19246,
-        "sold": 1858,
-        "deficit": 17388,
+        "atp": 19064,
+        "sold": 2055,
+        "deficit": 17009,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-ULDS 50SPF-SUN SCREEN-48X50ML",
         "product_name": "SCARLETT-ULDS 50SPF-SUN SCREEN-48X50ML",
-        "atp": 17818,
-        "sold": 412,
-        "deficit": 17406,
+        "atp": 17804,
+        "sold": 429,
+        "deficit": 17375,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-GARDEN OF WHISPER-BODY SERUM-48X170ML",
         "product_name": "SCARLETT-GARDEN OF WHISPER-BODY SERUM-48X170ML",
-        "atp": 18095,
-        "sold": 612,
-        "deficit": 17483,
+        "atp": 18044,
+        "sold": 663,
+        "deficit": 17381,
         "status": "Aman"
       },
       {
@@ -11820,9 +11820,9 @@
       {
         "sku": "SCARLETT-SAHARA MIRAGE-EDP-24X30ML",
         "product_name": "SCARLETT-SAHARA MIRAGE-EDP-24X30ML",
-        "atp": 22261,
-        "sold": 930,
-        "deficit": 21331,
+        "atp": 22196,
+        "sold": 1001,
+        "deficit": 21195,
         "status": "Aman"
       },
       {
@@ -11844,57 +11844,57 @@
       {
         "sku": "SCARLETT-GARDEN-EDP-48X30ML",
         "product_name": "SCARLETT-GARDEN-EDP-48X30ML",
-        "atp": 27532,
-        "sold": 1923,
-        "deficit": 25609,
+        "atp": 27359,
+        "sold": 2110,
+        "deficit": 25249,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-SAFA ATHER-EDP-24X30ML",
         "product_name": "SCARLETT-SAFA ATHER-EDP-24X30ML",
-        "atp": 28515,
-        "sold": 1190,
-        "deficit": 27325,
+        "atp": 28395,
+        "sold": 1316,
+        "deficit": 27079,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-PEELING-PEELING-48X100ML",
         "product_name": "SCARLETT-PEELING-PEELING-48X100ML",
-        "atp": 29406,
-        "sold": 26,
-        "deficit": 29380,
+        "atp": 29404,
+        "sold": 28,
+        "deficit": 29376,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-PISTACHIO CRUSH-EDP-24X30ML",
         "product_name": "SCARLETT-PISTACHIO CRUSH-EDP-24X30ML",
-        "atp": 37879,
-        "sold": 270,
-        "deficit": 37609,
+        "atp": 37863,
+        "sold": 288,
+        "deficit": 37575,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-DAILY TONE UP-CREAM-48X25GR",
         "product_name": "SCARLETT-DAILY TONE UP-CREAM-48X25GR",
-        "atp": 40127,
-        "sold": 1900,
-        "deficit": 38227,
+        "atp": 39944,
+        "sold": 2135,
+        "deficit": 37809,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT COTTON HUG 2ML",
         "product_name": "SCARLETT COTTON HUG 2ML",
-        "atp": 52921,
-        "sold": 463,
-        "deficit": 52458,
+        "atp": 52887,
+        "sold": 501,
+        "deficit": 52386,
         "status": "Aman"
       },
       {
         "sku": "SCARLETT-VELVET-EDP-48X30ML",
         "product_name": "SCARLETT-VELVET-EDP-48X30ML",
-        "atp": 76237,
-        "sold": 3281,
-        "deficit": 72956,
+        "atp": 75948,
+        "sold": 3582,
+        "deficit": 72366,
         "status": "Aman"
       },
       {
