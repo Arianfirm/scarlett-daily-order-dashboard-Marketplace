@@ -12774,9 +12774,9 @@
     "total_orders": 31761,
     "total_qty": 44832,
     "fulfilled": 20484,
-    "pending": 7905,
+    "pending": 7903,
     "fulfillment_pct": 64.5,
-    "total_atp": 47708522,
+    "total_atp": 47708435,
     "peak_hour": 13,
     "peak_hour_orders": 6012,
     "peak_hour_qty": 8692,
@@ -12833,16 +12833,16 @@
       1349
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-20 00:00:32 WIB",
+    "last_updated": "2026-07-20 00:06:49 WIB",
     "sku_count": 2135,
     "warehouse": {
-      "total_orders": 31169,
+      "total_orders": 30676,
       "total_orders_b2c": 31761,
-      "picked_orders": 21884,
-      "packed_orders": 14675,
+      "picked_orders": 21393,
+      "packed_orders": 14672,
       "dispatched_orders": 12160,
       "pending_orders": 19601,
-      "avg_pick_min": 267.6,
+      "avg_pick_min": 267.7,
       "avg_pack_min": 166.3,
       "avg_dispatch_min": -660.8,
       "pick_hours": [
@@ -12867,8 +12867,8 @@
         348,
         845,
         1407,
-        2764,
-        6555,
+        2693,
+        6135,
         65
       ],
       "pack_hours": [
@@ -12894,7 +12894,7 @@
         827,
         1288,
         2243,
-        1996,
+        1993,
         1664
       ],
       "dispatch_hours": [
@@ -12925,16 +12925,16 @@
       ],
       "top_picker": [
         [
-          "IAN PACKERSERATUSENAMTIGA",
-          1449
-        ],
-        [
           "SIGIT PACKERTIGASATUDELAPAN",
           1297
         ],
         [
+          "IAN PACKERSERATUSENAMTIGA",
+          1219
+        ],
+        [
           "DAEROBI PACKERDUASATU",
-          1197
+          1195
         ],
         [
           "HUDRI PICKERTUJUHBELAS",
@@ -12946,15 +12946,11 @@
         ],
         [
           "PAJRIANSYAH PACKERTIGADUATUJUH",
-          1133
+          1120
         ],
         [
           "FERY PACKERDUASATUSEMBILAN",
           1119
-        ],
-        [
-          "FADIL PACKERSERATUSDUALIMA",
-          1087
         ],
         [
           "ALDITRI PACKERDELAPANBELAS",
@@ -12963,6 +12959,10 @@
         [
           "BUDI PACKERSERATUSDELAPANTIGA",
           1069
+        ],
+        [
+          "TEGAR EMPATBELAS",
+          1063
         ]
       ],
       "top_packer": [
@@ -13039,16 +13039,16 @@
           442
         ],
         [
+          "OPAN PICKERDUA",
+          571
+        ],
+        [
           "SANDI PACKERTIGATUJUHDELAPAN",
           586
         ],
         [
-          "OPAN PICKERDUA",
-          588
-        ],
-        [
           "IBNU PACKERSERATUSDUAENAM",
-          632
+          600
         ]
       ],
       "low_packer": [
@@ -13147,8 +13147,8 @@
         348,
         845,
         1407,
-        2764,
-        6555,
+        2693,
+        6135,
         65
       ],
       "pack_hour_orders": [
@@ -13174,7 +13174,7 @@
         827,
         1288,
         2243,
-        1996,
+        1993,
         1664
       ],
       "pick_hour_qty": [
@@ -13199,8 +13199,8 @@
         383,
         1020,
         2032,
-        2989,
-        6615,
+        2918,
+        6195,
         86
       ],
       "pack_hour_qty": [
@@ -13226,14 +13226,14 @@
         1154,
         1846,
         3126,
-        2515,
+        2512,
         1884
       ],
       "active_pickers": 27,
       "active_packers": 132,
       "active_dispatchers": 11,
       "total_workforce": 170,
-      "avg_pick_per_picker": 810.5,
+      "avg_pick_per_picker": 792.3,
       "avg_pack_per_packer": 111.2
     }
   }
