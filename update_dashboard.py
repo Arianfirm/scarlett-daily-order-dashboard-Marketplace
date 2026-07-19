@@ -4,7 +4,7 @@ from collections import Counter
 
 EMAIL    = os.getenv("ACHANTO_EMAIL")
 PASSWORD = os.getenv("ACHANTO_PASSWORD")
-BASE_URL = "https://wms-api.anchanto.com"
+BASE_URL = "https://scrwms-api.anchanto.com"
 
 # ── Timezone setup ────────────────────────────────────────────────────────────
 # WIB (UTC+7) for history date keys and dashboard timestamps
