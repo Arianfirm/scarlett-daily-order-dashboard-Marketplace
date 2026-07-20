@@ -12771,12 +12771,12 @@
   },
   {
     "date": "2026-07-20",
-    "total_orders": 23546,
-    "total_qty": 33604,
-    "fulfilled": 19232,
-    "pending": 740,
-    "fulfillment_pct": 81.7,
-    "total_atp": 47650595,
+    "total_orders": 24260,
+    "total_qty": 34586,
+    "fulfilled": 19895,
+    "pending": 302,
+    "fulfillment_pct": 82.0,
+    "total_atp": 47647562,
     "peak_hour": 12,
     "peak_hour_orders": 1658,
     "peak_hour_qty": 2249,
@@ -12803,7 +12803,7 @@
       1482,
       1644,
       1270,
-      0,
+      714,
       0
     ],
     "hourly_qty": [
@@ -12829,22 +12829,22 @@
       2041,
       2118,
       1855,
-      0,
+      982,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-20 22:00:39 WIB",
+    "last_updated": "2026-07-20 22:50:07 WIB",
     "sku_count": 2135,
     "warehouse": {
-      "total_orders": 23548,
-      "total_orders_b2c": 23546,
-      "picked_orders": 21723,
-      "packed_orders": 18611,
-      "dispatched_orders": 15765,
-      "pending_orders": 7781,
-      "avg_pick_min": 104.7,
-      "avg_pack_min": 93.0,
-      "avg_dispatch_min": -431.4,
+      "total_orders": 24261,
+      "total_orders_b2c": 24260,
+      "picked_orders": 22855,
+      "packed_orders": 20604,
+      "dispatched_orders": 17290,
+      "pending_orders": 6970,
+      "avg_pick_min": 101.5,
+      "avg_pack_min": 93.7,
+      "avg_dispatch_min": -470.9,
       "pick_hours": [
         0,
         370,
@@ -12866,9 +12866,9 @@
         1213,
         418,
         1654,
-        3156,
-        1739,
-        0,
+        3152,
+        1725,
+        1150,
         0
       ],
       "pack_hours": [
@@ -12894,7 +12894,7 @@
         1017,
         980,
         2522,
-        80,
+        2073,
         0
       ],
       "dispatch_hours": [
@@ -12905,7 +12905,7 @@
         0,
         0,
         0,
-        19712,
+        21603,
         0,
         0,
         0,
@@ -13025,8 +13025,8 @@
           2431
         ],
         [
-          "Sapta Siswana",
-          1139
+          "BUDIMAN DISPATCH",
+          1614
         ]
       ],
       "low_picker": [
@@ -13096,7 +13096,7 @@
         11,
         14,
         13,
-        0,
+        14,
         0
       ],
       "pack_hour_packers": [
@@ -13122,7 +13122,7 @@
         49,
         53,
         66,
-        32,
+        63,
         0
       ],
       "pick_hour_orders": [
@@ -13146,9 +13146,9 @@
         1213,
         418,
         1654,
-        3156,
-        1739,
-        0,
+        3152,
+        1725,
+        1150,
         0
       ],
       "pack_hour_orders": [
@@ -13174,7 +13174,7 @@
         1017,
         980,
         2522,
-        80,
+        2073,
         0
       ],
       "pick_hour_qty": [
@@ -13198,9 +13198,9 @@
         1638,
         509,
         2093,
-        4171,
-        2590,
-        0,
+        4167,
+        2570,
+        1591,
         0
       ],
       "pack_hour_qty": [
@@ -13226,15 +13226,15 @@
         1403,
         1297,
         3340,
-        95,
+        2745,
         0
       ],
       "active_pickers": 35,
       "active_packers": 147,
       "active_dispatchers": 12,
       "total_workforce": 193,
-      "avg_pick_per_picker": 620.7,
-      "avg_pack_per_packer": 126.6
+      "avg_pick_per_picker": 653.0,
+      "avg_pack_per_packer": 140.2
     }
   }
 ]
