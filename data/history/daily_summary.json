@@ -12771,12 +12771,12 @@
   },
   {
     "date": "2026-07-22",
-    "total_orders": 28233,
-    "total_qty": 38876,
-    "fulfilled": 23047,
-    "pending": 1909,
-    "fulfillment_pct": 81.6,
-    "total_atp": 48818294,
+    "total_orders": 29321,
+    "total_qty": 40375,
+    "fulfilled": 24321,
+    "pending": 1265,
+    "fulfillment_pct": 82.9,
+    "total_atp": 48815752,
     "peak_hour": 18,
     "peak_hour_orders": 2003,
     "peak_hour_qty": 2625,
@@ -12803,7 +12803,7 @@
       1785,
       1991,
       1722,
-      2,
+      1090,
       0
     ],
     "hourly_qty": [
@@ -12829,22 +12829,22 @@
       2385,
       2732,
       2348,
-      2,
+      1501,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-22 22:00:43 WIB",
+    "last_updated": "2026-07-22 22:42:17 WIB",
     "sku_count": 2135,
     "warehouse": {
-      "total_orders": 28234,
-      "total_orders_b2c": 28233,
-      "picked_orders": 25073,
-      "packed_orders": 20714,
-      "dispatched_orders": 18086,
-      "pending_orders": 10147,
-      "avg_pick_min": 69.8,
-      "avg_pack_min": 103.7,
-      "avg_dispatch_min": -364.0,
+      "total_orders": 29335,
+      "total_orders_b2c": 29321,
+      "picked_orders": 26566,
+      "packed_orders": 22375,
+      "dispatched_orders": 19312,
+      "pending_orders": 10009,
+      "avg_pick_min": 75.8,
+      "avg_pack_min": 104.2,
+      "avg_dispatch_min": -397.2,
       "pick_hours": [
         0,
         1433,
@@ -12867,8 +12867,8 @@
         770,
         1929,
         1387,
-        3239,
-        83,
+        3207,
+        1626,
         0
       ],
       "pack_hours": [
@@ -12894,7 +12894,7 @@
         1041,
         331,
         2335,
-        71,
+        1732,
         0
       ],
       "dispatch_hours": [
@@ -12905,7 +12905,7 @@
         0,
         0,
         0,
-        22148,
+        23668,
         0,
         0,
         0,
@@ -13009,16 +13009,16 @@
       ],
       "top_dispatcher": [
         [
+          "Sapta Siswana",
+          8009
+        ],
+        [
           "SAENURSEN DISPATCH",
           7702
         ],
         [
-          "Sapta Siswana",
-          7292
-        ],
-        [
           "Komarudin dispatch",
-          3121
+          3719
         ],
         [
           "MUHMMAD ADITYA",
@@ -13047,8 +13047,8 @@
           227
         ],
         [
-          "KRESNA PACKERSATUSEMBILANSEMBILAN",
-          247
+          "BUDI PACKERSERATUSDELAPANTIGA",
+          277
         ]
       ],
       "low_packer": [
@@ -13096,7 +13096,7 @@
         14,
         15,
         14,
-        7,
+        14,
         0
       ],
       "pack_hour_packers": [
@@ -13122,7 +13122,7 @@
         42,
         38,
         58,
-        37,
+        58,
         0
       ],
       "pick_hour_orders": [
@@ -13147,8 +13147,8 @@
         770,
         1929,
         1387,
-        3239,
-        83,
+        3207,
+        1626,
         0
       ],
       "pack_hour_orders": [
@@ -13174,7 +13174,7 @@
         1041,
         331,
         2335,
-        71,
+        1732,
         0
       ],
       "pick_hour_qty": [
@@ -13199,8 +13199,8 @@
         952,
         2385,
         1787,
-        4313,
-        104,
+        4270,
+        2290,
         0
       ],
       "pack_hour_qty": [
@@ -13226,15 +13226,15 @@
         1332,
         455,
         3038,
-        97,
+        2284,
         0
       ],
       "active_pickers": 42,
       "active_packers": 167,
       "active_dispatchers": 9,
       "total_workforce": 218,
-      "avg_pick_per_picker": 597.0,
-      "avg_pack_per_packer": 124.0
+      "avg_pick_per_picker": 632.5,
+      "avg_pack_per_packer": 134.0
     }
   }
 ]
