@@ -11969,12 +11969,12 @@
   },
   {
     "date": "2026-07-27",
-    "total_orders": 4506,
-    "total_qty": 7546,
-    "fulfilled": 2305,
-    "pending": 1350,
-    "fulfillment_pct": 51.2,
-    "total_atp": 49064460,
+    "total_orders": 5618,
+    "total_qty": 9390,
+    "fulfilled": 2846,
+    "pending": 2414,
+    "fulfillment_pct": 50.7,
+    "total_atp": 49061952,
     "peak_hour": 0,
     "peak_hour_orders": 1588,
     "peak_hour_qty": 2703,
@@ -11986,8 +11986,8 @@
       336,
       600,
       1097,
-      4,
-      0,
+      1108,
+      8,
       0,
       0,
       0,
@@ -12012,8 +12012,8 @@
       572,
       954,
       1853,
-      5,
-      0,
+      1840,
+      9,
       0,
       0,
       0,
@@ -12031,18 +12031,18 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-07-27 07:00:38 WIB",
+    "last_updated": "2026-07-27 08:00:30 WIB",
     "sku_count": 2136,
     "warehouse": {
-      "total_orders": 4517,
-      "total_orders_b2c": 4506,
+      "total_orders": 5647,
+      "total_orders_b2c": 5618,
       "picked_orders": 2940,
-      "packed_orders": 2011,
-      "dispatched_orders": 1362,
-      "pending_orders": 3144,
+      "packed_orders": 2315,
+      "dispatched_orders": 2213,
+      "pending_orders": 3405,
       "avg_pick_min": 110.8,
-      "avg_pack_min": 94.9,
-      "avg_dispatch_min": 176.9,
+      "avg_pack_min": 103.0,
+      "avg_dispatch_min": 114.7,
       "pick_hours": [
         0,
         1081,
@@ -12077,7 +12077,7 @@
         5,
         434,
         759,
-        13,
+        317,
         0,
         0,
         0,
@@ -12103,7 +12103,7 @@
         0,
         0,
         0,
-        2207,
+        3603,
         0,
         0,
         0,
@@ -12166,15 +12166,15 @@
       "top_packer": [
         [
           "AFDIYANTI PACKERDUADUA",
-          262
+          326
         ],
         [
           "SAFNAH PACKERSEMBILANENAM",
-          215
+          251
         ],
         [
           "RATNA DUADELAPAN",
-          196
+          211
         ],
         [
           "LIANI PACKERDUALIMALIMA",
@@ -12183,6 +12183,10 @@
         [
           "FITRI PACKERSERATUSENAMBELAS",
           176
+        ],
+        [
+          "MUNA PACKERSERATUSEMPATPULUH",
+          163
         ],
         [
           "RIKA PACKERTIGADELAPANSEMBILAN",
@@ -12197,26 +12201,22 @@
           151
         ],
         [
-          "MUNA PACKERSERATUSEMPATPULUH",
-          147
-        ],
-        [
-          "SAEPUDIN PACKERTUJUHEMPAT",
-          147
+          "DEWI PACKERDUATIGAENAM",
+          150
         ]
       ],
       "top_dispatcher": [
         [
           "Sapta Siswana",
-          1147
+          1792
         ],
         [
           "Komarudin dispatch",
-          880
+          1586
         ],
         [
           "ADI HUMAEDI",
-          144
+          189
         ],
         [
           "JOSHUA DISPATCH",
@@ -12255,16 +12255,16 @@
           1
         ],
         [
+          "TATIA PACKERSERATUSLIMA",
+          1
+        ],
+        [
           "DEDE PACKERSERATUSTUJUHPULUH",
           2
         ],
         [
           "ERNAWATI PACKERTIGASATUNOL",
           6
-        ],
-        [
-          "ANGGI PACKERDUATIGADELAPAN",
-          7
         ]
       ],
       "pick_hour_pickers": [
@@ -12301,7 +12301,7 @@
         1,
         24,
         38,
-        7,
+        25,
         0,
         0,
         0,
@@ -12353,7 +12353,7 @@
         5,
         434,
         759,
-        13,
+        317,
         0,
         0,
         0,
@@ -12405,7 +12405,7 @@
         5,
         709,
         1258,
-        21,
+        539,
         0,
         0,
         0,
@@ -12424,11 +12424,11 @@
         0
       ],
       "active_pickers": 13,
-      "active_packers": 41,
+      "active_packers": 42,
       "active_dispatchers": 4,
-      "total_workforce": 58,
+      "total_workforce": 59,
       "avg_pick_per_picker": 226.2,
-      "avg_pack_per_packer": 49.0
+      "avg_pack_per_packer": 55.1
     }
   }
 ]
