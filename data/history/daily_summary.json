@@ -11570,10 +11570,10 @@
     "date": "2026-07-31",
     "total_orders": 45680,
     "total_qty": 61453,
-    "fulfilled": 28064,
-    "pending": 8551,
-    "fulfillment_pct": 61.4,
-    "total_atp": 50545424,
+    "fulfilled": 32133,
+    "pending": 5000,
+    "fulfillment_pct": 70.3,
+    "total_atp": 50542873,
     "peak_hour": 9,
     "peak_hour_orders": 3650,
     "peak_hour_qty": 4823,
@@ -11630,18 +11630,18 @@
       1393
     ],
     "day_type": "gajian",
-    "last_updated": "2026-07-31 01:15:45 WIB",
+    "last_updated": "2026-07-31 02:00:35 WIB",
     "sku_count": 2138,
     "warehouse": {
-      "total_orders": 44631,
+      "total_orders": 37092,
       "total_orders_b2c": 45680,
-      "picked_orders": 32711,
-      "packed_orders": 28713,
-      "dispatched_orders": 23733,
-      "pending_orders": 21947,
-      "avg_pick_min": 234.1,
-      "avg_pack_min": 137.3,
-      "avg_dispatch_min": -521.2,
+      "picked_orders": 27926,
+      "packed_orders": 25745,
+      "dispatched_orders": 22908,
+      "pending_orders": 22772,
+      "avg_pick_min": 219.4,
+      "avg_pack_min": 146.0,
+      "avg_dispatch_min": -519.9,
       "pick_hours": [
         0,
         130,
@@ -11661,12 +11661,12 @@
         1549,
         1759,
         921,
-        862,
-        613,
+        845,
+        610,
         2,
-        6823,
-        5053,
-        1108
+        4732,
+        2752,
+        651
       ],
       "pack_hours": [
         0,
@@ -11688,11 +11688,11 @@
         1530,
         2338,
         1967,
-        2780,
-        894,
-        2738,
-        3299,
-        2812
+        2779,
+        892,
+        2388,
+        2052,
+        1444
       ],
       "dispatch_hours": [
         0,
@@ -11702,7 +11702,7 @@
         0,
         0,
         0,
-        29653,
+        28656,
         0,
         0,
         0,
@@ -11730,10 +11730,6 @@
           2120
         ],
         [
-          "PRAYOGA PACKERSERATUSTIGAPULUH",
-          2021
-        ],
-        [
           "SIGIT PACKERTIGASATUDELAPAN",
           2019
         ],
@@ -11751,15 +11747,19 @@
         ],
         [
           "NOVAL PACKEREMPATBELAS",
-          1705
+          1682
         ],
         [
           "RICHO PACKERSEMBILANSATU",
-          1650
+          1632
         ],
         [
-          "DAEROBI PACKERDUASATU",
-          1583
+          "NASRUN PICKERDELAPAN",
+          1582
+        ],
+        [
+          "BUDI PACKERSERATUSDELAPANTIGA",
+          1580
         ]
       ],
       "top_packer": [
@@ -11806,16 +11806,16 @@
       ],
       "top_dispatcher": [
         [
-          "SAENURSEN DISPATCH",
-          6055
-        ],
-        [
           "Sapta Siswana",
           5947
         ],
         [
           "adriansyah maulana",
           5664
+        ],
+        [
+          "SAENURSEN DISPATCH",
+          5629
         ],
         [
           "Komarudin dispatch",
@@ -11894,7 +11894,7 @@
         1,
         12,
         12,
-        10
+        9
       ],
       "pack_hour_packers": [
         0,
@@ -11919,8 +11919,8 @@
         72,
         43,
         57,
-        70,
-        63
+        66,
+        56
       ],
       "pick_hour_orders": [
         0,
@@ -11941,12 +11941,12 @@
         1549,
         1759,
         921,
-        862,
-        613,
+        845,
+        610,
         2,
-        6823,
-        5053,
-        1108
+        4732,
+        2752,
+        651
       ],
       "pack_hour_orders": [
         0,
@@ -11968,11 +11968,11 @@
         1530,
         2338,
         1967,
-        2780,
-        894,
-        2738,
-        3299,
-        2812
+        2779,
+        892,
+        2388,
+        2052,
+        1444
       ],
       "pick_hour_qty": [
         0,
@@ -11993,12 +11993,12 @@
         2048,
         2510,
         1157,
-        1163,
-        857,
+        1145,
+        832,
         34,
-        7718,
-        6430,
-        1473
+        5274,
+        3378,
+        882
       ],
       "pack_hour_qty": [
         0,
@@ -12020,18 +12020,18 @@
         2175,
         3121,
         2662,
-        3875,
-        1246,
-        2959,
-        3724,
-        3387
+        3852,
+        1244,
+        2608,
+        2355,
+        1613
       ],
       "active_pickers": 35,
       "active_packers": 153,
       "active_dispatchers": 11,
       "total_workforce": 199,
-      "avg_pick_per_picker": 934.6,
-      "avg_pack_per_packer": 187.7
+      "avg_pick_per_picker": 797.9,
+      "avg_pack_per_packer": 168.3
     }
   }
 ]
