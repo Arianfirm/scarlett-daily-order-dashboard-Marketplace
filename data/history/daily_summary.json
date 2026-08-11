@@ -10766,12 +10766,12 @@
   },
   {
     "date": "2026-08-11",
-    "total_orders": 4632,
-    "total_qty": 8390,
-    "fulfilled": 788,
-    "pending": 3498,
-    "fulfillment_pct": 17.0,
-    "total_atp": 53143375,
+    "total_orders": 5587,
+    "total_qty": 10150,
+    "fulfilled": 739,
+    "pending": 4387,
+    "fulfillment_pct": 13.2,
+    "total_atp": 53139754,
     "peak_hour": 7,
     "peak_hour_orders": 1167,
     "peak_hour_qty": 2126,
@@ -10784,7 +10784,7 @@
       542,
       733,
       1167,
-      17,
+      972,
       0,
       0,
       0,
@@ -10810,7 +10810,7 @@
       936,
       1225,
       2126,
-      25,
+      1785,
       0,
       0,
       0,
@@ -10828,18 +10828,18 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-11 08:00:31 WIB",
+    "last_updated": "2026-08-11 08:42:31 WIB",
     "sku_count": 2138,
     "warehouse": {
-      "total_orders": 4655,
-      "total_orders_b2c": 4632,
-      "picked_orders": 854,
-      "packed_orders": 750,
-      "dispatched_orders": 682,
-      "pending_orders": 3950,
+      "total_orders": 5605,
+      "total_orders_b2c": 5587,
+      "picked_orders": 855,
+      "packed_orders": 813,
+      "dispatched_orders": 695,
+      "pending_orders": 4892,
       "avg_pick_min": 132.1,
-      "avg_pack_min": 168.4,
-      "avg_dispatch_min": 57.2,
+      "avg_pack_min": 173.2,
+      "avg_dispatch_min": 56.0,
       "pick_hours": [
         0,
         0,
@@ -10849,7 +10849,7 @@
         0,
         111,
         6,
-        0,
+        1,
         0,
         0,
         0,
@@ -10875,7 +10875,7 @@
         210,
         353,
         134,
-        0,
+        63,
         0,
         0,
         0,
@@ -10900,7 +10900,7 @@
         0,
         0,
         0,
-        1229,
+        1247,
         0,
         0,
         0,
@@ -10954,6 +10954,10 @@
         [
           "AZIS DUADUA",
           22
+        ],
+        [
+          "RIKI PACKERDUALIMANOL",
+          1
         ]
       ],
       "top_packer": [
@@ -11016,11 +11020,15 @@
           34
         ],
         [
-          "Sapta Siswana",
-          8
+          "Komarudin dispatch",
+          18
         ]
       ],
       "low_picker": [
+        [
+          "RIKI PACKERDUALIMANOL",
+          1
+        ],
         [
           "AZIS DUADUA",
           22
@@ -11036,15 +11044,19 @@
         [
           "HENDRIK PACKERDUALIMAEMPAT",
           173
-        ],
-        [
-          "HERDIANSYAH PACKERSERATUSDUA",
-          174
         ]
       ],
       "low_packer": [
         [
+          "RIKA PACKERTIGADELAPANSEMBILAN",
+          2
+        ],
+        [
           "MEILANI PACKERTIGALIMAPULUH",
+          2
+        ],
+        [
+          "MAHDIN PACKERSERATUS",
           2
         ],
         [
@@ -11052,16 +11064,8 @@
           2
         ],
         [
-          "RAISYA PACKERTIGAENAMEMPAT",
-          4
-        ],
-        [
-          "ANGELIANA PACKERDUASATUTIGA",
-          5
-        ],
-        [
-          "ALDA PACKERSEMBILANEMPAT",
-          12
+          "RATNA DUADELAPAN",
+          3
         ]
       ],
       "pick_hour_pickers": [
@@ -11073,7 +11077,7 @@
         0,
         5,
         1,
-        0,
+        1,
         0,
         0,
         0,
@@ -11099,7 +11103,7 @@
         6,
         8,
         10,
-        0,
+        7,
         0,
         0,
         0,
@@ -11125,7 +11129,7 @@
         0,
         111,
         6,
-        0,
+        1,
         0,
         0,
         0,
@@ -11151,7 +11155,7 @@
         210,
         353,
         134,
-        0,
+        63,
         0,
         0,
         0,
@@ -11177,7 +11181,7 @@
         0,
         262,
         9,
-        0,
+        1,
         0,
         0,
         0,
@@ -11203,7 +11207,7 @@
         417,
         653,
         306,
-        0,
+        99,
         0,
         0,
         0,
@@ -11220,12 +11224,12 @@
         0,
         0
       ],
-      "active_pickers": 9,
-      "active_packers": 15,
-      "active_dispatchers": 5,
-      "total_workforce": 29,
-      "avg_pick_per_picker": 94.9,
-      "avg_pack_per_packer": 50.0
+      "active_pickers": 10,
+      "active_packers": 22,
+      "active_dispatchers": 6,
+      "total_workforce": 38,
+      "avg_pick_per_picker": 85.5,
+      "avg_pack_per_packer": 37.0
     }
   }
 ]
