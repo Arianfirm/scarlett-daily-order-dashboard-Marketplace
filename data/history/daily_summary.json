@@ -9964,15 +9964,15 @@
   },
   {
     "date": "2026-08-14",
-    "total_orders": 9547,
-    "total_qty": 16781,
-    "fulfilled": 1591,
-    "pending": 7337,
-    "fulfillment_pct": 16.7,
-    "total_atp": 53442343,
-    "peak_hour": 7,
-    "peak_hour_orders": 2183,
-    "peak_hour_qty": 3955,
+    "total_orders": 9857,
+    "total_qty": 17350,
+    "fulfilled": 1567,
+    "pending": 7623,
+    "fulfillment_pct": 15.9,
+    "total_atp": 53441554,
+    "peak_hour": 8,
+    "peak_hour_orders": 2446,
+    "peak_hour_qty": 4401,
     "hourly_orders": [
       1802,
       436,
@@ -9982,8 +9982,8 @@
       621,
       1320,
       2183,
-      2164,
-      0,
+      2446,
+      28,
       0,
       0,
       0,
@@ -10008,8 +10008,8 @@
       1016,
       2271,
       3955,
-      3880,
-      0,
+      4401,
+      48,
       0,
       0,
       0,
@@ -10026,17 +10026,17 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-14 08:54:19 WIB",
+    "last_updated": "2026-08-14 09:00:34 WIB",
     "sku_count": 2138,
     "warehouse": {
-      "total_orders": 9575,
-      "total_orders_b2c": 9547,
+      "total_orders": 9894,
+      "total_orders_b2c": 9857,
       "picked_orders": 1647,
-      "packed_orders": 1351,
+      "packed_orders": 1374,
       "dispatched_orders": 1279,
-      "pending_orders": 8268,
+      "pending_orders": 8578,
       "avg_pick_min": 107.2,
-      "avg_pack_min": 139.2,
+      "avg_pack_min": 143.7,
       "avg_dispatch_min": 149.0,
       "pick_hours": [
         0,
@@ -10073,8 +10073,8 @@
         269,
         271,
         99,
-        25,
-        0,
+        42,
+        6,
         0,
         0,
         0,
@@ -10247,14 +10247,6 @@
       "low_packer": [
         [
           "SELVIA PACKEREMPATSATULIMA",
-          1
-        ],
-        [
-          "STEVIA PACKERTIGASEMBILAN",
-          2
-        ],
-        [
-          "KESYA PACKEREMPATSATUTUJUH",
           2
         ],
         [
@@ -10264,6 +10256,14 @@
         [
           "RAISYA PACKERTIGAENAMEMPAT",
           3
+        ],
+        [
+          "KESYA PACKEREMPATSATUTUJUH",
+          4
+        ],
+        [
+          "SILVI PACKERTUJUHDELAPAN",
+          6
         ]
       ],
       "pick_hour_pickers": [
@@ -10302,7 +10302,7 @@
         20,
         11,
         7,
-        0,
+        3,
         0,
         0,
         0,
@@ -10353,8 +10353,8 @@
         269,
         271,
         99,
-        25,
-        0,
+        42,
+        6,
         0,
         0,
         0,
@@ -10405,8 +10405,8 @@
         442,
         450,
         177,
-        57,
-        0,
+        92,
+        8,
         0,
         0,
         0,
@@ -10427,7 +10427,7 @@
       "active_dispatchers": 5,
       "total_workforce": 63,
       "avg_pick_per_picker": 109.8,
-      "avg_pack_per_packer": 31.4
+      "avg_pack_per_packer": 32.0
     }
   }
 ]
