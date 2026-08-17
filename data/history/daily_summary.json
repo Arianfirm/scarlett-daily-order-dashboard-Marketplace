@@ -9563,12 +9563,12 @@
   },
   {
     "date": "2026-08-17",
-    "total_orders": 11180,
-    "total_qty": 15528,
-    "fulfilled": 8003,
-    "pending": 919,
-    "fulfillment_pct": 71.6,
-    "total_atp": 53559989,
+    "total_orders": 13281,
+    "total_qty": 18550,
+    "fulfilled": 8597,
+    "pending": 1797,
+    "fulfillment_pct": 64.7,
+    "total_atp": 53562810,
     "peak_hour": 9,
     "peak_hour_orders": 2858,
     "peak_hour_qty": 3889,
@@ -9583,7 +9583,7 @@
       1679,
       2238,
       2858,
-      31,
+      2132,
       0,
       0,
       0,
@@ -9609,7 +9609,7 @@
       2143,
       3006,
       3889,
-      42,
+      3064,
       0,
       0,
       0,
@@ -9625,7 +9625,408 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-17 10:00:36 WIB",
-    "sku_count": 2138
+    "last_updated": "2026-08-17 10:56:40 WIB",
+    "sku_count": 2138,
+    "warehouse": {
+      "total_orders": 13310,
+      "total_orders_b2c": 13281,
+      "picked_orders": 10462,
+      "packed_orders": 6890,
+      "dispatched_orders": 4721,
+      "pending_orders": 8560,
+      "avg_pick_min": 83.5,
+      "avg_pack_min": 74.4,
+      "avg_dispatch_min": -8.4,
+      "pick_hours": [
+        0,
+        477,
+        902,
+        47,
+        0,
+        1010,
+        584,
+        725,
+        1498,
+        3882,
+        1426,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "pack_hours": [
+        0,
+        51,
+        296,
+        598,
+        5,
+        498,
+        868,
+        598,
+        276,
+        1557,
+        2143,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "dispatch_hours": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6046,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "top_picker": [
+        [
+          "TEGAR EMPATBELAS",
+          1200
+        ],
+        [
+          "FERY PACKERDUASATUSEMBILAN",
+          846
+        ],
+        [
+          "DAFID PACKERTIGADELAPANDUA",
+          814
+        ],
+        [
+          "RIKI PACKERDUALIMANOL",
+          781
+        ],
+        [
+          "HUDRI PICKERTUJUHBELAS",
+          761
+        ],
+        [
+          "BUDI PACKERSERATUSDELAPANTIGA",
+          716
+        ],
+        [
+          "TOMI PICKERSEBELAS",
+          624
+        ],
+        [
+          "PRAMADI PICKERDUABELAS",
+          567
+        ],
+        [
+          "ABDUL PACKERTIGATIGASATU",
+          531
+        ],
+        [
+          "SANDI PACKERTIGATUJUHDELAPAN",
+          511
+        ]
+      ],
+      "top_packer": [
+        [
+          "SITI PACKERSERATUSLIMADUA",
+          300
+        ],
+        [
+          "TIKA PACKERSERATUSDELAPAN",
+          243
+        ],
+        [
+          "ALDA PACKERSEMBILANEMPAT",
+          192
+        ],
+        [
+          "RATNA DUADELAPAN",
+          191
+        ],
+        [
+          "PUTRI PACKERDUADUADUA",
+          179
+        ],
+        [
+          "ANGGI PACKERDUATIGADELAPAN",
+          173
+        ],
+        [
+          "SITI PACKERTIGASATUTIGA",
+          152
+        ],
+        [
+          "NABILA PACKERDUANOLDELAPAN",
+          150
+        ],
+        [
+          "YOGA PACKERTUJUHTIGA",
+          143
+        ],
+        [
+          "FARDA PACKEREMPATTIGATIGA",
+          141
+        ]
+      ],
+      "top_dispatcher": [
+        [
+          "hardian hamzah",
+          2324
+        ],
+        [
+          "Sapta Siswana",
+          1603
+        ],
+        [
+          "ahmad wandi",
+          1072
+        ],
+        [
+          "ahmad Hamdani",
+          789
+        ],
+        [
+          "BUDIMAN DISPATCH",
+          161
+        ]
+      ],
+      "low_picker": [
+        [
+          "KRESNA PACKERSATUSEMBILANSEMBILAN",
+          50
+        ],
+        [
+          "HENDRIK PACKERDUALIMAEMPAT",
+          68
+        ],
+        [
+          "BOUGHORY PACKERTIGATIGADUA",
+          117
+        ],
+        [
+          "HERDIANSYAH PACKERSERATUSDUA",
+          124
+        ],
+        [
+          "DIAN PACKERSERATUSLIMASATU",
+          161
+        ]
+      ],
+      "low_packer": [
+        [
+          "Abdul Rosid",
+          1
+        ],
+        [
+          "AFDIYANTI PACKERDUADUA",
+          1
+        ],
+        [
+          "RAFAEL PACKEREMPATTUJUHEMPAT",
+          2
+        ],
+        [
+          "TIARA PACKEREMPATEMPATNOL",
+          6
+        ],
+        [
+          "YUSUFF PACKEREMPATENAMSEMBILAN",
+          8
+        ]
+      ],
+      "pick_hour_pickers": [
+        0,
+        6,
+        11,
+        1,
+        0,
+        9,
+        7,
+        11,
+        13,
+        13,
+        12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "pack_hour_packers": [
+        0,
+        5,
+        15,
+        24,
+        1,
+        25,
+        40,
+        34,
+        21,
+        51,
+        57,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "pick_hour_orders": [
+        0,
+        477,
+        902,
+        47,
+        0,
+        1010,
+        584,
+        725,
+        1498,
+        3882,
+        1426,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "pack_hour_orders": [
+        0,
+        51,
+        296,
+        598,
+        5,
+        498,
+        868,
+        598,
+        276,
+        1557,
+        2143,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "pick_hour_qty": [
+        0,
+        627,
+        1252,
+        57,
+        0,
+        1511,
+        763,
+        1028,
+        1975,
+        5073,
+        2346,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "pack_hour_qty": [
+        0,
+        62,
+        430,
+        788,
+        5,
+        708,
+        1255,
+        889,
+        425,
+        2237,
+        2818,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "active_pickers": 29,
+      "active_packers": 109,
+      "active_dispatchers": 6,
+      "total_workforce": 144,
+      "avg_pick_per_picker": 360.8,
+      "avg_pack_per_packer": 63.2
+    }
   }
 ]
