@@ -9966,10 +9966,10 @@
     "date": "2026-08-20",
     "total_orders": 35627,
     "total_qty": 64378,
-    "fulfilled": 29746,
+    "fulfilled": 30151,
     "pending": 170,
-    "fulfillment_pct": 83.5,
-    "total_atp": 54019440,
+    "fulfillment_pct": 84.6,
+    "total_atp": 54018571,
     "peak_hour": 9,
     "peak_hour_orders": 2637,
     "peak_hour_qty": 4731,
@@ -10026,18 +10026,18 @@
       1314
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-20 03:26:30 WIB",
+    "last_updated": "2026-08-20 04:00:41 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 26741,
+      "total_orders": 26621,
       "total_orders_b2c": 35627,
-      "picked_orders": 23891,
-      "packed_orders": 23355,
-      "dispatched_orders": 22154,
-      "pending_orders": 13473,
-      "avg_pick_min": 96.3,
-      "avg_pack_min": 126.6,
-      "avg_dispatch_min": -460.9,
+      "picked_orders": 23771,
+      "packed_orders": 23342,
+      "dispatched_orders": 22156,
+      "pending_orders": 13471,
+      "avg_pick_min": 95.7,
+      "avg_pack_min": 126.5,
+      "avg_dispatch_min": -460.8,
       "pick_hours": [
         0,
         7,
@@ -10053,15 +10053,15 @@
         477,
         0,
         3199,
-        3516,
+        3514,
         1670,
         1105,
         16,
         8,
         11,
         0,
-        3320,
-        454,
+        3252,
+        404,
         0
       ],
       "pack_hours": [
@@ -10087,8 +10087,8 @@
         1189,
         687,
         1616,
-        1581,
-        318
+        1579,
+        307
       ],
       "dispatch_hours": [
         0,
@@ -10098,7 +10098,7 @@
         0,
         0,
         0,
-        34154,
+        34158,
         0,
         0,
         0,
@@ -10224,6 +10224,14 @@
       ],
       "low_picker": [
         [
+          "NOVAL PACKEREMPATBELAS",
+          117
+        ],
+        [
+          "IRSAN PACKERDUAEMPATLIMA",
+          127
+        ],
+        [
           "IBNU PACKERSERATUSDUAENAM",
           130
         ],
@@ -10234,14 +10242,6 @@
         [
           "HAPIDIN PACKERDUATIGASEMBILAN",
           138
-        ],
-        [
-          "NOVAL PACKEREMPATBELAS",
-          139
-        ],
-        [
-          "IRSAN PACKERDUAEMPATLIMA",
-          141
         ]
       ],
       "low_packer": [
@@ -10289,7 +10289,7 @@
         2,
         0,
         15,
-        15,
+        14,
         0
       ],
       "pack_hour_packers": [
@@ -10316,7 +10316,7 @@
         33,
         62,
         61,
-        50
+        48
       ],
       "pick_hour_orders": [
         0,
@@ -10333,15 +10333,15 @@
         477,
         0,
         3199,
-        3516,
+        3514,
         1670,
         1105,
         16,
         8,
         11,
         0,
-        3320,
-        454,
+        3252,
+        404,
         0
       ],
       "pack_hour_orders": [
@@ -10367,8 +10367,8 @@
         1189,
         687,
         1616,
-        1581,
-        318
+        1579,
+        307
       ],
       "pick_hour_qty": [
         0,
@@ -10385,15 +10385,15 @@
         870,
         0,
         5009,
-        6225,
+        6221,
         2819,
         1774,
         3805,
         16,
         21,
         0,
-        4734,
-        810,
+        4612,
+        679,
         0
       ],
       "pack_hour_qty": [
@@ -10419,15 +10419,15 @@
         1804,
         1091,
         2107,
-        2263,
-        589
+        2258,
+        573
       ],
       "active_pickers": 41,
       "active_packers": 164,
       "active_dispatchers": 11,
       "total_workforce": 216,
-      "avg_pick_per_picker": 582.7,
-      "avg_pack_per_packer": 142.4
+      "avg_pick_per_picker": 579.8,
+      "avg_pack_per_packer": 142.3
     }
   }
 ]
