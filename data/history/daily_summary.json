@@ -9964,12 +9964,12 @@
   },
   {
     "date": "2026-08-20",
-    "total_orders": 5128,
-    "total_qty": 8187,
-    "fulfilled": 2576,
-    "pending": 2107,
-    "fulfillment_pct": 50.2,
-    "total_atp": 54009111,
+    "total_orders": 5698,
+    "total_qty": 9091,
+    "fulfilled": 2597,
+    "pending": 2645,
+    "fulfillment_pct": 45.6,
+    "total_atp": 54008282,
     "peak_hour": 7,
     "peak_hour_orders": 1628,
     "peak_hour_qty": 2920,
@@ -9982,7 +9982,7 @@
       595,
       827,
       1628,
-      17,
+      587,
       0,
       0,
       0,
@@ -10008,7 +10008,7 @@
       889,
       1312,
       2920,
-      26,
+      930,
       0,
       0,
       0,
@@ -10026,18 +10026,18 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-20 08:00:33 WIB",
+    "last_updated": "2026-08-20 08:11:32 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 5150,
-      "total_orders_b2c": 5128,
+      "total_orders": 5718,
+      "total_orders_b2c": 5698,
       "picked_orders": 2777,
       "packed_orders": 2089,
-      "dispatched_orders": 1882,
-      "pending_orders": 3246,
+      "dispatched_orders": 1991,
+      "pending_orders": 3707,
       "avg_pick_min": 74.4,
       "avg_pack_min": 107.9,
-      "avg_dispatch_min": 64.0,
+      "avg_dispatch_min": 60.3,
       "pick_hours": [
         0,
         0,
@@ -10098,7 +10098,7 @@
         0,
         0,
         0,
-        2635,
+        2767,
         0,
         0,
         0,
@@ -10212,6 +10212,10 @@
         [
           "JOSHUA DISPATCH",
           240
+        ],
+        [
+          "ADI HUMAEDI",
+          132
         ]
       ],
       "low_picker": [
@@ -10416,8 +10420,8 @@
       ],
       "active_pickers": 15,
       "active_packers": 39,
-      "active_dispatchers": 3,
-      "total_workforce": 57,
+      "active_dispatchers": 4,
+      "total_workforce": 58,
       "avg_pick_per_picker": 185.1,
       "avg_pack_per_packer": 53.6
     }
