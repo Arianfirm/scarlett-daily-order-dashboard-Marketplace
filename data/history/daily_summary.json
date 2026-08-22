@@ -10365,12 +10365,12 @@
   },
   {
     "date": "2026-08-22",
-    "total_orders": 23711,
-    "total_qty": 36484,
-    "fulfilled": 19731,
-    "pending": 1298,
-    "fulfillment_pct": 83.2,
-    "total_atp": 54664639,
+    "total_orders": 24481,
+    "total_qty": 37625,
+    "fulfilled": 19585,
+    "pending": 2028,
+    "fulfillment_pct": 80.0,
+    "total_atp": 54662545,
     "peak_hour": 12,
     "peak_hour_orders": 2006,
     "peak_hour_qty": 2981,
@@ -10397,8 +10397,8 @@
       1400,
       1582,
       1441,
-      435,
-      0
+      1190,
+      15
     ],
     "hourly_qty": [
       1230,
@@ -10423,22 +10423,22 @@
       2209,
       2432,
       2261,
-      670,
-      0
+      1792,
+      19
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-22 22:19:54 WIB",
+    "last_updated": "2026-08-22 23:00:35 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 23729,
-      "total_orders_b2c": 23711,
-      "picked_orders": 20850,
-      "packed_orders": 16158,
-      "dispatched_orders": 14896,
-      "pending_orders": 8815,
+      "total_orders": 24505,
+      "total_orders_b2c": 24481,
+      "picked_orders": 20849,
+      "packed_orders": 17161,
+      "dispatched_orders": 15735,
+      "pending_orders": 8746,
       "avg_pick_min": 79.7,
-      "avg_pack_min": 132.3,
-      "avg_dispatch_min": -430.9,
+      "avg_pack_min": 129.6,
+      "avg_dispatch_min": -458.5,
       "pick_hours": [
         0,
         103,
@@ -10462,7 +10462,7 @@
         0,
         2242,
         3938,
-        272,
+        271,
         0
       ],
       "pack_hours": [
@@ -10488,8 +10488,8 @@
         603,
         264,
         1011,
-        611,
-        0
+        1567,
+        47
       ],
       "dispatch_hours": [
         0,
@@ -10499,7 +10499,7 @@
         0,
         0,
         0,
-        21187,
+        22455,
         0,
         0,
         0,
@@ -10603,12 +10603,12 @@
       ],
       "top_dispatcher": [
         [
-          "adriansyah maulana",
-          5971
+          "hardian hamzah",
+          6719
         ],
         [
-          "hardian hamzah",
-          5451
+          "adriansyah maulana",
+          5971
         ],
         [
           "Abdul Rosyid",
@@ -10651,20 +10651,20 @@
           2
         ],
         [
-          "AMAULANA PACKEREMPATENAMDUA",
-          3
-        ],
-        [
-          "AHMAD PACKEREMPATENAMSATU",
-          5
-        ],
-        [
-          "NABILA PACKEREMPATENAMENAM",
-          5
+          "ZAENI PACKERDUASEMBILANDELAPAN",
+          7
         ],
         [
           "NAZUA PACKEREMPATENAMLIMA",
-          5
+          12
+        ],
+        [
+          "HERMAWAN PACKERDUAEMPAT",
+          13
+        ],
+        [
+          "NABILA PACKEREMPATENAMENAM",
+          14
         ]
       ],
       "pick_hour_pickers": [
@@ -10716,8 +10716,8 @@
         41,
         28,
         59,
-        67,
-        0
+        69,
+        29
       ],
       "pick_hour_orders": [
         0,
@@ -10742,7 +10742,7 @@
         0,
         2242,
         3938,
-        272,
+        271,
         0
       ],
       "pack_hour_orders": [
@@ -10768,8 +10768,8 @@
         603,
         264,
         1011,
-        611,
-        0
+        1567,
+        47
       ],
       "pick_hour_qty": [
         0,
@@ -10794,7 +10794,7 @@
         0,
         3257,
         5770,
-        400,
+        399,
         0
       ],
       "pack_hour_qty": [
@@ -10820,15 +10820,15 @@
         828,
         444,
         1752,
-        957,
-        0
+        2504,
+        72
       ],
       "active_pickers": 28,
-      "active_packers": 140,
+      "active_packers": 141,
       "active_dispatchers": 9,
-      "total_workforce": 176,
+      "total_workforce": 177,
       "avg_pick_per_picker": 744.6,
-      "avg_pack_per_packer": 115.4
+      "avg_pack_per_packer": 121.7
     }
   }
 ]
