@@ -10367,10 +10367,10 @@
     "date": "2026-08-23",
     "total_orders": 25364,
     "total_qty": 39025,
-    "fulfilled": 21074,
+    "fulfilled": 21553,
     "pending": 757,
-    "fulfillment_pct": 83.1,
-    "total_atp": 54656342,
+    "fulfillment_pct": 85.0,
+    "total_atp": 54655664,
     "peak_hour": 12,
     "peak_hour_orders": 2006,
     "peak_hour_qty": 2981,
@@ -10427,18 +10427,18 @@
       1419
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-23 02:00:36 WIB",
+    "last_updated": "2026-08-23 02:21:49 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 21565,
+      "total_orders": 21130,
       "total_orders_b2c": 25364,
-      "picked_orders": 18995,
-      "packed_orders": 17721,
-      "dispatched_orders": 16647,
-      "pending_orders": 8717,
-      "avg_pick_min": 77.3,
+      "picked_orders": 18704,
+      "packed_orders": 17711,
+      "dispatched_orders": 16927,
+      "pending_orders": 8437,
+      "avg_pick_min": 77.1,
       "avg_pack_min": 129.9,
-      "avg_dispatch_min": -483.2,
+      "avg_dispatch_min": -468.5,
       "pick_hours": [
         0,
         103,
@@ -10460,9 +10460,9 @@
         3,
         0,
         0,
-        1731,
-        2633,
-        206,
+        1669,
+        2401,
+        203,
         0
       ],
       "pack_hours": [
@@ -10488,8 +10488,8 @@
         603,
         264,
         998,
-        1475,
-        714
+        1474,
+        705
       ],
       "dispatch_hours": [
         0,
@@ -10499,7 +10499,7 @@
         0,
         0,
         0,
-        23685,
+        24063,
         0,
         0,
         0,
@@ -10604,7 +10604,7 @@
       "top_dispatcher": [
         [
           "hardian hamzah",
-          7949
+          8327
         ],
         [
           "adriansyah maulana",
@@ -10626,23 +10626,23 @@
       "low_picker": [
         [
           "SABRI PACKERDUADELAPANTUJUH",
-          318
+          276
         ],
         [
           "DIAN PACKERSERATUSLIMASATU",
-          345
+          315
+        ],
+        [
+          "RIO PACKERSERATUSDELAPANTUJUH",
+          371
         ],
         [
           "ABDUL PACKERTIGATIGASATU",
           382
         ],
         [
-          "RIO PACKERSERATUSDELAPANTUJUH",
-          391
-        ],
-        [
           "BOUGHORY PACKERTIGATIGADUA",
-          407
+          392
         ]
       ],
       "low_packer": [
@@ -10740,9 +10740,9 @@
         3,
         0,
         0,
-        1731,
-        2633,
-        206,
+        1669,
+        2401,
+        203,
         0
       ],
       "pack_hour_orders": [
@@ -10768,8 +10768,8 @@
         603,
         264,
         998,
-        1475,
-        714
+        1474,
+        705
       ],
       "pick_hour_qty": [
         0,
@@ -10792,9 +10792,9 @@
         3,
         0,
         0,
-        2553,
-        3964,
-        303,
+        2474,
+        3653,
+        298,
         0
       ],
       "pack_hour_qty": [
@@ -10820,15 +10820,15 @@
         828,
         444,
         1730,
-        2350,
-        1057
+        2349,
+        1046
       ],
       "active_pickers": 28,
       "active_packers": 141,
       "active_dispatchers": 9,
       "total_workforce": 177,
-      "avg_pick_per_picker": 678.4,
-      "avg_pack_per_packer": 125.7
+      "avg_pick_per_picker": 668.0,
+      "avg_pack_per_packer": 125.6
     }
   }
 ]
