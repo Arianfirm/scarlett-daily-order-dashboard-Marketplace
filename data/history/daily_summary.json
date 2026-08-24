@@ -10365,12 +10365,12 @@
   },
   {
     "date": "2026-08-24",
-    "total_orders": 31775,
-    "total_qty": 50204,
-    "fulfilled": 22601,
-    "pending": 4291,
-    "fulfillment_pct": 71.1,
-    "total_atp": 54557479,
+    "total_orders": 32580,
+    "total_qty": 51466,
+    "fulfilled": 22224,
+    "pending": 5054,
+    "fulfillment_pct": 68.2,
+    "total_atp": 54556625,
     "peak_hour": 0,
     "peak_hour_orders": 2930,
     "peak_hour_qty": 3543,
@@ -10396,8 +10396,8 @@
       1727,
       1562,
       2255,
-      1454,
-      0,
+      2247,
+      12,
       0
     ],
     "hourly_qty": [
@@ -10422,23 +10422,23 @@
       2635,
       2917,
       3288,
-      2499,
-      0,
+      3738,
+      23,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-24 21:40:58 WIB",
+    "last_updated": "2026-08-24 22:00:41 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 31901,
-      "total_orders_b2c": 31775,
-      "picked_orders": 25479,
-      "packed_orders": 22303,
-      "dispatched_orders": 19549,
-      "pending_orders": 12226,
+      "total_orders": 32651,
+      "total_orders_b2c": 32580,
+      "picked_orders": 25478,
+      "packed_orders": 23219,
+      "dispatched_orders": 19800,
+      "pending_orders": 12780,
       "avg_pick_min": 99.1,
-      "avg_pack_min": 103.2,
-      "avg_dispatch_min": -308.3,
+      "avg_pack_min": 104.0,
+      "avg_dispatch_min": -314.8,
       "pick_hours": [
         0,
         1788,
@@ -10459,7 +10459,7 @@
         767,
         100,
         586,
-        2555,
+        2554,
         2022,
         566,
         0,
@@ -10487,8 +10487,8 @@
         650,
         941,
         1490,
-        1600,
-        0,
+        2422,
+        94,
         0
       ],
       "dispatch_hours": [
@@ -10499,7 +10499,7 @@
         0,
         0,
         0,
-        27832,
+        28178,
         0,
         0,
         0,
@@ -10548,7 +10548,7 @@
         ],
         [
           "IRSAN PACKERDUAEMPATLIMA",
-          1708
+          1704
         ],
         [
           "FERY PACKERDUASATUSEMBILAN",
@@ -10608,7 +10608,7 @@
         ],
         [
           "adriansyah maulana",
-          5538
+          5632
         ],
         [
           "ahmad Hamdani",
@@ -10655,16 +10655,16 @@
           2
         ],
         [
-          "Amsori Bahtiar",
-          2
-        ],
-        [
           "dzikri ahmad",
           3
         ],
         [
           "Fatkhur Rohman",
           8
+        ],
+        [
+          "Amsori Bahtiar",
+          13
         ]
       ],
       "pick_hour_pickers": [
@@ -10715,8 +10715,8 @@
         49,
         58,
         62,
-        64,
-        0,
+        65,
+        30,
         0
       ],
       "pick_hour_orders": [
@@ -10739,7 +10739,7 @@
         767,
         100,
         586,
-        2555,
+        2554,
         2022,
         566,
         0,
@@ -10767,8 +10767,8 @@
         650,
         941,
         1490,
-        1600,
-        0,
+        2422,
+        94,
         0
       ],
       "pick_hour_qty": [
@@ -10791,7 +10791,7 @@
         1138,
         138,
         796,
-        3590,
+        3586,
         3212,
         796,
         0,
@@ -10819,16 +10819,16 @@
         1143,
         1390,
         2228,
-        2540,
-        0,
+        3769,
+        128,
         0
       ],
       "active_pickers": 26,
       "active_packers": 139,
       "active_dispatchers": 13,
       "total_workforce": 177,
-      "avg_pick_per_picker": 980.0,
-      "avg_pack_per_packer": 160.5
+      "avg_pick_per_picker": 979.9,
+      "avg_pack_per_packer": 167.0
     }
   }
 ]
