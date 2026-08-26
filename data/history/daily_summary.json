@@ -10766,12 +10766,12 @@
   },
   {
     "date": "2026-08-26",
-    "total_orders": 5016,
-    "total_qty": 6677,
-    "fulfilled": 2619,
-    "pending": 1503,
-    "fulfillment_pct": 52.2,
-    "total_atp": 54490897,
+    "total_orders": 6136,
+    "total_qty": 8396,
+    "fulfilled": 3238,
+    "pending": 2580,
+    "fulfillment_pct": 52.8,
+    "total_atp": 54488304,
     "peak_hour": 0,
     "peak_hour_orders": 2160,
     "peak_hour_qty": 2586,
@@ -10783,8 +10783,8 @@
       209,
       713,
       688,
-      6,
-      0,
+      1118,
+      8,
       0,
       0,
       0,
@@ -10809,8 +10809,8 @@
       292,
       978,
       1049,
-      15,
-      0,
+      1724,
+      10,
       0,
       0,
       0,
@@ -10828,18 +10828,18 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-26 07:00:38 WIB",
+    "last_updated": "2026-08-26 08:00:31 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 5021,
-      "total_orders_b2c": 5016,
+      "total_orders": 6168,
+      "total_orders_b2c": 6136,
       "picked_orders": 3279,
-      "packed_orders": 1561,
-      "dispatched_orders": 885,
-      "pending_orders": 4131,
+      "packed_orders": 2053,
+      "dispatched_orders": 2002,
+      "pending_orders": 4134,
       "avg_pick_min": 107.6,
-      "avg_pack_min": 165.2,
-      "avg_dispatch_min": 122.2,
+      "avg_pack_min": 174.2,
+      "avg_dispatch_min": 65.0,
       "pick_hours": [
         0,
         194,
@@ -10874,7 +10874,7 @@
         37,
         594,
         640,
-        8,
+        500,
         0,
         0,
         0,
@@ -10900,7 +10900,7 @@
         0,
         0,
         0,
-        1048,
+        2336,
         0,
         0,
         0,
@@ -10962,16 +10962,32 @@
       ],
       "top_packer": [
         [
+          "ARIF PACKERTIGAENAM",
+          133
+        ],
+        [
+          "RENI PACKERTIGASATUDUA",
+          122
+        ],
+        [
           "SYIFA PACKERTIGANOLSATU",
           108
         ],
         [
-          "RENI PACKERTIGASATUDUA",
+          "IHSAN PACKEREMPATTUJUHDUA",
+          106
+        ],
+        [
+          "NELY PACKEREMPATNOLDUA",
           104
         ],
         [
+          "FAJRIN PACKEREMPATNOLTUJUH",
+          100
+        ],
+        [
           "NURFADILAH PACKERTIGATIGATUJUH",
-          95
+          96
         ],
         [
           "SUBAKTY PACKEREMPATSATUEMPAT",
@@ -10982,46 +10998,30 @@
           93
         ],
         [
-          "NELY PACKEREMPATNOLDUA",
-          90
-        ],
-        [
-          "ARIF PACKERTIGAENAM",
-          87
-        ],
-        [
-          "IHSAN PACKEREMPATTUJUHDUA",
+          "MUADJIDIN PACKEREMPATTUJUHENAM",
           85
-        ],
-        [
-          "FAJRIN PACKEREMPATNOLTUJUH",
-          77
-        ],
-        [
-          "MUTIARA PACKERTIGADELAPANDELAPAN",
-          71
         ]
       ],
       "top_dispatcher": [
         [
-          "JOSHUA DISPATCH",
-          371
+          "Sapta Siswana",
+          1008
         ],
         [
-          "Sapta Siswana",
-          303
+          "JOSHUA DISPATCH",
+          582
         ],
         [
           "BUDIMAN DISPATCH",
-          288
-        ],
-        [
-          "ahmad Hamdani",
-          45
+          392
         ],
         [
           "Komarudin dispatch",
-          41
+          179
+        ],
+        [
+          "ahmad Hamdani",
+          175
         ]
       ],
       "low_picker": [
@@ -11048,24 +11048,24 @@
       ],
       "low_packer": [
         [
-          "RIZKA PACKERTIGATIGA",
-          2
+          "NURHALIZAH PACKERENAMBELAS",
+          5
         ],
         [
-          "NEISYA PACKERTIGA",
-          4
+          "FABIAN PACKERDUADELAPANDUA",
+          5
         ],
         [
-          "SYAKILA PACKEREMPATTUJUHNOL",
-          4
-        ],
-        [
-          "FITRI PACKERSERATUSENAMBELAS",
+          "INDAH PACKEREMPATNOLTIGA",
           6
         ],
         [
-          "LANI PACKERSERATUSEMPATDUA",
+          "RIZKA PACKERTIGATIGA",
           7
+        ],
+        [
+          "LISNA PACKEREMPATTIGAENAM",
+          15
         ]
       ],
       "pick_hour_pickers": [
@@ -11102,7 +11102,7 @@
         3,
         26,
         33,
-        6,
+        36,
         0,
         0,
         0,
@@ -11154,7 +11154,7 @@
         37,
         594,
         640,
-        8,
+        500,
         0,
         0,
         0,
@@ -11206,7 +11206,7 @@
         39,
         753,
         799,
-        13,
+        604,
         0,
         0,
         0,
@@ -11225,11 +11225,11 @@
         0
       ],
       "active_pickers": 13,
-      "active_packers": 37,
+      "active_packers": 42,
       "active_dispatchers": 5,
-      "total_workforce": 55,
+      "total_workforce": 60,
       "avg_pick_per_picker": 252.2,
-      "avg_pack_per_packer": 42.2
+      "avg_pack_per_packer": 48.9
     }
   }
 ]
