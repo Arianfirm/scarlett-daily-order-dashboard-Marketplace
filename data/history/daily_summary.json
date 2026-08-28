@@ -10766,12 +10766,12 @@
   },
   {
     "date": "2026-08-28",
-    "total_orders": 7466,
-    "total_qty": 9708,
-    "fulfilled": 5116,
-    "pending": 1553,
-    "fulfillment_pct": 68.5,
-    "total_atp": 54717495,
+    "total_orders": 8034,
+    "total_qty": 10562,
+    "fulfilled": 5330,
+    "pending": 2104,
+    "fulfillment_pct": 66.3,
+    "total_atp": 54716697,
     "peak_hour": 0,
     "peak_hour_orders": 2598,
     "peak_hour_qty": 2946,
@@ -10784,7 +10784,7 @@
       679,
       1100,
       1222,
-      11,
+      579,
       0,
       0,
       0,
@@ -10810,7 +10810,7 @@
       998,
       1482,
       1788,
-      14,
+      868,
       0,
       0,
       0,
@@ -10828,15 +10828,15 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-08-28 08:00:34 WIB",
+    "last_updated": "2026-08-28 08:16:46 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 7483,
-      "total_orders_b2c": 7466,
+      "total_orders": 8047,
+      "total_orders_b2c": 8034,
       "picked_orders": 5472,
-      "packed_orders": 4602,
+      "packed_orders": 4603,
       "dispatched_orders": 4347,
-      "pending_orders": 3119,
+      "pending_orders": 3687,
       "avg_pick_min": 99.8,
       "avg_pack_min": 106.9,
       "avg_dispatch_min": 80.6,
@@ -10875,7 +10875,7 @@
         834,
         1624,
         906,
-        0,
+        1,
         0,
         0,
         0,
@@ -11040,6 +11040,10 @@
       ],
       "low_packer": [
         [
+          "PINGKAN PACKEREMPATEMPATSATU",
+          2
+        ],
+        [
           "RAMDAN PACKERTIGANOLENAM",
           2
         ],
@@ -11054,10 +11058,6 @@
         [
           "RAISYA PACKERTIGAENAMEMPAT",
           21
-        ],
-        [
-          "AINFEBRIYANI PACKEREMPATENAMNOL",
-          28
         ]
       ],
       "pick_hour_pickers": [
@@ -11095,7 +11095,7 @@
         39,
         55,
         47,
-        0,
+        1,
         0,
         0,
         0,
@@ -11147,7 +11147,7 @@
         834,
         1624,
         906,
-        0,
+        1,
         0,
         0,
         0,
@@ -11199,7 +11199,7 @@
         1054,
         2058,
         1192,
-        0,
+        2,
         0,
         0,
         0,
@@ -11217,11 +11217,11 @@
         0
       ],
       "active_pickers": 14,
-      "active_packers": 57,
+      "active_packers": 58,
       "active_dispatchers": 3,
-      "total_workforce": 74,
+      "total_workforce": 75,
       "avg_pick_per_picker": 390.9,
-      "avg_pack_per_packer": 80.7
+      "avg_pack_per_packer": 79.4
     }
   }
 ]
