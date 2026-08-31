@@ -10768,10 +10768,10 @@
     "date": "2026-09-01",
     "total_orders": 40631,
     "total_qty": 58652,
-    "fulfilled": 29696,
-    "pending": 5814,
-    "fulfillment_pct": 73.1,
-    "total_atp": 54381302,
+    "fulfilled": 30925,
+    "pending": 5010,
+    "fulfillment_pct": 76.1,
+    "total_atp": 54379022,
     "peak_hour": 0,
     "peak_hour_orders": 3356,
     "peak_hour_qty": 3897,
@@ -10828,17 +10828,17 @@
       2027
     ],
     "day_type": "biasa",
-    "last_updated": "2026-09-01 02:00:42 WIB",
+    "last_updated": "2026-09-01 03:00:36 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 31889,
+      "total_orders": 29000,
       "total_orders_b2c": 40631,
-      "picked_orders": 23097,
-      "packed_orders": 20345,
+      "picked_orders": 21623,
+      "packed_orders": 19978,
       "dispatched_orders": 19162,
       "pending_orders": 21469,
-      "avg_pick_min": 182.8,
-      "avg_pack_min": 242.5,
+      "avg_pick_min": 171.7,
+      "avg_pack_min": 245.1,
       "avg_dispatch_min": -455.4,
       "pick_hours": [
         0,
@@ -10862,9 +10862,9 @@
         0,
         2,
         1,
-        1055,
-        3339,
-        388
+        797,
+        2171,
+        321
       ],
       "pack_hours": [
         0,
@@ -10889,8 +10889,8 @@
         951,
         715,
         499,
-        1210,
-        577
+        1123,
+        297
       ],
       "dispatch_hours": [
         0,
@@ -11027,23 +11027,23 @@
       "low_picker": [
         [
           "HUDRI PICKERTUJUHBELAS",
-          200
+          118
+        ],
+        [
+          "DAFID PACKERTIGADELAPANDUA",
+          188
         ],
         [
           "IBNU PACKERSERATUSDUAENAM",
           216
         ],
         [
-          "SIGIT PACKERTIGASATUDELAPAN",
-          262
-        ],
-        [
-          "DAFID PACKERTIGADELAPANDUA",
-          286
-        ],
-        [
           "PRAMADI PICKERDUABELAS",
-          322
+          229
+        ],
+        [
+          "FERY PACKERDUASATUSEMBILAN",
+          244
         ]
       ],
       "low_packer": [
@@ -11057,7 +11057,7 @@
         ],
         [
           "SANDI PACKERTIGATUJUHDELAPAN",
-          4
+          3
         ],
         [
           "FERY PACKERDELAPANTIGA",
@@ -11092,7 +11092,7 @@
         1,
         14,
         14,
-        9
+        7
       ],
       "pack_hour_packers": [
         0,
@@ -11118,7 +11118,7 @@
         35,
         31,
         58,
-        48
+        38
       ],
       "pick_hour_orders": [
         0,
@@ -11142,9 +11142,9 @@
         0,
         2,
         1,
-        1055,
-        3339,
-        388
+        797,
+        2171,
+        321
       ],
       "pack_hour_orders": [
         0,
@@ -11169,8 +11169,8 @@
         951,
         715,
         499,
-        1210,
-        577
+        1123,
+        297
       ],
       "pick_hour_qty": [
         0,
@@ -11194,9 +11194,9 @@
         0,
         5,
         1,
-        1480,
-        4084,
-        582
+        1165,
+        2596,
+        507
       ],
       "pack_hour_qty": [
         0,
@@ -11221,15 +11221,15 @@
         1447,
         975,
         687,
-        1568,
-        642
+        1472,
+        352
       ],
       "active_pickers": 38,
       "active_packers": 164,
       "active_dispatchers": 11,
       "total_workforce": 213,
-      "avg_pick_per_picker": 607.8,
-      "avg_pack_per_packer": 124.1
+      "avg_pick_per_picker": 569.0,
+      "avg_pack_per_packer": 121.8
     }
   }
 ]
