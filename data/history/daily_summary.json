@@ -10768,10 +10768,10 @@
     "date": "2026-09-03",
     "total_orders": 55560,
     "total_qty": 82110,
-    "fulfilled": 36098,
-    "pending": 11888,
-    "fulfillment_pct": 65.0,
-    "total_atp": 50666279,
+    "fulfilled": 37161,
+    "pending": 10723,
+    "fulfillment_pct": 66.9,
+    "total_atp": 50664489,
     "peak_hour": 18,
     "peak_hour_orders": 3810,
     "peak_hour_qty": 5426,
@@ -10828,16 +10828,16 @@
       2127
     ],
     "day_type": "biasa",
-    "last_updated": "2026-09-03 03:00:41 WIB",
+    "last_updated": "2026-09-03 03:34:26 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 41465,
+      "total_orders": 39834,
       "total_orders_b2c": 55560,
-      "picked_orders": 25482,
-      "packed_orders": 23691,
+      "picked_orders": 24870,
+      "packed_orders": 23657,
       "dispatched_orders": 22515,
       "pending_orders": 33045,
-      "avg_pick_min": 349.7,
+      "avg_pick_min": 346.3,
       "avg_pack_min": 94.1,
       "avg_dispatch_min": -451.7,
       "pick_hours": [
@@ -10862,9 +10862,9 @@
         1085,
         2044,
         52,
-        1112,
-        862,
-        397
+        994,
+        490,
+        260
       ],
       "pack_hours": [
         0,
@@ -10890,7 +10890,7 @@
         1280,
         1036,
         408,
-        423
+        389
       ],
       "dispatch_hours": [
         0,
@@ -11034,21 +11034,25 @@
           20
         ],
         [
+          "DIAN PACKERSERATUSLIMASATU",
+          23
+        ],
+        [
           "NASRUN PICKERDELAPAN",
           25
         ],
         [
-          "SUBAKTY PACKEREMPATSATUEMPAT",
-          31
-        ],
-        [
-          "DIAN PACKERSERATUSLIMASATU",
-          56
+          "SABRI PACKERDUADELAPANTUJUH",
+          27
         ]
       ],
       "low_packer": [
         [
           "UUS PACKERDUADELAPANLIMA",
+          1
+        ],
+        [
+          "ANGELIANA PACKERDUASATUTIGA",
           1
         ],
         [
@@ -11062,10 +11066,6 @@
         [
           "asep yusuf",
           3
-        ],
-        [
-          "FIKA PACKEREMPATTUJUHTIGA",
-          4
         ]
       ],
       "pick_hour_pickers": [
@@ -11090,9 +11090,9 @@
         12,
         14,
         5,
+        16,
         17,
-        17,
-        14
+        10
       ],
       "pack_hour_packers": [
         0,
@@ -11118,7 +11118,7 @@
         67,
         63,
         44,
-        58
+        55
       ],
       "pick_hour_orders": [
         0,
@@ -11142,9 +11142,9 @@
         1085,
         2044,
         52,
-        1112,
-        862,
-        397
+        994,
+        490,
+        260
       ],
       "pack_hour_orders": [
         0,
@@ -11170,7 +11170,7 @@
         1280,
         1036,
         408,
-        423
+        389
       ],
       "pick_hour_qty": [
         0,
@@ -11194,9 +11194,9 @@
         1080,
         4555,
         150,
-        1157,
-        1318,
-        591
+        1037,
+        781,
+        373
       ],
       "pack_hour_qty": [
         0,
@@ -11222,14 +11222,14 @@
         2450,
         2094,
         1193,
-        685
+        632
       ],
       "active_pickers": 38,
       "active_packers": 170,
       "active_dispatchers": 12,
       "total_workforce": 219,
-      "avg_pick_per_picker": 670.6,
-      "avg_pack_per_packer": 139.4
+      "avg_pick_per_picker": 654.5,
+      "avg_pack_per_packer": 139.2
     }
   }
 ]
