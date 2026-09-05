@@ -10365,12 +10365,12 @@
   },
   {
     "date": "2026-09-05",
-    "total_orders": 31771,
-    "total_qty": 45251,
-    "fulfilled": 19391,
-    "pending": 8110,
-    "fulfillment_pct": 61.0,
-    "total_atp": 50925017,
+    "total_orders": 33556,
+    "total_qty": 47937,
+    "fulfilled": 20240,
+    "pending": 9741,
+    "fulfillment_pct": 60.3,
+    "total_atp": 50921589,
     "peak_hour": 15,
     "peak_hour_orders": 2944,
     "peak_hour_qty": 4049,
@@ -10396,8 +10396,8 @@
       1841,
       1841,
       1960,
-      20,
-      0,
+      1793,
+      12,
       0
     ],
     "hourly_qty": [
@@ -10422,23 +10422,23 @@
       2601,
       2776,
       2930,
-      37,
-      0,
+      2706,
+      17,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-09-05 21:00:33 WIB",
+    "last_updated": "2026-09-05 22:00:35 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 31844,
-      "total_orders_b2c": 31771,
-      "picked_orders": 21722,
-      "packed_orders": 19623,
-      "dispatched_orders": 17454,
-      "pending_orders": 14317,
+      "total_orders": 33628,
+      "total_orders_b2c": 33556,
+      "picked_orders": 21720,
+      "packed_orders": 20600,
+      "dispatched_orders": 18911,
+      "pending_orders": 14645,
       "avg_pick_min": 98.3,
-      "avg_pack_min": 146.9,
-      "avg_dispatch_min": -328.5,
+      "avg_pack_min": 149.5,
+      "avg_dispatch_min": -364.6,
       "pick_hours": [
         0,
         835,
@@ -10460,7 +10460,7 @@
         305,
         1,
         0,
-        1879,
+        1877,
         3,
         0,
         0
@@ -10487,8 +10487,8 @@
         766,
         760,
         1675,
-        44,
-        0,
+        993,
+        28,
         0
       ],
       "dispatch_hours": [
@@ -10499,7 +10499,7 @@
         0,
         0,
         0,
-        22703,
+        24504,
         0,
         0,
         0,
@@ -10573,6 +10573,10 @@
           445
         ],
         [
+          "VINA PACKERSERATUSSEMBILANBELAS",
+          415
+        ],
+        [
           "RIYANTI PACKERSEMBILANDELAPAN",
           411
         ],
@@ -10595,10 +10599,6 @@
         [
           "AZIZ PACKEREMPATTUJUHLIMA",
           361
-        ],
-        [
-          "REKA PACKERTIGADELAPANSATU",
-          355
         ]
       ],
       "top_dispatcher": [
@@ -10612,15 +10612,15 @@
         ],
         [
           "Komarudin dispatch",
-          3931
+          3932
+        ],
+        [
+          "Abdul Rosyid",
+          2385
         ],
         [
           "adriansyah maulana",
-          2073
-        ],
-        [
-          "BUDIMAN DISPATCH",
-          1925
+          2078
         ]
       ],
       "low_picker": [
@@ -10663,8 +10663,8 @@
           18
         ],
         [
-          "WIDYA PACKERDUALIMADUA",
-          18
+          "SHANDIKA PACKERLIMABELAS",
+          22
         ]
       ],
       "pick_hour_pickers": [
@@ -10715,8 +10715,8 @@
         53,
         54,
         50,
-        14,
-        0,
+        38,
+        10,
         0
       ],
       "pick_hour_orders": [
@@ -10740,7 +10740,7 @@
         305,
         1,
         0,
-        1879,
+        1877,
         3,
         0,
         0
@@ -10767,8 +10767,8 @@
         766,
         760,
         1675,
-        44,
-        0,
+        993,
+        28,
         0
       ],
       "pick_hour_qty": [
@@ -10792,7 +10792,7 @@
         660,
         1,
         0,
-        2603,
+        2601,
         1,
         0,
         0
@@ -10819,16 +10819,16 @@
         1043,
         1053,
         2319,
-        57,
-        0,
+        1408,
+        42,
         0
       ],
       "active_pickers": 32,
-      "active_packers": 139,
+      "active_packers": 141,
       "active_dispatchers": 11,
-      "total_workforce": 181,
+      "total_workforce": 183,
       "avg_pick_per_picker": 678.8,
-      "avg_pack_per_packer": 141.2
+      "avg_pack_per_packer": 146.1
     }
   }
 ]
