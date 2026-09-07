@@ -11169,10 +11169,10 @@
     "date": "2026-09-08",
     "total_orders": 31297,
     "total_qty": 47273,
-    "fulfilled": 27049,
+    "fulfilled": 26635,
     "pending": 165,
-    "fulfillment_pct": 86.4,
-    "total_atp": 50803023,
+    "fulfillment_pct": 85.1,
+    "total_atp": 50801720,
     "peak_hour": 19,
     "peak_hour_orders": 3129,
     "peak_hour_qty": 4103,
@@ -11229,18 +11229,18 @@
       1270
     ],
     "day_type": "biasa",
-    "last_updated": "2026-09-08 05:00:32 WIB",
+    "last_updated": "2026-09-08 05:32:12 WIB",
     "sku_count": 2144,
     "warehouse": {
-      "total_orders": 21712,
+      "total_orders": 21298,
       "total_orders_b2c": 31297,
-      "picked_orders": 19498,
-      "packed_orders": 18129,
-      "dispatched_orders": 17212,
-      "pending_orders": 14085,
-      "avg_pick_min": 111.2,
-      "avg_pack_min": 209.6,
-      "avg_dispatch_min": -515.6,
+      "picked_orders": 19084,
+      "packed_orders": 17998,
+      "dispatched_orders": 17081,
+      "pending_orders": 14216,
+      "avg_pick_min": 109.4,
+      "avg_pack_min": 210.6,
+      "avg_dispatch_min": -521.2,
       "pick_hours": [
         0,
         1144,
@@ -11264,8 +11264,8 @@
         326,
         0,
         0,
-        524,
-        1258
+        408,
+        960
       ],
       "pack_hours": [
         0,
@@ -11291,7 +11291,7 @@
         1750,
         2240,
         956,
-        299
+        168
       ],
       "dispatch_hours": [
         0,
@@ -11301,7 +11301,7 @@
         0,
         0,
         0,
-        23055,
+        22921,
         0,
         0,
         0,
@@ -11414,11 +11414,11 @@
         ],
         [
           "Komarudin dispatch",
-          3301
+          3253
         ],
         [
           "Sapta Siswana",
-          3191
+          3141
         ],
         [
           "AHMAD ADIL",
@@ -11428,23 +11428,23 @@
       "low_picker": [
         [
           "FERI PACKERSERATUSTIGATIGA",
-          68
+          47
+        ],
+        [
+          "FERY PACKERDUASATUSEMBILAN",
+          92
         ],
         [
           "BUDI PACKERSERATUSDELAPANTIGA",
           103
         ],
         [
-          "FERY PACKERDUASATUSEMBILAN",
-          125
-        ],
-        [
           "RICHO PACKERSEMBILANSATU",
-          192
+          170
         ],
         [
-          "NASRUN PICKERDELAPAN",
-          229
+          "SIGIT PACKERTIGASATUDELAPAN",
+          209
         ]
       ],
       "low_packer": [
@@ -11493,7 +11493,7 @@
         0,
         0,
         12,
-        13
+        12
       ],
       "pack_hour_packers": [
         0,
@@ -11519,7 +11519,7 @@
         71,
         67,
         48,
-        37
+        35
       ],
       "pick_hour_orders": [
         0,
@@ -11544,8 +11544,8 @@
         326,
         0,
         0,
-        524,
-        1258
+        408,
+        960
       ],
       "pack_hour_orders": [
         0,
@@ -11571,7 +11571,7 @@
         1750,
         2240,
         956,
-        299
+        168
       ],
       "pick_hour_qty": [
         0,
@@ -11596,8 +11596,8 @@
         501,
         0,
         0,
-        530,
-        2624
+        414,
+        2131
       ],
       "pack_hour_qty": [
         0,
@@ -11623,14 +11623,14 @@
         2820,
         3200,
         1322,
-        375
+        226
       ],
       "active_pickers": 27,
       "active_packers": 138,
       "active_dispatchers": 10,
       "total_workforce": 174,
-      "avg_pick_per_picker": 722.1,
-      "avg_pack_per_packer": 131.4
+      "avg_pick_per_picker": 706.8,
+      "avg_pack_per_packer": 130.4
     }
   }
 ]
