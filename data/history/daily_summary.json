@@ -12771,12 +12771,12 @@
   },
   {
     "date": "2026-09-30",
-    "total_orders": 37651,
-    "total_qty": 54934,
-    "fulfilled": 26536,
-    "pending": 5970,
-    "fulfillment_pct": 70.5,
-    "total_atp": 50971157,
+    "total_orders": 40106,
+    "total_qty": 58437,
+    "fulfilled": 27259,
+    "pending": 5581,
+    "fulfillment_pct": 68.0,
+    "total_atp": 50963730,
     "peak_hour": 12,
     "peak_hour_orders": 3415,
     "peak_hour_qty": 4838,
@@ -12802,8 +12802,8 @@
       2214,
       2345,
       2312,
-      11,
-      0,
+      2453,
+      13,
       0
     ],
     "hourly_qty": [
@@ -12828,23 +12828,23 @@
       3256,
       3400,
       3181,
-      11,
-      0,
+      3495,
+      19,
       0
     ],
     "day_type": "gajian",
-    "last_updated": "2026-09-30 21:00:44 WIB",
+    "last_updated": "2026-09-30 22:00:42 WIB",
     "sku_count": 2159,
     "warehouse": {
-      "total_orders": 37936,
-      "total_orders_b2c": 37651,
-      "picked_orders": 27814,
-      "packed_orders": 21910,
-      "dispatched_orders": 19690,
-      "pending_orders": 17961,
-      "avg_pick_min": 143.6,
-      "avg_pack_min": 128.5,
-      "avg_dispatch_min": -374.4,
+      "total_orders": 40268,
+      "total_orders_b2c": 40106,
+      "picked_orders": 31518,
+      "packed_orders": 25708,
+      "dispatched_orders": 21169,
+      "pending_orders": 18937,
+      "avg_pick_min": 161.5,
+      "avg_pack_min": 118.1,
+      "avg_dispatch_min": -400.5,
       "pick_hours": [
         0,
         228,
@@ -12866,9 +12866,9 @@
         24,
         0,
         0,
-        6015,
-        949,
-        0,
+        6001,
+        4573,
+        149,
         0
       ],
       "pack_hours": [
@@ -12893,8 +12893,8 @@
         804,
         998,
         1374,
-        271,
-        0,
+        3936,
+        133,
         0
       ],
       "dispatch_hours": [
@@ -12905,7 +12905,7 @@
         0,
         0,
         0,
-        26540,
+        28131,
         0,
         0,
         0,
@@ -13043,21 +13043,17 @@
           214
         ],
         [
-          "MAULANA PACKERDUAENAM",
-          214
-        ],
-        [
           "ALDITRI PACKERDELAPANBELAS",
           250
+        ],
+        [
+          "DAEROBI PACKERDUASATU",
+          304
         ]
       ],
       "low_packer": [
         [
           "REZA PACKERDUADELAPANENAM",
-          1
-        ],
-        [
-          "ANAHULWATUN PACKERTUJUHENAM",
           1
         ],
         [
@@ -13069,8 +13065,12 @@
           2
         ],
         [
-          "NURFADILAH PACKERTIGATIGATUJUH",
-          2
+          "ahmad wandi",
+          3
+        ],
+        [
+          "ASKAL PACKERTIGALIMAEMPAT",
+          4
         ]
       ],
       "pick_hour_pickers": [
@@ -13095,8 +13095,8 @@
         0,
         0,
         13,
-        11,
-        0,
+        13,
+        6,
         0
       ],
       "pack_hour_packers": [
@@ -13121,8 +13121,8 @@
         63,
         60,
         55,
-        43,
-        0,
+        61,
+        24,
         0
       ],
       "pick_hour_orders": [
@@ -13146,9 +13146,9 @@
         24,
         0,
         0,
-        6015,
-        949,
-        0,
+        6001,
+        4573,
+        149,
         0
       ],
       "pack_hour_orders": [
@@ -13173,8 +13173,8 @@
         804,
         998,
         1374,
-        271,
-        0,
+        3936,
+        133,
         0
       ],
       "pick_hour_qty": [
@@ -13198,9 +13198,9 @@
         246,
         0,
         0,
-        5984,
-        960,
-        0,
+        5970,
+        8127,
+        170,
         0
       ],
       "pack_hour_qty": [
@@ -13225,16 +13225,16 @@
         1232,
         1615,
         1681,
-        310,
-        0,
+        4255,
+        144,
         0
       ],
       "active_pickers": 36,
-      "active_packers": 168,
+      "active_packers": 172,
       "active_dispatchers": 18,
-      "total_workforce": 221,
-      "avg_pick_per_picker": 772.6,
-      "avg_pack_per_packer": 130.4
+      "total_workforce": 225,
+      "avg_pick_per_picker": 875.5,
+      "avg_pack_per_packer": 149.5
     }
   }
 ]
