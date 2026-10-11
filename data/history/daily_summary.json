@@ -12771,12 +12771,12 @@
   },
   {
     "date": "2026-10-11",
-    "total_orders": 7284,
-    "total_qty": 14645,
-    "fulfilled": 1076,
-    "pending": 5614,
-    "fulfillment_pct": 14.8,
-    "total_atp": 49342116,
+    "total_orders": 8802,
+    "total_qty": 17002,
+    "fulfilled": 1325,
+    "pending": 7062,
+    "fulfillment_pct": 15.1,
+    "total_atp": 49338816,
     "peak_hour": 0,
     "peak_hour_orders": 1666,
     "peak_hour_qty": 3279,
@@ -12788,8 +12788,8 @@
       858,
       904,
       1298,
-      4,
-      0,
+      1511,
+      11,
       0,
       0,
       0,
@@ -12814,8 +12814,8 @@
       1763,
       1875,
       2485,
-      10,
-      0,
+      2349,
+      18,
       0,
       0,
       0,
@@ -12833,27 +12833,27 @@
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-10-11 07:00:40 WIB",
+    "last_updated": "2026-10-11 08:00:33 WIB",
     "sku_count": 2164,
     "warehouse": {
-      "total_orders": 7383,
-      "total_orders_b2c": 7284,
-      "picked_orders": 1341,
-      "packed_orders": 674,
-      "dispatched_orders": 384,
-      "pending_orders": 6900,
-      "avg_pick_min": 222.2,
-      "avg_pack_min": 59.0,
-      "avg_dispatch_min": 162.6,
+      "total_orders": 8856,
+      "total_orders_b2c": 8802,
+      "picked_orders": 1355,
+      "packed_orders": 755,
+      "dispatched_orders": 721,
+      "pending_orders": 8081,
+      "avg_pick_min": 223.4,
+      "avg_pack_min": 69.3,
+      "avg_dispatch_min": 102.9,
       "pick_hours": [
         0,
         85,
-        243,
+        242,
         51,
         0,
         218,
-        794,
-        2,
+        793,
+        18,
         0,
         0,
         0,
@@ -12879,7 +12879,7 @@
         0,
         83,
         365,
-        11,
+        92,
         0,
         0,
         0,
@@ -12905,7 +12905,7 @@
         0,
         0,
         0,
-        844,
+        1449,
         0,
         0,
         0,
@@ -12929,12 +12929,12 @@
           273
         ],
         [
-          "HAPIDIN PACKERDUATIGASEMBILAN",
-          203
+          "IBNU PACKERSERATUSDUAENAM",
+          217
         ],
         [
-          "IBNU PACKERSERATUSDUAENAM",
-          201
+          "HAPIDIN PACKERDUATIGASEMBILAN",
+          203
         ],
         [
           "AGUSTIAN PACKERTIGATUJUH",
@@ -12946,7 +12946,7 @@
         ],
         [
           "ZAENAL PACKERDUASEMBILANPULUH",
-          178
+          176
         ],
         [
           "DANNY PACKERSERATUSTIGASATU",
@@ -12958,7 +12958,7 @@
         ],
         [
           "YAHYA PACKERTIGADUAEMPAT",
-          118
+          117
         ],
         [
           "SUNANDAR PACKERSERATUSTIGATUJUH",
@@ -12968,27 +12968,31 @@
       "top_packer": [
         [
           "WIWIK PACKERDUASATUDUA",
-          238
+          255
         ],
         [
           "SAMSUDIN PACKERDUARATUS",
-          133
+          141
         ],
         [
           "DIAN PACKERDUAEMPATTUJUH",
           85
         ],
         [
-          "ANGGARA PACKEREMPATEMPATTIGA",
-          62
+          "KHARISMA PACKERDUANOLSEMBILAN",
+          75
+        ],
+        [
+          "VIANTO PACKERDUALIMA",
+          73
         ],
         [
           "INTAN PACKERTIGADELAPANEMPAT",
-          62
+          66
         ],
         [
-          "KHARISMA PACKERDUANOLSEMBILAN",
-          59
+          "ANGGARA PACKEREMPATEMPATTIGA",
+          62
         ],
         [
           "NURUL PACKERSERATUSEMPATSATU",
@@ -13001,32 +13005,28 @@
         [
           "ASKAL PACKERTIGALIMAEMPAT",
           51
-        ],
-        [
-          "SYAHDA PACKERDUANOLDUA",
-          46
         ]
       ],
       "top_dispatcher": [
         [
           "MUHMMAD ADITYA",
-          221
+          393
         ],
         [
           "SAENURSEN DISPATCH",
-          153
+          268
         ],
         [
-          "GUGUN DISPATCH",
-          119
+          "Trio Prasetyo",
+          216
         ],
         [
-          "SUKMA ARIYANTO",
-          99
+          "Asep Suseno",
+          149
         ],
         [
           "Abdul Rosyid",
-          91
+          146
         ]
       ],
       "low_picker": [
@@ -13107,7 +13107,7 @@
         0,
         22,
         31,
-        5,
+        14,
         0,
         0,
         0,
@@ -13128,12 +13128,12 @@
       "pick_hour_orders": [
         0,
         85,
-        243,
+        242,
         51,
         0,
         218,
-        794,
-        2,
+        793,
+        18,
         0,
         0,
         0,
@@ -13159,7 +13159,7 @@
         0,
         83,
         365,
-        11,
+        92,
         0,
         0,
         0,
@@ -13180,12 +13180,12 @@
       "pick_hour_qty": [
         0,
         164,
-        651,
+        648,
         117,
         0,
         460,
-        954,
-        2,
+        953,
+        18,
         0,
         0,
         0,
@@ -13211,7 +13211,7 @@
         0,
         203,
         749,
-        19,
+        167,
         0,
         0,
         0,
@@ -13230,11 +13230,11 @@
         0
       ],
       "active_pickers": 16,
-      "active_packers": 60,
+      "active_packers": 61,
       "active_dispatchers": 9,
-      "total_workforce": 85,
-      "avg_pick_per_picker": 83.8,
-      "avg_pack_per_packer": 11.2
+      "total_workforce": 86,
+      "avg_pick_per_picker": 84.7,
+      "avg_pack_per_packer": 12.4
     }
   }
 ]
