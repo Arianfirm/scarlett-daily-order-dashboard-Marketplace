@@ -12370,12 +12370,12 @@
   },
   {
     "date": "2026-10-16",
-    "total_orders": 26224,
-    "total_qty": 39632,
-    "fulfilled": 20012,
-    "pending": 2879,
-    "fulfillment_pct": 76.3,
-    "total_atp": 49604376,
+    "total_orders": 26584,
+    "total_qty": 40160,
+    "fulfilled": 20876,
+    "pending": 2227,
+    "fulfillment_pct": 78.5,
+    "total_atp": 49603482,
     "peak_hour": 13,
     "peak_hour_orders": 2007,
     "peak_hour_qty": 2858,
@@ -12402,7 +12402,7 @@
       1636,
       1919,
       1587,
-      9,
+      369,
       0
     ],
     "hourly_qty": [
@@ -12428,22 +12428,22 @@
       2413,
       2837,
       2312,
-      13,
+      541,
       0
     ],
     "day_type": "biasa",
-    "last_updated": "2026-10-16 22:00:43 WIB",
+    "last_updated": "2026-10-16 22:14:13 WIB",
     "sku_count": 2167,
     "warehouse": {
-      "total_orders": 26339,
-      "total_orders_b2c": 26224,
-      "picked_orders": 21247,
-      "packed_orders": 17527,
-      "dispatched_orders": 15452,
-      "pending_orders": 10772,
-      "avg_pick_min": 95.9,
-      "avg_pack_min": 140.0,
-      "avg_dispatch_min": -390.7,
+      "total_orders": 26608,
+      "total_orders_b2c": 26584,
+      "picked_orders": 22319,
+      "packed_orders": 18105,
+      "dispatched_orders": 15860,
+      "pending_orders": 10724,
+      "avg_pick_min": 94.9,
+      "avg_pack_min": 136.7,
+      "avg_dispatch_min": -401.6,
       "pick_hours": [
         0,
         332,
@@ -12461,13 +12461,13 @@
         3249,
         2185,
         1503,
-        1470,
+        1469,
         122,
         34,
         0,
         0,
-        4380,
-        344,
+        4376,
+        1443,
         0
       ],
       "pack_hours": [
@@ -12493,7 +12493,7 @@
         862,
         1041,
         1132,
-        94,
+        672,
         0
       ],
       "dispatch_hours": [
@@ -12504,7 +12504,7 @@
         0,
         0,
         0,
-        20989,
+        21513,
         0,
         0,
         0,
@@ -12533,7 +12533,7 @@
         ],
         [
           "DAFID PACKERTIGADELAPANDUA",
-          1711
+          1710
         ],
         [
           "FERY PACKERDUASATUSEMBILAN",
@@ -12624,8 +12624,8 @@
           777
         ],
         [
-          "BUDIMAN DISPATCH",
-          610
+          "HAERUDIN DISPATCH",
+          653
         ]
       ],
       "low_picker": [
@@ -12652,10 +12652,6 @@
       ],
       "low_packer": [
         [
-          "NAYLA PACKEREMPATDUATIGA",
-          3
-        ],
-        [
           "SELVIA PACKEREMPATSATULIMA",
           4
         ],
@@ -12670,6 +12666,10 @@
         [
           "MULYATI PACKERSEPULUH",
           5
+        ],
+        [
+          "LUKMAN PACKERTIGATUJUHTUJUH",
+          6
         ]
       ],
       "pick_hour_pickers": [
@@ -12721,7 +12721,7 @@
         48,
         46,
         47,
-        33,
+        45,
         0
       ],
       "pick_hour_orders": [
@@ -12741,13 +12741,13 @@
         3249,
         2185,
         1503,
-        1470,
+        1469,
         122,
         34,
         0,
         0,
-        4380,
-        344,
+        4376,
+        1443,
         0
       ],
       "pack_hour_orders": [
@@ -12773,7 +12773,7 @@
         862,
         1041,
         1132,
-        94,
+        672,
         0
       ],
       "pick_hour_qty": [
@@ -12793,13 +12793,13 @@
         4625,
         3098,
         2216,
-        2658,
+        2657,
         156,
         66,
         0,
         0,
-        6000,
-        426,
+        5995,
+        1935,
         0
       ],
       "pack_hour_qty": [
@@ -12825,15 +12825,15 @@
         1220,
         1434,
         1754,
-        139,
+        1012,
         0
       ],
       "active_pickers": 39,
-      "active_packers": 159,
-      "active_dispatchers": 15,
-      "total_workforce": 213,
-      "avg_pick_per_picker": 544.8,
-      "avg_pack_per_packer": 110.2
+      "active_packers": 164,
+      "active_dispatchers": 16,
+      "total_workforce": 219,
+      "avg_pick_per_picker": 572.3,
+      "avg_pack_per_packer": 110.4
     }
   }
 ]
