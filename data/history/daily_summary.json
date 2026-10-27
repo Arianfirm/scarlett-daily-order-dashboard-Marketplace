@@ -11570,10 +11570,10 @@
     "date": "2026-10-28",
     "total_orders": 38964,
     "total_qty": 66843,
-    "fulfilled": 30395,
-    "pending": 2461,
-    "fulfillment_pct": 78.0,
-    "total_atp": 49909285,
+    "fulfilled": 33136,
+    "pending": 265,
+    "fulfillment_pct": 85.0,
+    "total_atp": 49907462,
     "peak_hour": 20,
     "peak_hour_orders": 2656,
     "peak_hour_qty": 4267,
@@ -11630,18 +11630,18 @@
       1795
     ],
     "day_type": "biasa",
-    "last_updated": "2026-10-28 02:01:49 WIB",
+    "last_updated": "2026-10-28 02:50:03 WIB",
     "sku_count": 2167,
     "warehouse": {
-      "total_orders": 29869,
+      "total_orders": 28987,
       "total_orders_b2c": 38964,
-      "picked_orders": 26781,
+      "picked_orders": 25999,
       "packed_orders": 25515,
-      "dispatched_orders": 23334,
-      "pending_orders": 15630,
-      "avg_pick_min": 89.6,
+      "dispatched_orders": 23944,
+      "pending_orders": 15020,
+      "avg_pick_min": 84.7,
       "avg_pack_min": 117.3,
-      "avg_dispatch_min": -409.9,
+      "avg_dispatch_min": -391.2,
       "pick_hours": [
         0,
         157,
@@ -11664,9 +11664,9 @@
         100,
         0,
         0,
-        729,
-        3353,
-        208
+        682,
+        2698,
+        126
       ],
       "pack_hours": [
         0,
@@ -11702,7 +11702,7 @@
         0,
         0,
         0,
-        36450,
+        37249,
         0,
         0,
         0,
@@ -11828,24 +11828,24 @@
       ],
       "low_picker": [
         [
-          "DIAN PACKERSERATUSLIMASATU",
-          603
+          "RIO PACKERSERATUSDELAPANTUJUH",
+          454
         ],
         [
           "ABDUL PACKERTIGATIGASATU",
-          663
+          485
         ],
         [
-          "RIO PACKERSERATUSDELAPANTUJUH",
-          690
-        ],
-        [
-          "RIVAN PACKERSERATUSSATU",
-          846
+          "DIAN PACKERSERATUSLIMASATU",
+          562
         ],
         [
           "HENDRIK PACKERDUALIMAEMPAT",
-          860
+          698
+        ],
+        [
+          "AZIS DUADUA",
+          733
         ]
       ],
       "low_packer": [
@@ -11944,9 +11944,9 @@
         100,
         0,
         0,
-        729,
-        3353,
-        208
+        682,
+        2698,
+        126
       ],
       "pack_hour_orders": [
         0,
@@ -11996,9 +11996,9 @@
         202,
         0,
         0,
-        721,
-        5991,
-        272
+        674,
+        4416,
+        167
       ],
       "pack_hour_qty": [
         0,
@@ -12030,7 +12030,7 @@
       "active_packers": 131,
       "active_dispatchers": 15,
       "total_workforce": 174,
-      "avg_pick_per_picker": 956.5,
+      "avg_pick_per_picker": 928.5,
       "avg_pack_per_packer": 194.8
     }
   }
