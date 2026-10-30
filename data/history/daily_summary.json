@@ -11167,12 +11167,12 @@
   },
   {
     "date": "2026-10-30",
-    "total_orders": 12927,
-    "total_qty": 20244,
-    "fulfilled": 7680,
-    "pending": 2913,
-    "fulfillment_pct": 59.4,
-    "total_atp": 15310543,
+    "total_orders": 14952,
+    "total_qty": 23434,
+    "fulfilled": 7655,
+    "pending": 4808,
+    "fulfillment_pct": 51.2,
+    "total_atp": 15307412,
     "peak_hour": 11,
     "peak_hour_orders": 2501,
     "peak_hour_qty": 3909,
@@ -11189,8 +11189,8 @@
       2194,
       1892,
       2501,
-      13,
-      0,
+      2031,
+      7,
       0,
       0,
       0,
@@ -11215,8 +11215,8 @@
       3417,
       2876,
       3909,
-      18,
-      0,
+      3196,
+      12,
       0,
       0,
       0,
@@ -11229,33 +11229,33 @@
       0
     ],
     "day_type": "gajian",
-    "last_updated": "2026-10-30 12:00:32 WIB",
+    "last_updated": "2026-10-30 13:00:34 WIB",
     "sku_count": 2167,
     "warehouse": {
-      "total_orders": 13004,
-      "total_orders_b2c": 12927,
-      "picked_orders": 8941,
-      "packed_orders": 6480,
+      "total_orders": 15032,
+      "total_orders_b2c": 14952,
+      "picked_orders": 8940,
+      "packed_orders": 6512,
       "dispatched_orders": 4849,
-      "pending_orders": 8078,
+      "pending_orders": 10103,
       "avg_pick_min": 75.4,
-      "avg_pack_min": 90.5,
+      "avg_pack_min": 90.9,
       "avg_dispatch_min": -62.7,
       "pick_hours": [
         0,
         314,
-        1084,
+        1083,
         0,
         0,
         916,
         478,
         0,
-        1769,
+        1768,
         2606,
         1190,
         814,
         0,
-        0,
+        1,
         0,
         0,
         0,
@@ -11280,8 +11280,8 @@
         1555,
         1847,
         674,
-        0,
-        0,
+        21,
+        11,
         0,
         0,
         0,
@@ -11342,7 +11342,7 @@
         ],
         [
           "TOMI PICKERSEBELAS",
-          806
+          805
         ],
         [
           "DENALDI PACKERSERATUSENAMDUA",
@@ -11358,7 +11358,7 @@
         ],
         [
           "ADITIA PICKERDUAPULUH",
-          557
+          558
         ]
       ],
       "top_packer": [
@@ -11368,7 +11368,11 @@
         ],
         [
           "TIKA PACKERSERATUSDELAPAN",
-          262
+          265
+        ],
+        [
+          "ZULAIKAH PACKERTIGATUJUHEMPAT",
+          220
         ],
         [
           "ALDA PACKERSEMBILANEMPAT",
@@ -11376,10 +11380,6 @@
         ],
         [
           "NUR PACKERDUASATULIMA",
-          212
-        ],
-        [
-          "ZULAIKAH PACKERTIGATUJUHEMPAT",
           212
         ],
         [
@@ -11483,7 +11483,7 @@
         10,
         10,
         0,
-        0,
+        1,
         0,
         0,
         0,
@@ -11508,8 +11508,8 @@
         49,
         52,
         43,
-        0,
-        0,
+        3,
+        4,
         0,
         0,
         0,
@@ -11524,18 +11524,18 @@
       "pick_hour_orders": [
         0,
         314,
-        1084,
+        1083,
         0,
         0,
         916,
         478,
         0,
-        1769,
+        1768,
         2606,
         1190,
         814,
         0,
-        0,
+        1,
         0,
         0,
         0,
@@ -11560,8 +11560,8 @@
         1555,
         1847,
         674,
-        0,
-        0,
+        21,
+        11,
         0,
         0,
         0,
@@ -11576,13 +11576,13 @@
       "pick_hour_qty": [
         0,
         442,
-        1627,
+        1626,
         0,
         0,
         1428,
         698,
         0,
-        2465,
+        2464,
         4082,
         2032,
         1212,
@@ -11612,8 +11612,8 @@
         2565,
         2759,
         1031,
-        0,
-        0,
+        31,
+        15,
         0,
         0,
         0,
@@ -11630,7 +11630,7 @@
       "active_dispatchers": 9,
       "total_workforce": 115,
       "avg_pick_per_picker": 388.7,
-      "avg_pack_per_packer": 78.1
+      "avg_pack_per_packer": 78.5
     }
   }
 ]
